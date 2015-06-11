@@ -1,0 +1,6 @@
+{
+	"validateIndentation": 4,
+	"maximumLineLength": 120,
+	"esprima": "esprima-fb",
+	"preset": "google"
+}

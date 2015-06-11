@@ -1,0 +1,21 @@
+{
+  "name": "cst",
+  "version": "0.0.1",
+  "description": "JavaScript CST Implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test lib --recursive --require test/babelhook",
+    "test-live": "mocha test lib --recursive --require test/babelhook --watch"
+  },
+  "author": "Marat Dulin",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "jscs": "^1.13.1",
+    "mocha": "^2.2.5",
+    "babel-core": "^5.5.5"
+  },
+  "dependencies": {
+    "esprima-fb": "15001.1.0-dev-harmony-fb"
+  }
+}
