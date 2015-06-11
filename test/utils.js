@@ -9,5 +9,5 @@ export function parseAndGetStatement(code) {
 export function parseAndGetExpression(code) {
     var parser = new Parser();
     var program = parser.parse(code);
-    return program.body.get(0).expression;
+    return program.body[0].expression;
 }
