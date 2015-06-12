@@ -13,14 +13,14 @@ describe('ArrayPattern', () => {
     });
 
     it('should accept 1-element array', () => {
-        var assignment = parseAndGetExpression('[x] = [1]');
+        var assignment = parseAndGetExpression('[ x ] = [ 1 ]');
         var pattern = assignment.left;
         expect(pattern.elements.length).to.equal(1);
         expect(pattern.elements[0].type).to.equal('Identifier');
     });
 
     it('should accept multiple elements array', () => {
-        var assignment = parseAndGetExpression('[x, y] = [1]');
+        var assignment = parseAndGetExpression('[ x , y ] = [1]');
         var pattern = assignment.left;
         expect(pattern.elements.length).to.equal(2);
         expect(pattern.elements[0].type).to.equal('Identifier');
@@ -30,7 +30,7 @@ describe('ArrayPattern', () => {
     });
 
     it('should accept holes', () => {
-        var assignment = parseAndGetExpression('[,x,,y,,] = [1]');
+        var assignment = parseAndGetExpression('[ , x , , y , , ] = [1]');
         var pattern = assignment.left;
         expect(pattern.elements.length).to.equal(5);
         expect(pattern.elements[0]).to.equal(null);

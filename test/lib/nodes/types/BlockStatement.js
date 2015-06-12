@@ -6,7 +6,7 @@ describe('BlockStatement', () => {
         expect(parseAndGetStatement('{;}').type).to.equal('BlockStatement');
     });
 
-    it('should accept single no statements', () => {
+    it('should accept no statements', () => {
         var statement = parseAndGetStatement('{}');
         expect(statement.type).to.equal('BlockStatement');
         expect(statement.body.length).to.equal(0);
