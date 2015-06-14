@@ -1,5 +1,9 @@
 import Parser from '../lib/Parser';
 
+export function parseAndGetProgram(code) {
+    var parser = new Parser();
+    return parser.parse(code);
+}
 
 export function parseAndGetStatement(code) {
     var parser = new Parser();

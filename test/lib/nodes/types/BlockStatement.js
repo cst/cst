@@ -17,7 +17,7 @@ describe('BlockStatement', () => {
         expect(statement.body[0].type).to.equal('EmptyStatement');
     });
 
-    it('should accept single multiple statements', () => {
+    it('should accept multiple statements', () => {
         var statement = parseAndGetStatement('{ ; ; ; /* */ }');
         expect(statement.body[0].type).to.equal('EmptyStatement');
         expect(statement.body[1].type).to.equal('EmptyStatement');
