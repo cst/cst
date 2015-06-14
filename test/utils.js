@@ -9,8 +9,20 @@ export function parseAndGetStatement(code) {
 
 export function parseAndGetExpression(code) {
     var parser = new Parser();
-    var program = parser.parse(code);
+    var program = parser.parse('(' + code + ')');
     return program.body[0].expression;
+}
+
+export function parseAndGetPattern(code) {
+    var parser = new Parser();
+    var program = parser.parse(`(${code}) = 1`);
+    return program.body[0].expression.left;
+}
+
+export function parseAndGetObjectProperty(code) {
+    var parser = new Parser();
+    var program = parser.parse(`({${code}})`);
+    return program.body[0].expression.properties[0];
 }
 
 export function parseAndGetStatementInLoop(code, loopLabel) {

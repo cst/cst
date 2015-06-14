@@ -21,7 +21,7 @@ describe('AssignmentExpression', () => {
     });
 
     it('should accept array pattern', () => {
-        var assignment = parseAndGetExpression('[x] = (y);');
+        var assignment = parseAndGetExpression('[x] = (y)');
         expect(assignment.operator).to.equal('=');
         expect(assignment.left.type).to.equal('ArrayPattern');
         expect(assignment.right.name).to.equal('y');
