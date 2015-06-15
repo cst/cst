@@ -32,7 +32,7 @@ describe('Property', () => {
         expect(property.key.type).to.equal('Identifier');
         expect(property.key.name).to.equal('x');
         expect(property.value.type).to.equal('FunctionExpression');
-        expect(property.methodParams).to.deep.equal([]);
+        expect(property.value.params).to.deep.equal([]);
         expect(property.kind).to.equal('get');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
@@ -43,8 +43,8 @@ describe('Property', () => {
         expect(property.key.type).to.equal('Identifier');
         expect(property.key.name).to.equal('x');
         expect(property.value.type).to.equal('FunctionExpression');
-        expect(property.methodParams[0].type).to.deep.equal('Identifier');
-        expect(property.methodParams[0].name).to.deep.equal('v');
+        expect(property.value.params[0].type).to.deep.equal('Identifier');
+        expect(property.value.params[0].name).to.deep.equal('v');
         expect(property.kind).to.equal('set');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
@@ -55,10 +55,10 @@ describe('Property', () => {
         expect(property.key.type).to.equal('Identifier');
         expect(property.key.name).to.equal('x');
         expect(property.value.type).to.equal('FunctionExpression');
-        expect(property.methodParams[0].type).to.deep.equal('Identifier');
-        expect(property.methodParams[0].name).to.deep.equal('v');
-        expect(property.methodParams[1].type).to.deep.equal('Identifier');
-        expect(property.methodParams[1].name).to.deep.equal('w');
+        expect(property.value.params[0].type).to.deep.equal('Identifier');
+        expect(property.value.params[0].name).to.deep.equal('v');
+        expect(property.value.params[1].type).to.deep.equal('Identifier');
+        expect(property.value.params[1].name).to.deep.equal('w');
         expect(property.kind).to.equal('init');
         expect(property.method).to.equal(true);
         expect(property.shorthand).to.equal(false);
