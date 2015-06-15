@@ -2,7 +2,7 @@
 
 ### CST
 
-CST means Concrete Syntax Tree. Unline AST (which is Abstract Syntax Tree), CST containst the whole information
+CST means Concrete Syntax Tree. Unlike AST (which is Abstract Syntax Tree), CST contains the whole information
 from the JavaScript source file: whitespace, punctuators, comments.
 
 This `CST` implementation is designed to be `100%` compatible with JS `AST` (https://github.com/estree/estree).
