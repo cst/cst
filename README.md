@@ -7,6 +7,22 @@ from the JavaScript source file: whitespace, punctuators, comments.
 
 This `CST` implementation is designed to be `100%` compatible with JS `AST` (https://github.com/estree/estree).
 
+Let's see an example:
+
+```js
+x = 0;
+if (x) x++;
+```
+
+CST for this example:
+
+![](https://raw.githubusercontent.com/mdevils/cst/master/docs/cst-example.png)
+
+* Blue text — CST Tokens.
+* White text in blue blocks — CST Nodes (thir structure is equal to AST).
+* Blue lines — CST Structure.
+* Red lined — AST Links.
+
 ## Classes
 
 ### Element
