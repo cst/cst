@@ -1,0 +1,11 @@
+{
+  "node"     : true,
+  "bitwise"  : true,
+  "undef"    : true,
+  "eqeqeq"   : true,
+  "noarg"    : true,
+  "mocha"    : true,
+  "unused"   : "vars",
+  "esnext"   : true,
+  "latedef"  : false
+}

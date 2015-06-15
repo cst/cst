@@ -4,16 +4,21 @@
   "description": "JavaScript CST Implementation",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test lib --recursive --require test/babelhook",
-    "test:live": "mocha test lib --recursive --require test/babelhook --watch"
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "mocha test lib --recursive --require test/babelhook",
+    "test:live": "mocha test lib --recursive --require test/babelhook --watch",
+    "lint": "npm run lint:jscs && npm run lint:jshint",
+    "lint:jscs": "jscs lib test",
+    "lint:jshint": "jshint lib test"
   },
   "author": "Marat Dulin",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^5.5.5",
     "chai": "^3.0.0",
     "jscs": "^1.13.1",
-    "mocha": "^2.2.5",
-    "babel-core": "^5.5.5"
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5"
   },
   "dependencies": {
     "esprima-fb": "15001.1.0-dev-harmony-fb"

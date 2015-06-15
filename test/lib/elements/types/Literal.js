@@ -52,7 +52,7 @@ describe('Literal', () => {
     it('should accept float starting with dot', () => {
         var expression = parseAndGetExpression('.5');
         expect(expression.type).to.equal('Literal');
-        expect(expression.value).to.equal(.5);
+        expect(expression.value).to.equal(0.5);
         expect(expression.raw).to.equal('.5');
     });
 
