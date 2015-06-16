@@ -4,7 +4,7 @@
 
 `CST` means Concrete Syntax Tree. Unlike `AST` (which is Abstract Syntax Tree), `CST` contains the whole information
 from the JavaScript source file: whitespace, punctuators, comments. This information is extremely useful for
-code style checker and other code linters. `CST` is also useful for cases, when you need to apply modifications
+code style checkers and other code linters. `CST` is also useful for cases, when you need to apply modifications
 to existing JavaScript files and preserve initial file formatting.
 
 This `CST` implementation is designed to be `100%` compatible with JS `AST` (https://github.com/estree/estree).
@@ -21,7 +21,7 @@ CST for this example:
 ![](https://raw.githubusercontent.com/mdevils/cst/master/docs/cst-example.png)
 
 * Blue text — CST Tokens.
-* White text in blue blocks — CST Nodes (thir structure is equal to AST).
+* White text in blue blocks — CST Nodes (their structure is equal to AST).
 * Blue lines — CST Structure.
 * Red lined — AST Links.
 
