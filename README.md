@@ -33,25 +33,27 @@ CST for this example:
 
 Provides traversing properties:
 
-* `childElements: Element[]`, `parentElement: Element|null`: child/parent traversing
-* `nextSibling: Element|null`, `previousSibling: Element|null`: traversing between siblings
-* `nextToken: Token|null`, `previousToken: Token|null`: traversing to next/previous token
+* `childElements: Element[]`, `parentElement: Element|null`: child/parent traversing.
+* `nextSibling: Element|null`, `previousSibling: Element|null`: traversing between siblings.
+* `nextToken: Token|null`, `previousToken: Token|null`: traversing to next/previous token.
+* `firstToken: Token|null`, `lastToken: Token|null`: traversing to first/last tokens (not only direct tokens).
+* `firstChild: Token|null`, `lastChild: Token|null`: traversing to first/last direct child.
 
 Code-related properties:
 
 * `sourceCode`: generates and return JavaScript code of the specified `Element`
 * `sourceCodeLength`: returns JavaScript code length
-* `isToken`, `isNode`, `isExpression`, `isStatement`, `isWhitespace`, `isComment`, `isPattern`, `isAssignable`:
-  code entity flags.
+* `isToken`, `isNode`, `isExpression`, `isStatement`, `isWhitespace`, `isComment`, `isPattern`, `isAssignable`,
+  `isFragment`: code entity flags.
 
 Provides mutation methods:
 
-* `appendChildren(newElements)`: appends children to the end of the `Element`
-* `prependChildren(newElements)`: prepends children to the end of the `Element`
-* `replaceChildren(newElements, referenceElement, replaceCount)`: replaces `replaceCount` elements starting with
-  `referenceElement`
-* `insertChildrenBefore(newElements, referenceElement)`: inserts children before `referenceElement`
-* `insertChildrenAfter(newElements, referenceElement)`: inserts children after `referenceElement`
+* `appendChild(child)`: appends child to the end of the `Element`
+* `prependChild(child)`: prepends child to the end of the `Element`
+* `insertChildBefore(child, referenceChild)`: inserts child before `referenceChild`
+* `insertChildAfter(child, referenceChild)`: inserts child after `referenceChild`
+* `replaceChild(child, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
+  `lastChildRef`) with specified child.
 
 Location properties:
 
