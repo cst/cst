@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
-    "test:unit": "mocha test lib --recursive --require test/babelhook",
-    "test:live": "mocha test lib --recursive --require test/babelhook --watch",
+    "test:unit": "mocha test lib --recursive --compilers js:babel/register",
+    "test:live": "mocha test lib --recursive --compilers js:babel/register --watch",
     "lint": "npm run lint:jscs && npm run lint:jshint",
     "lint:jscs": "jscs lib test",
     "lint:jshint": "jshint lib test"
