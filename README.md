@@ -9,6 +9,14 @@ to existing JavaScript files and preserve initial file formatting.
 
 This `CST` implementation is designed to be `100%` compatible with JS `AST` (https://github.com/estree/estree).
 
+Main principles:
+
+* CST contains all the information from parsed file (including whitespace and comments).
+* Compatible with AST (https://github.com/estree/estree).
+* Requires tokens to modify CST structure.
+* The tree is always valid (it protects itself against breaking changes).
+* CST can be rendered to valid JS at any time.
+
 Let's see an example:
 
 ```js
