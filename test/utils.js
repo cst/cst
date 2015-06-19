@@ -59,7 +59,11 @@ export function assertChildren(element, children) {
     let childElements = element.childElements;
     for (let i = 0; i < childElements.length; i++) {
         if (childElements[i] !== children[i]) {
-            throw new Error('Invalid child');
+            throw new Error(
+                'Invalid children\n' +
+                'Actual: "' + element.sourceCode + '"\n' +
+                'Expected: "' + children.map(c => c.sourceCode).join('') + '"'
+            );
         }
     }
 }

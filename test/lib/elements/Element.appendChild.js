@@ -1,7 +1,6 @@
 import Element from '../../../lib/elements/Element';
 import Fragment from '../../../lib/elements/Fragment';
 import Token from '../../../lib/elements/Token';
-import {expect} from 'chai';
 import {assertChildren, validateStructure} from '../../utils';
 
 describe('Element::appendChild', () => {
