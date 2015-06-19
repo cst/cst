@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mdevils/cst.svg?branch=master)](https://travis-ci.org/mdevils/cst)
+
 # JavaScript CST implementation
 
 ### CST
@@ -59,8 +61,7 @@ Provides mutation methods:
 * `appendChild(child)`: appends child to the end of the `Element`
 * `prependChild(child)`: prepends child to the end of the `Element`
 * `insertChildBefore(child, referenceChild)`: inserts child before `referenceChild`
-* `insertChildAfter(child, referenceChild)`: inserts child after `referenceChild`
-* `replaceChild(child, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
+* `replaceChildren(child, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
   `lastChildRef`) with specified child.
 
 Location properties:
