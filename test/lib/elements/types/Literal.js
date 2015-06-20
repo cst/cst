@@ -20,13 +20,6 @@ describe('Literal', () => {
         expect(expression.raw).to.equal('\'123\'');
     });
 
-    it('should accept single quoted string', () => {
-        var expression = parseAndGetExpression('\'123\'');
-        expect(expression.type).to.equal('Literal');
-        expect(expression.value).to.equal('123');
-        expect(expression.raw).to.equal('\'123\'');
-    });
-
     it('should accept string escapes', () => {
         var value = '" \\" \\n \\r \\t \\f \\b \\v \\0 \\\n \\u006F \\251 \\xa9 \\u{000000000061} "';
         var expression = parseAndGetExpression(value);
