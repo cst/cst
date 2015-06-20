@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
-    "test:unit": "mocha test lib --recursive --compilers js:babel/register",
-    "test:live": "mocha test lib --recursive --compilers js:babel/register --watch",
+    "test:unit": "mocha test/utils.js test/lib test/integrated lib --recursive --compilers js:babel/register",
+    "test:live": "mocha test/utils.js test/lib test/integrated lib --recursive --compilers js:babel/register --watch",
+    "test:benchmark": "babel-node test/benchmarks/selectors.js",
     "lint": "npm run lint:jscs && npm run lint:jshint",
     "lint:jscs": "jscs lib test",
     "lint:jshint": "jshint lib test",
@@ -17,7 +18,9 @@
   "devDependencies": {
     "babel": "^5.5.8",
     "babel-core": "^5.5.5",
+    "benchmark": "^1.0.0",
     "chai": "^3.0.0",
+    "chalk": "^1.0.0",
     "husky": "^0.8.1",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
