@@ -9,7 +9,8 @@
     "test:live": "mocha test lib --recursive --compilers js:babel/register --watch",
     "lint": "npm run lint:jscs && npm run lint:jshint",
     "lint:jscs": "jscs lib test",
-    "lint:jshint": "jshint lib test"
+    "lint:jshint": "jshint lib test",
+    "precommit": "npm test"
   },
   "author": "Marat Dulin",
   "license": "MIT",
@@ -17,6 +18,7 @@
     "babel": "^5.5.8",
     "babel-core": "^5.5.5",
     "chai": "^3.0.0",
+    "husky": "^0.8.1",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
