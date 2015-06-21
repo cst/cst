@@ -1,6 +1,8 @@
 import Benchmark from 'benchmark';
 import chalk from 'chalk';
 import elementIndex from '../../lib/elements/elementIndex';
+import {readFileSync} from 'fs';
+import Parser from '../../lib/Parser';
 
 import {
     ArrayChildren,
@@ -21,6 +23,22 @@ function test(testName, cases) {
 }
 
 let availableTypes = Object.keys(elementIndex);
+
+(() => {
+    const code = readFileSync(__dirname + '/../../node_modules/esprima-fb/esprima.js', 'utf8');
+    let parser = new Parser();
+    test('CST building costs', {
+        'Parse (esprima)': function() {
+            parser._parseAst(code);
+        },
+        'Parse, fix tokens': function() {
+            parser._processTokens(parser._parseAst(code), code);
+        },
+        'Parse, fix tokens, build CST': function() {
+            parser.parse(code);
+        }
+    });
+})();
 
 (() => {
     const childrenCount = 3;
