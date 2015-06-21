@@ -56,9 +56,9 @@ let exceptions = {
 
 describe('integrated/requireCurlyBraces', () => {
     it('should add curly braces to all supported statements', () => {
-        let tree = parseAndGetProgram(sourceCode);
+        let program = parseAndGetProgram(sourceCode);
         for (var typeName in types) {
-            for (let node of getNodesByType(tree, typeName)) {
+            for (let node of program.selectNodesByType(typeName)) {
                 for (let propName of types[typeName]) {
                     let propValue = node[propName];
                     if (propValue) {
@@ -98,24 +98,6 @@ describe('integrated/requireCurlyBraces', () => {
                 }
             }
         }
-        expect(tree.sourceCode).to.equal(resultCode);
+        expect(program.sourceCode).to.equal(resultCode);
     });
 });
-
-function getNodesByType(tree, type) {
-    let result = [];
-    let elementStack = [tree];
-    let element = elementStack.shift();
-    while (element) {
-        if (element.isNode) {
-            if (element.type === type) {
-                result.push(element);
-            }
-            if (element.childCount > 0) {
-                elementStack = element.childElements.concat(elementStack);
-            }
-        }
-        element = elementStack.shift();
-    }
-    return result;
-}

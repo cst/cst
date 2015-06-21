@@ -58,10 +58,10 @@ Code-related properties:
 
 Provides mutation methods:
 
-* `appendChild(child)`: appends child to the end of the `Element`
-* `prependChild(child)`: prepends child to the end of the `Element`
-* `insertChildBefore(child, referenceChild)`: inserts child before `referenceChild`
-* `replaceChildren(child, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
+* `appendChild(element)`: appends child to the end of the `Element`
+* `prependChild(element)`: prepends child to the end of the `Element`
+* `insertChildBefore(element, referenceChild)`: inserts child before `referenceChild`
+* `replaceChildren(element, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
   `lastChildRef`) with specified child.
 
 Location properties:
