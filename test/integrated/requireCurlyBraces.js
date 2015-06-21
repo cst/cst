@@ -76,11 +76,15 @@ describe('integrated/requireCurlyBraces', () => {
                                 continue;
                             }
                             let firstChild = children[0];
-                            firstChild = firstChild.previousCodeToken.nextToken;
+                            while (firstChild.previousSibling && firstChild.previousSibling.isNonCodeToken) {
+                                firstChild = firstChild.previousSibling;
+                            }
+
                             let lastChild = children[children.length - 1];
                             while (lastChild.nextSibling && lastChild.nextSibling.isNonCodeToken) {
                                 lastChild = lastChild.nextSibling;
                             }
+
                             let body = node.getChildrenBetween(firstChild, lastChild);
                             node.replaceChildren(block, firstChild, lastChild);
                             block.insertChildBefore(new Fragment(body), block.lastChild);
