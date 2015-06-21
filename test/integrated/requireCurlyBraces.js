@@ -32,12 +32,12 @@ for (x in x) {x++;}
 with (x) {prop++;}
 switch (x) {
     case 1:
-    case 2:
-        {x++;
-        break;}
-    default:
-        {x--;}
-}
+    case 2:{
+        x++;
+        break;
+    }default:{
+        x--;
+}}
 `;
 
 let types = {
@@ -76,7 +76,11 @@ describe('integrated/requireCurlyBraces', () => {
                                 continue;
                             }
                             let firstChild = children[0];
+                            firstChild = firstChild.previousCodeToken.nextToken;
                             let lastChild = children[children.length - 1];
+                            while (lastChild.nextSibling && lastChild.nextSibling.isNonCodeToken) {
+                                lastChild = lastChild.nextSibling;
+                            }
                             let body = node.getChildrenBetween(firstChild, lastChild);
                             node.replaceChildren(block, firstChild, lastChild);
                             block.insertChildBefore(new Fragment(body), block.lastChild);
