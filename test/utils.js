@@ -19,7 +19,7 @@ export function parseAndGetExpression(code) {
 
 export function parseAndGetPattern(code) {
     var parser = new Parser();
-    var program = parser.parse(`(${code}) = 1`);
+    var program = parser.parse(`(${code} = 1)`);
     return program.body[0].expression.left;
 }
 

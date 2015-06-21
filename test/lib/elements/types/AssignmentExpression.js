@@ -14,7 +14,7 @@ describe('AssignmentExpression', () => {
     });
 
     it('should accept object pattern', () => {
-        var assignment = parseAndGetExpression('({x}) = y');
+        var assignment = parseAndGetExpression('({x} = y)');
         expect(assignment.operator).to.equal('=');
         expect(assignment.left.type).to.equal('ObjectPattern');
         expect(assignment.right.name).to.equal('y');
