@@ -13,12 +13,19 @@ import {
 
 import {
     SetIndex,
-    HashIndex
+    HashIndex,
+    ArrayIndex
 } from './elements/indexElements';
 
 let tests = [];
 
 function test(testName, cases) {
+    if (Array.isArray(cases)) {
+        cases = cases.reduce((obj, [caseName, caseCallback]) => {
+            obj[caseName] = caseCallback;
+            return obj;
+        }, {});
+    }
     tests.push([testName, cases]);
 }
 
@@ -43,63 +50,38 @@ let availableTypes = Object.keys(elementIndex);
 (() => {
     const childrenCount = 3;
     const depth = 7;
-    let [arrayTree, counts] = buildElementTree(ArrayChildren, depth, childrenCount);
-    let [listTree] = buildElementTree(ListChildren, depth, childrenCount);
-    let [listNonRecursiveTree] = buildElementTree(ListChildrenNonRecursive, depth, childrenCount);
-    let [listRecursiveClosureTree] = buildElementTree(ListChildrenRecursiveClosure, depth, childrenCount);
-    let [setIndexTree] = buildElementTree(SetIndex, depth, childrenCount);
-    let [hashIndexTree] = buildElementTree(HashIndex, depth, childrenCount);
-    test('Searching by type', {
-        'NO INDEX, Array children': function() {
+
+    let structureTypes = {
+        'NO INDEX, Array children': ArrayChildren,
+        'NO INDEX, List children': ListChildren,
+        'NO INDEX, List children, non recursive': ListChildrenNonRecursive,
+        'NO INDEX, List children, closure recursive': ListChildrenRecursiveClosure,
+        'INDEX, using sets': SetIndex,
+        'INDEX, using hashes': HashIndex,
+        'INDEX, using arrays': ArrayIndex
+    };
+
+    let [, counts] = buildElementTree(ListChildren, depth, childrenCount);
+
+    test('Building structure', Object.keys(structureTypes).map(function(typeName) {
+        let StructureType = structureTypes[typeName];
+        return [typeName, function() {
+            buildElementTree(StructureType, depth, childrenCount);
+        }];
+    }));
+
+    test('Searching by type', Object.keys(structureTypes).map(function(typeName) {
+        let [structure] = buildElementTree(structureTypes[typeName], depth, childrenCount);
+        var callback = function callback() {
             for (let type of availableTypes) {
-                let count = arrayTree.select(type).length;
+                let count = structure.select(type).length;
                 if (counts[type] !== count) {
                     console.log(type + ' ' + count + ' vs ' + counts[type]);
                 }
             }
-        },
-        'NO INDEX, List children': function() {
-            for (let type of availableTypes) {
-                let count = listTree.select(type).length;
-                if (counts[type] !== count) {
-                    console.log(type + ' ' + count + ' vs ' + counts[type]);
-                }
-            }
-        },
-        'NO INDEX, List children, non recursive': function() {
-            for (let type of availableTypes) {
-                let count = listNonRecursiveTree.select(type).length;
-                if (counts[type] !== count) {
-                    console.log(type + ' ' + count + ' vs ' + counts[type]);
-                }
-            }
-        },
-        'NO INDEX, List children, closure recursive': function() {
-            for (let type of availableTypes) {
-                let count = listRecursiveClosureTree.select(type).length;
-                if (counts[type] !== count) {
-                    console.log(type + ' ' + count + ' vs ' + counts[type]);
-                }
-            }
-        },
-        'INDEX, using sets': function() {
-            for (let type of availableTypes) {
-                let count = setIndexTree.select(type).length;
-                if (counts[type] !== count) {
-                    console.log(type + ' ' + count + ' vs ' + counts[type]);
-                }
-            }
-        },
-        'INDEX, using hashes': function() {
-            for (let type of availableTypes) {
-                let count = hashIndexTree.select(type).length;
-                if (counts[type] !== count) {
-                    console.log(type + ' ' + count + ' vs ' + counts[type]);
-                    throw new Error(';');
-                }
-            }
-        }
-    });
+        };
+        return [typeName, callback];
+    }));
 })();
 
 function buildElementTree(ElementClass, depth, childrenCount) {

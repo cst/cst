@@ -93,3 +93,39 @@ export class HashIndex {
 }
 
 HashIndex._lastId = 1000000;
+
+export class ArrayIndex {
+    constructor(type, children) {
+        this._type = type;
+        let index = this._index = {
+            [type]: {elements: [this]}
+        };
+
+        if (children.length > 0) {
+            this._firstChild = children[0];
+            this._lastChild = children[children.length - 1];
+            for (let i = 0; i < children.length; i++) {
+                let child = children[i];
+                child._nextSibling = children[i + 1] || null;
+                child._previousSibling = children[i - 1] || null;
+                for (var elementType in child._index) {
+                    let childSubIndex = child._index[elementType];
+                    if (!(elementType in index)) {
+                        index[elementType] = {elements: []};
+                    }
+                    let parentSubIndex = index[elementType];
+                    parentSubIndex.elements = parentSubIndex.elements.concat(childSubIndex.elements);
+                }
+            }
+        }
+    }
+
+    select(type) {
+        let elementSubIndex = this._index[type];
+        if (elementSubIndex) {
+            return elementSubIndex.elements.slice(0);
+        } else {
+            return [];
+        }
+    }
+}
