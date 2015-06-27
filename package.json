@@ -2,6 +2,14 @@
   "name": "cst",
   "version": "0.0.1",
   "description": "JavaScript CST Implementation",
+  "author": "Marat Dulin",
+  "contributors": [
+    {
+      "name": "Henry Zhu",
+      "email": "hi@henryzoo.com"
+    }
+  ],
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
@@ -13,8 +21,6 @@
     "lint:jshint": "jshint lib test",
     "precommit": "npm test"
   },
-  "author": "Marat Dulin",
-  "license": "MIT",
   "devDependencies": {
     "babel": "^5.5.8",
     "babel-core": "^5.5.5",
