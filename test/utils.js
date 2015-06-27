@@ -1,19 +1,19 @@
 import Parser from '../lib/Parser';
 
-export function parseAndGetProgram(code) {
+export function parseAndGetProgram(code, mode) {
     var parser = new Parser();
-    return parser.parse(code);
+    return parser.parse(code, mode);
 }
 
-export function parseAndGetStatement(code) {
+export function parseAndGetStatement(code, mode) {
     var parser = new Parser();
-    var program = parser.parse(code);
+    var program = parser.parse(code, mode);
     return program.body[0];
 }
 
-export function parseAndGetExpression(code) {
+export function parseAndGetExpression(code, mode) {
     var parser = new Parser();
-    var program = parser.parse('(' + code + ')');
+    var program = parser.parse('(' + code + ')', mode);
     return program.body[0].expression;
 }
 
