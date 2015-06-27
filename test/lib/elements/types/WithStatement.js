@@ -1,13 +1,13 @@
-import {parseLooseAndGetStatement} from '../../../utils';
+import {parseAndGetStatement} from '../../../utils';
 import {expect} from 'chai';
 
 describe('WithStatement', () => {
     it('should return correct type', () => {
-        expect(parseLooseAndGetStatement('with(true);').type).to.equal('WithStatement');
+        expect(parseAndGetStatement('with(true);', 'loose').type).to.equal('WithStatement');
     });
 
     it('should accept single statement', () => {
-        var statement = parseLooseAndGetStatement('with (true) x;');
+        var statement = parseAndGetStatement('with (true) x;', 'loose');
         expect(statement.object.type).to.equal('Literal');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -16,7 +16,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept expression in parentheses', () => {
-        var statement = parseLooseAndGetStatement('with ((true)) x;');
+        var statement = parseAndGetStatement('with ((true)) x;', 'loose');
         expect(statement.object.type).to.equal('Literal');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -25,7 +25,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept whitespaces', () => {
-        var statement = parseLooseAndGetStatement('with ( true ) x ;');
+        var statement = parseAndGetStatement('with ( true ) x ;', 'loose');
         expect(statement.object.type).to.equal('Literal');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -34,7 +34,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept blocks', () => {
-        var statement = parseLooseAndGetStatement('with ( true ) { x; }');
+        var statement = parseAndGetStatement('with ( true ) { x; }', 'loose');
         expect(statement.object.type).to.equal('Literal');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('BlockStatement');

@@ -1,4 +1,4 @@
-import {parseAndGetExpression, parseLooseAndGetExpression} from '../../../utils';
+import {parseAndGetExpression} from '../../../utils';
 import {expect} from 'chai';
 
 describe('UnaryExpression', () => {
@@ -43,7 +43,7 @@ describe('UnaryExpression', () => {
     });
 
     it('should accept delete', () => {
-        var assignment = parseLooseAndGetExpression('delete x');
+        var assignment = parseAndGetExpression('delete x', 'loose');
         expect(assignment.operator).to.equal('delete');
         expect(assignment.argument.name).to.equal('x');
     });
