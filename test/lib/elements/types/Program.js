@@ -34,4 +34,7 @@ describe('Program', () => {
         ]);
     });
 
+    describe('selectNodesByType()', () => {
+
+    });
 });

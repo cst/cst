@@ -82,6 +82,24 @@ let availableTypes = Object.keys(elementIndex);
         };
         return [typeName, callback];
     }));
+
+    test('Removing, then readding', Object.keys(structureTypes).map(function(typeName) {
+        let [structure] = buildElementTree(structureTypes[typeName], depth, childrenCount);
+        let callback = function callback() {
+            for (let type of availableTypes) {
+                let nodes = structure.select(type);
+                for (let i = 0; i < nodes.length; i++) {
+                    let node = nodes[i];
+                    if (node !== structure) {
+                        let parent = node._parent;
+                        parent.removeChild(node);
+                        parent.appendChild(node);
+                    }
+                }
+            }
+        };
+        return [typeName, callback];
+    }));
 })();
 
 function buildElementTree(ElementClass, depth, childrenCount) {
@@ -102,7 +120,8 @@ function buildElementTree(ElementClass, depth, childrenCount) {
             counts[type]++;
             parentElements[i] = new ElementClass(
                 type,
-                elements.slice(i * childrenCount, (i + 1) * childrenCount)
+                elements.slice(i * childrenCount, (i + 1) * childrenCount),
+                parentElements.length === 1
             );
         }
         elements = parentElements;

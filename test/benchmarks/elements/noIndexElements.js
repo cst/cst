@@ -6,6 +6,46 @@ export class ArrayChildren {
             let child = children[i];
             child._nextSibling = children[i + 1] || null;
             child._previousSibling = children[i - 1] || null;
+            child._parent = this;
+        }
+    }
+
+    appendChild(element) {
+        element._parent = this;
+
+        element._previousSibling = this._lastChild;
+        element._nextSibling = null;
+
+        this._children[this._children.length] = element;
+        if (this._lastChild) {
+            this._lastChild._nextSibling = element;
+        } else {
+            this._firstChild = this._lastChild = element;
+        }
+        this._lastChild = element;
+    }
+
+    removeChild(element) {
+        if (element._parent === this) {
+            if (element._previousSibling) {
+                element._previousSibling._nextSibling = element._nextSibling;
+            }
+
+            if (element._nextSibling) {
+                element._nextSibling._previousSibling = element._previousSibling;
+            }
+
+            if (element === this._lastChild) {
+                this._lastChild = element._previousSibling;
+            }
+
+            if (element === this._firstChild) {
+                this._firstChild = element._nextSibling;
+            }
+
+            element._parent = null;
+
+            this._children.splice(this._children.indexOf(element), 1);
         }
     }
 
@@ -39,7 +79,44 @@ export class ListChildren {
                 let child = children[i];
                 child._nextSibling = children[i + 1] || null;
                 child._previousSibling = children[i - 1] || null;
+                child._parent = this;
             }
+        }
+    }
+
+    appendChild(element) {
+        element._parent = this;
+
+        element._previousSibling = this._lastChild;
+        element._nextSibling = null;
+
+        if (this._lastChild) {
+            this._lastChild._nextSibling = element;
+        } else {
+            this._firstChild = this._lastChild = element;
+        }
+        this._lastChild = element;
+    }
+
+    removeChild(element) {
+        if (element._parent === this) {
+            if (element._previousSibling) {
+                element._previousSibling._nextSibling = element._nextSibling;
+            }
+
+            if (element._nextSibling) {
+                element._nextSibling._previousSibling = element._previousSibling;
+            }
+
+            if (element === this._lastChild) {
+                this._lastChild = element._previousSibling;
+            }
+
+            if (element === this._firstChild) {
+                this._firstChild = element._nextSibling;
+            }
+
+            element._parent = null;
         }
     }
 

@@ -66,38 +66,6 @@ describe('Element::appendChild', () => {
         validateStructure(parent);
     });
 
-    it('should reorder elements if necessary', () => {
-        let token1 = new Token('Punctuator', '(');
-        let element1 = new Element('CustomElement', [token1]);
-
-        let token2 = new Token('Punctuator', ')');
-        let element2 = new Element('CustomElement', [token2]);
-
-        let parent = new Element('CustomElement', [element2, element1]);
-        parent.appendChild(element2);
-
-        assertChildren(parent, [element1, element2]);
-        assertChildren(element1, [token1]);
-        assertChildren(element2, [token2]);
-        validateStructure(parent);
-    });
-
-    it('should keep the same order if no changes required', () => {
-        let token1 = new Token('Punctuator', '(');
-        let element1 = new Element('CustomElement', [token1]);
-
-        let token2 = new Token('Punctuator', ')');
-        let element2 = new Element('CustomElement', [token2]);
-
-        let parent = new Element('CustomElement', [element1, element2]);
-        parent.appendChild(element2);
-
-        assertChildren(parent, [element1, element2]);
-        assertChildren(element1, [token1]);
-        assertChildren(element2, [token2]);
-        validateStructure(parent);
-    });
-
     it('should append fragment after element', () => {
         let token1 = new Token('Punctuator', '(');
         let element1 = new Element('CustomElement', [token1]);
