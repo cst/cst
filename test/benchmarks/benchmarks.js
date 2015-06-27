@@ -35,7 +35,7 @@ let availableTypes = Object.keys(elementIndex);
     const code = readFileSync(__dirname + '/../../node_modules/esprima-fb/esprima.js', 'utf8');
     let parser = new Parser();
     test('CST building costs', {
-        'Parse (esprima)': function() {
+        'Parse (babel)': function() {
             parser._parseAst(code);
         },
         'Parse, fix tokens': function() {
