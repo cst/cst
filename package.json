@@ -20,7 +20,9 @@
     "lint:jscs": "jscs src test",
     "lint:jshint": "jshint src test",
     "build": "babel src -d lib",
-    "precommit": "npm test"
+    "precommit": "npm test",
+    "release": "npm run build",
+    "postpublish": "rm -Rf lib"
   },
   "devDependencies": {
     "babel": "^5.5.8",
