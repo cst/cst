@@ -1,7 +1,7 @@
 import {parseAndGetProgram} from '../utils';
-import BlockStatement from '../../lib/elements/types/BlockStatement';
-import Token from '../../lib/elements/Token';
-import Fragment from '../../lib/elements/Fragment';
+import BlockStatement from '../../src/elements/types/BlockStatement';
+import Token from '../../src/elements/Token';
+import Fragment from '../../src/elements/Fragment';
 import {expect} from 'chai';
 
 let sourceCode = `

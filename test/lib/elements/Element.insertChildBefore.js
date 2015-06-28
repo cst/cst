@@ -1,6 +1,6 @@
-import Element from '../../../lib/elements/Element';
-import Fragment from '../../../lib/elements/Fragment';
-import Token from '../../../lib/elements/Token';
+import Element from '../../../src/elements/Element';
+import Fragment from '../../../src/elements/Fragment';
+import Token from '../../../src/elements/Token';
 import {assertChildren, validateStructure} from '../../utils';
 
 describe('Element::insertChildBefore', () => {

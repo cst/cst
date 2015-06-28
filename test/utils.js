@@ -1,4 +1,4 @@
-import Parser from '../lib/Parser';
+import Parser from '../src/Parser';
 
 export function parseAndGetProgram(code, mode) {
     var parser = new Parser();

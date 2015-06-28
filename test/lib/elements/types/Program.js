@@ -1,6 +1,6 @@
 import {parseAndGetProgram, parseAndGetStatement} from '../../../utils';
 import {expect} from 'chai';
-import {Fragment, Token} from '../../../../lib/index';
+import {Fragment, Token} from '../../../../src/index';
 
 describe('Program', () => {
     it('should return correct type', () => {

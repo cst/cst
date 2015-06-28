@@ -1,8 +1,8 @@
 import Benchmark from 'benchmark';
 import chalk from 'chalk';
-import elementIndex from '../../lib/elements/elementIndex';
+import elementIndex from '../../src/elements/elementIndex';
 import {readFileSync} from 'fs';
-import Parser from '../../lib/Parser';
+import Parser from '../../src/Parser';
 
 import {
     ArrayChildren,
