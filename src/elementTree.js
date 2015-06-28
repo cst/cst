@@ -219,6 +219,7 @@ export function buildTokenList(codeTokens, commentTokens, code) {
         if (codeToken) {
             if (commentToken && codeToken.start > commentToken.start) {
                 token = commentToken;
+                token.type += 'Comment';
                 commentToken = commentTokens[++commentPtr];
             } else {
                 token = codeToken;
@@ -228,6 +229,7 @@ export function buildTokenList(codeTokens, commentTokens, code) {
         } else {
             if (commentToken) {
                 token = commentToken;
+                token.type += 'Comment';
                 commentToken = commentTokens[++commentPtr];
             } else {
                 if (prevPos !== code.length) {

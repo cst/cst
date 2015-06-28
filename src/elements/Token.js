@@ -8,11 +8,11 @@ export default class Token extends Element {
         let isWhitespace = false;
         let code = value;
         switch (type) {
-            case 'Line':
+            case 'LineComment':
                 code = '//' + code;
                 isComment = true;
                 break;
-            case 'Block':
+            case 'BlockComment':
                 code = '/*' + code + '*/';
                 isComment = true;
                 break;
