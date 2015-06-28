@@ -21,7 +21,7 @@
     "lint:jshint": "jshint src test",
     "build": "babel src -d lib",
     "precommit": "npm test",
-    "release": "npm run build",
+    "release": "npm run build && npm publish",
     "postpublish": "rm -Rf lib"
   },
   "devDependencies": {
