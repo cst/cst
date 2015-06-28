@@ -10,7 +10,7 @@
     }
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
     "test:unit": "mocha test/utils.js test/lib test/integrated src --recursive --compilers js:babel/register",
@@ -19,6 +19,7 @@
     "lint": "npm run lint:jscs && npm run lint:jshint",
     "lint:jscs": "jscs src test",
     "lint:jshint": "jshint src test",
+    "build": "babel src -d lib",
     "precommit": "npm test"
   },
   "devDependencies": {

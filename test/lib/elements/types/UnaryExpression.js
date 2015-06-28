@@ -43,7 +43,7 @@ describe('UnaryExpression', () => {
     });
 
     it('should accept delete', () => {
-        var assignment = parseAndGetExpression('delete x', 'loose');
+        var assignment = parseAndGetExpression('delete x', {disableStrictMode: true});
         expect(assignment.operator).to.equal('delete');
         expect(assignment.argument.name).to.equal('x');
     });

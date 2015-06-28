@@ -1,19 +1,28 @@
 import Parser from '../src/Parser';
 
-export function parseAndGetProgram(code, mode) {
+export function parseAndGetProgram(code, options) {
     var parser = new Parser();
-    return parser.parse(code, mode);
+    if (options && options.disableStrictMode) {
+        parser.disableStrictMode();
+    }
+    return parser.parse(code);
 }
 
-export function parseAndGetStatement(code, mode) {
+export function parseAndGetStatement(code, options) {
     var parser = new Parser();
-    var program = parser.parse(code, mode);
+    if (options && options.disableStrictMode) {
+        parser.disableStrictMode();
+    }
+    var program = parser.parse(code);
     return program.body[0];
 }
 
-export function parseAndGetExpression(code, mode) {
+export function parseAndGetExpression(code, options) {
     var parser = new Parser();
-    var program = parser.parse('(' + code + ')', mode);
+    if (options && options.disableStrictMode) {
+        parser.disableStrictMode();
+    }
+    var program = parser.parse('(' + code + ')');
     return program.body[0].expression;
 }
 
