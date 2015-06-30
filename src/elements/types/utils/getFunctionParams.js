@@ -1,5 +1,6 @@
 /**
  * Processes function parameters.
+ *
  * @param {ElementAssert} children
  * @returns {Pattern[]}
  */
