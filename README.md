@@ -4,16 +4,16 @@
 
 ### CST
 
-`CST` means Concrete Syntax Tree. Unlike `AST` (which is Abstract Syntax Tree), `CST` contains the whole information
+`CST` means Concrete Syntax Tree. Unlike an `AST` (Abstract Syntax Tree), a `CST` contains all the information
 from the JavaScript source file: whitespace, punctuators, comments. This information is extremely useful for
-code style checkers and other code linters. `CST` is also useful for cases, when you need to apply modifications
-to existing JavaScript files and preserve initial file formatting.
+code style checkers and other code linters. `CST` is also useful for cases when you need to apply modifications
+to existing JavaScript files while preserving the initial file formatting.
 
 This `CST` implementation is designed to be `100%` compatible with JS `AST` (https://github.com/estree/estree).
 
 Main principles:
 
-* CST contains all the information from parsed file (including whitespace and comments).
+* CST contains all the information from a parsed file (including whitespace and comments).
 * Compatible with AST (https://github.com/estree/estree).
 * Requires tokens to modify CST structure.
 * The tree is always valid (it protects itself against breaking changes).
@@ -26,12 +26,12 @@ x = 0;
 if (x) x++;
 ```
 
-CST for this example:
+The CST for this example:
 
 ![](https://raw.githubusercontent.com/mdevils/cst/master/docs/cst-example.png)
 
 * Blue text — CST Tokens.
-* White text in blue blocks — CST Nodes (their structure is equal to AST).
+* White text in blue blocks — CST Nodes (their structure is equal to an AST).
 * Blue lines — CST Structure.
 * Red lined — AST Links.
 
@@ -51,7 +51,7 @@ Provides traversing properties:
 
 Code-related properties:
 
-* `sourceCode`: generates and return JavaScript code of the specified `Element`
+* `sourceCode`: generates and returns JavaScript code of the specified `Element`
 * `sourceCodeLength`: returns JavaScript code length
 * `isToken`, `isNode`, `isExpression`, `isStatement`, `isWhitespace`, `isComment`, `isPattern`, `isAssignable`,
   `isFragment`: code entity flags.
@@ -72,15 +72,15 @@ Location properties:
 
 ### Node
 
-`Node` extends `Element`. Nodes are "AST part of CST". If you drop everything but Nodes from this `CST`, you will
-get pure `AST` from the Node structure. So it is fair to say that Nodes provide `AST` logic for `CST`. Right now
+`Node` extends `Element`. The Nodes are the "AST part of a CST". If you drop everything but Nodes from a `CST`, you will
+get a pure `AST` from the Node structure. So it is fair to say that Nodes provide the `AST` logic for a `CST`. Currently
 only Nodes can contain children.
 
-For Nodes property `isNode` always return `true`.
+The Node property `isNode` always returns `true`.
 
 ### Token
 
-`Token` extends `Element`. Tokens in the tree are the purpose of `CST`. By manipulating using only tokens,
+`Token` extends `Element`. The purpose of a `CST` is to have tokens in the tree. By only manipulating tokens,
 we can change code formatting without any effect on the behaviour.
 
-For Tokens property `isToken` always return `true`.
+The Token property `isToken` always returns `true`.
