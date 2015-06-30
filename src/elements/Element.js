@@ -200,7 +200,7 @@ export default class Element {
      */
     get previousToken() {
         if (this._previousSibling) {
-            return this._previousSibling.firstToken;
+            return this._previousSibling.lastToken;
         }
 
         if (this._parentElement) {
