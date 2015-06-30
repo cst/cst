@@ -298,6 +298,23 @@ export default class Element {
         return this._childElements.length;
     }
 
+    /**
+     * Calculates and returns Element range.
+     *
+     * @returns {Number[]}
+     */
+    get range() {
+        let counter = 0;
+
+        let previous = this.previousToken;
+        while (previous) {
+            counter += previous.sourceCodeLength;
+            previous = previous.previousToken;
+        }
+
+        return [counter, counter + this.sourceCodeLength];
+    }
+
     // ==== Source Code ================================================================================================
 
     /**
