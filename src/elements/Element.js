@@ -237,6 +237,32 @@ export default class Element {
     }
 
     /**
+     * Next non-whitespace token. Null if token was not foung.
+     *
+     * @returns {Element|null}
+     */
+    get nextNonWhitespaceToken() {
+        let token = this.nextToken;
+        while (token && token.isWhitespace) {
+            token = token.nextToken;
+        }
+        return token;
+    }
+
+    /**
+     * Previous non-whitespace token. Null if token was not foung.
+     *
+     * @returns {Element|null}
+     */
+    get previousNonWhitespaceToken() {
+        let token = this.previousToken;
+        while (token && token.isWhitespace) {
+            token = token.previousToken;
+        }
+        return token;
+    }
+
+    /**
      * First token inside element child tree.
      *
      * @returns {Element|null}
