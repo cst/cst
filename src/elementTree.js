@@ -94,6 +94,7 @@ const visitorKeys = {
 
 /**
  * Creates CST using AST and token list.
+ *
  * @param {Object} ast
  * @param {Array} tokens
  * @returns {Program}

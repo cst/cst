@@ -200,7 +200,7 @@ export default class Element {
      */
     get previousToken() {
         if (this._previousSibling) {
-            return this._previousSibling.firstToken;
+            return this._previousSibling.lastToken;
         }
 
         if (this._parentElement) {
@@ -296,6 +296,23 @@ export default class Element {
      */
     get childCount() {
         return this._childElements.length;
+    }
+
+    /**
+     * Calculates and returns Element range.
+     *
+     * @returns {Number[]}
+     */
+    get range() {
+        let counter = 0;
+
+        let previous = this.previousToken;
+        while (previous) {
+            counter += previous.sourceCodeLength;
+            previous = previous.previousToken;
+        }
+
+        return [counter, counter + this.sourceCodeLength];
     }
 
     // ==== Source Code ================================================================================================
