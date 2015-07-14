@@ -23,6 +23,8 @@ export default class Token extends Element {
         this._value = value;
         this._sourceCode = code;
         this._sourceCodeLength = code.length;
+        this._lineBreakCount = countLineBreaks(code);
+        this._sourceCodeLengthWithoutLineBreaks = this._sourceCodeLength - this._lineBreakCount;
         this._isComment = isComment;
         this._isWhitespace = isWhitespace;
     }
@@ -59,11 +61,12 @@ export default class Token extends Element {
         return this._sourceCodeLength;
     }
 
+    get sourceCodeLengthWithoutLineBreaks() {
+        return this._sourceCodeLengthWithoutLineBreaks;
+    }
+
     get lineBreakCount() {
-        if (this._newLines === undefined) {
-            this._newLines = countLineBreaks(this._sourceCode);
-        }
-        return this._newLines;
+        return this._lineBreakCount;
     }
 
     _setChildren(newChildren) {
