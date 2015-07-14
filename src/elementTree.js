@@ -177,6 +177,10 @@ function buildElementTreeItem(ast, state) {
             let endOfAstReached = state.token.end === end;
             let addedTokenType = state.token.type;
 
+            if (endOfAstReached && ast.type === 'Identifier' && addedTokenType === 'Keyword') {
+                addedTokenType = 'Identifier';
+            }
+
             children[children.length] = new Token(
                 addedTokenType,
                 state.token.value

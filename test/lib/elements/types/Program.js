@@ -49,6 +49,10 @@ describe('Program', () => {
         ]);
     });
 
+    it('should handle reserved words', () => {
+        parseAndGetProgram('promise.catch()');
+    });
+
     describe('selectNodesByType()', () => {
         it('should return node list', () => {
             let program = parseAndGetProgram('if (x) { y++; z--; } if (w) { i--; }');
