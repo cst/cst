@@ -34,7 +34,6 @@ export default class Parser {
             strictMode: this._strictModeEnabled
         };
         let ast = parse(code, opts);
-        tokens.pop();
         ast.tokens = tokens;
         ast.comments = comments;
         return ast;

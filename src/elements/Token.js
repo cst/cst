@@ -9,11 +9,9 @@ export default class Token extends Element {
         let code = value;
         switch (type) {
             case 'LineComment':
-                code = '//' + code;
                 isComment = true;
                 break;
             case 'BlockComment':
-                code = '/*' + code + '*/';
                 isComment = true;
                 break;
             case 'Whitespace':

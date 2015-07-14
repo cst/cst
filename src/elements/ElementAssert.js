@@ -173,6 +173,17 @@ export default class ElementAssert {
     }
 
     /**
+     * Checks if the current element is a statement.
+     *
+     * @returns {Boolean}
+     */
+    isStatement() {
+        let {isStatement} = this._currentElement || {};
+
+        return isStatement;
+    }
+
+    /**
      * Checks if current element is token (can also check type and value),
      * returns current element and move pointer to the next element.
      *

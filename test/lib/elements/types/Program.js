@@ -8,9 +8,10 @@ describe('Program', () => {
     });
 
     it('should accept empty string', () => {
-        var program = parseAndGetProgram('');
+        var program = parseAndGetProgram('   ');
         expect(program.type).to.equal('Program');
         expect(program.body.length).to.equal(0);
+        expect(program.range[1]).to.equal(3);
     });
 
     it('should accept no statements', () => {
@@ -29,9 +30,9 @@ describe('Program', () => {
         expect(program.body[0].type).to.equal('EmptyStatement');
         expect(program.body[1].type).to.equal('EmptyStatement');
         expect(program.body[2].type).to.equal('EmptyStatement');
-        expect(program.childElements.length).to.equal(10);
+        expect(program.childElements.length).to.equal(11);
         expect(program.childElements.map(el => el.sourceCode)).to.deep.equal([
-            ' ', ';', ' ', ';', ' ', ';', ' ', '/* */', ' ', '// cmt'
+            ' ', ';', ' ', ';', ' ', ';', ' ', '/* */', ' ', '// cmt', ''
         ]);
         expect(program.childElements.map(el => el.type)).to.deep.equal([
             'Whitespace',
@@ -43,7 +44,8 @@ describe('Program', () => {
             'Whitespace',
             'BlockComment',
             'Whitespace',
-            'LineComment'
+            'LineComment',
+            'EOF'
         ]);
     });
 

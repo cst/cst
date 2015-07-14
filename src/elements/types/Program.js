@@ -14,11 +14,12 @@ export default class Program extends Statement {
         children.skipNonCode();
 
         let body = [];
-        while (!children.isEnd) {
+        while (children.isStatement()) {
             body.push(children.passStatement());
             children.skipNonCode();
         }
 
+        children.passToken('EOF');
         children.assertEnd();
 
         this._body = body;

@@ -100,18 +100,14 @@ const visitorKeys = {
  * @returns {Program}
  */
 export function buildElementTree(ast, tokens) {
-    if (tokens.length > 0) {
-        var firstToken = tokens[0];
-        ast.start = firstToken.start;
-        ast.end = tokens[tokens.length - 1].end;
-        return buildElementTreeItem(ast, {
-            tokens,
-            token: firstToken,
-            pos: 0
-        });
-    } else {
-        return new elementIndex.Program([]);
-    }
+    var firstToken = tokens[0];
+    ast.start = firstToken.start;
+    ast.end = tokens[tokens.length - 1].end;
+    return buildElementTreeItem(ast, {
+        tokens,
+        token: firstToken,
+        pos: 0
+    });
 }
 
 /**
@@ -120,15 +116,16 @@ export function buildElementTree(ast, tokens) {
  * @returns {Element}
  */
 function buildElementTreeItem(ast, state) {
-    let childProps = visitorKeys[ast.type];
+    var elementType = ast.type;
+    let childProps = visitorKeys[elementType];
 
     if (!childProps) {
-        throw new Error(`Cannot iterate using ${ast.type}`);
+        throw new Error(`Cannot iterate using ${elementType}`);
     }
 
     // Babel uses AST-related ranges for cases, but actually they also include all the whitespaces till
     // the next case or till the end of the switch statement.
-    if (ast.type === 'SwitchStatement') {
+    if (elementType === 'SwitchStatement') {
         for (let i = 0; i < ast.cases.length; i++) {
             let switchCase = ast.cases[i];
             let nextCase = ast.cases[i + 1];
@@ -156,10 +153,10 @@ function buildElementTreeItem(ast, state) {
         }
     }
 
-    let NodeClass = elementIndex[ast.type];
+    let NodeClass = elementIndex[elementType];
 
     if (!NodeClass) {
-        throw new Error(`Cannot create ${ast.type} instance`);
+        throw new Error(`Cannot create ${elementType} instance`);
     }
 
     let children = [];
@@ -171,23 +168,26 @@ function buildElementTreeItem(ast, state) {
             children[children.length] = buildElementTreeItem(childElement, state);
             childElement = childElements[++childElementIndex];
 
-            if (!state.token || state.token.start === end) {
+            if (!state.token ||
+                (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
+            ) {
                 return new NodeClass(children);
             }
         } else {
-            var endOfAstReached = state.token.end === end;
-
-            if (endOfAstReached && ast.type === 'Identifier' && state.token.type === 'Keyword') {
-                state.token.type = 'Identifier';
-            }
+            let endOfAstReached = state.token.end === end;
+            let addedTokenType = state.token.type;
 
             children[children.length] = new Token(
-                state.token.type,
+                addedTokenType,
                 state.token.value
             );
 
             state.pos++;
             state.token = state.tokens[state.pos];
+
+            if (elementType === 'Program' && addedTokenType !== 'EOF') {
+                continue;
+            }
 
             if (endOfAstReached) {
                 return new NodeClass(children);
@@ -219,8 +219,7 @@ export function buildTokenList(codeTokens, commentTokens, code) {
     while (true) {
         if (codeToken) {
             if (commentToken && codeToken.start > commentToken.start) {
-                token = commentToken;
-                token.type += 'Comment';
+                token = processCommentToken(commentToken);
                 commentToken = commentTokens[++commentPtr];
             } else {
                 token = codeToken;
@@ -229,8 +228,7 @@ export function buildTokenList(codeTokens, commentTokens, code) {
             }
         } else {
             if (commentToken) {
-                token = commentToken;
-                token.type += 'Comment';
+                token = processCommentToken(commentToken);
                 commentToken = commentTokens[++commentPtr];
             } else {
                 if (prevPos !== code.length) {
@@ -323,7 +321,26 @@ function toToken(token, source) {
     } else if (type === tt.regexp) {
         token.type = 'RegularExpression';
         token.value = source.slice(token.start, token.end);
+    } else if (type === tt.eof) {
+        token.type = 'EOF';
+        token.value = '';
     }
 
+    return token;
+}
+
+/**
+ * Babel does not add // and /*..*\/ to the token value.
+ * Fixing this.
+ *
+ * @param {Object} token
+ */
+function processCommentToken(token) {
+    if (token.type === 'Line') {
+        token.value = '//' + token.value;
+    } else {
+        token.value = '/*' + token.value + '*/';
+    }
+    token.type += 'Comment';
     return token;
 }
