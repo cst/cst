@@ -1,5 +1,5 @@
 import Element from './Element';
-import {countLineBreaks} from '../utils/lines';
+import {getLines} from '../utils/lines';
 
 export default class Token extends Element {
     constructor(type, value) {
@@ -23,8 +23,7 @@ export default class Token extends Element {
         this._value = value;
         this._sourceCode = code;
         this._sourceCodeLength = code.length;
-        this._lineBreakCount = countLineBreaks(code);
-        this._sourceCodeLengthWithoutLineBreaks = this._sourceCodeLength - this._lineBreakCount;
+        this._sourceCodeLines = getLines(code);
         this._isComment = isComment;
         this._isWhitespace = isWhitespace;
     }
@@ -61,12 +60,12 @@ export default class Token extends Element {
         return this._sourceCodeLength;
     }
 
-    get sourceCodeLengthWithoutLineBreaks() {
-        return this._sourceCodeLengthWithoutLineBreaks;
+    get sourceCodeLines() {
+        return this._sourceCodeLines.concat();
     }
 
-    get lineBreakCount() {
-        return this._lineBreakCount;
+    get newlineCount() {
+        return this._sourceCodeLines.length - 1;
     }
 
     _setChildren(newChildren) {

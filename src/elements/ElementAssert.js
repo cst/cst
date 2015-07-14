@@ -307,7 +307,7 @@ export default class ElementAssert {
                 break;
             }
 
-            if (this._currentElement.lineBreakCount > 0) {
+            if (this._currentElement.newlineCount > 0) {
                 break;
             }
 

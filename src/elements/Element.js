@@ -1,17 +1,5 @@
+import {getLines} from '../utils/lines';
 import ElementAssert from './ElementAssert';
-
-/*  If token is
- * " \n" or then we should add "0"
- * "\n " then add "1" (because whitespace)
- * " \n " then add "1" (because we need to count whitespace after newline char)
- * " \n\n\n\n    " then add "4"
- * see tests, there should be a better way
- *
- * @private
- * @param {Token} token
- * @returns {Number}
-*/
-let spacesEnding = (token) => token.sourceCode.replace(/\s*\n+/g, '').length;
 
 /**
  * Base class for Node, Token and Fragment.
@@ -355,87 +343,43 @@ export default class Element {
     }
 
     /**
-     * Calculates and returns Element line positions.
-     *
-     * @returns {Object}
-     */
-    _getLines() {
-        let token;
-        let lines = {start: 1, end: 0};
-        let firstToken = this.firstToken;
-        let lastToken = this.lastToken;
-
-        token = firstToken;
-        while (token) {
-            lines.start += token.lineBreakCount;
-            token = token.previousToken;
-        }
-
-        token = lastToken;
-        lines.end = lines.start;
-        while (firstToken !== token) {
-            lines.end += token.lineBreakCount;
-            token = token.previousToken;
-        }
-
-        return lines;
-    }
-
-    /**
-     * Calculates and returns Element column positions.
-     *
-     * @returns {Object}
-     */
-    _getColumns() {
-        let token;
-        let columns = {
-            start: 0,
-            end: 0
-        };
-
-        token = this.firstToken.previousToken;
-        while (token) {
-            columns.start += token.sourceCodeLengthWithoutLineBreaks;
-            token = token.previousToken;
-
-            // In case there is space chars with line break symbols
-            if (token && token.lineBreakCount) {
-                columns.end += spacesEnding(token);
-                break;
-            }
-        }
-
-        token = this.lastToken;
-        while (token) {
-            columns.end += token.sourceCodeLengthWithoutLineBreaks;
-            token = token.previousToken;
-
-            // In case there is space chars with line break symbols
-            if (token && token.lineBreakCount) {
-                columns.end += spacesEnding(token);
-                break;
-            }
-        }
-
-        return columns;
-    }
-    /**
      * Calculates and returns Element loc.
      *
      * @returns {Object}
      */
     get loc() {
-        let columns = this._getColumns();
-        let lines = this._getLines();
+        let prevToken = this.previousToken;
+        let startColumn = 0;
+        let startLine = 1;
+        while (prevToken) {
+            let lines = prevToken.sourceCodeLines;
+            startColumn += lines[lines.length - 1].length;
+            if (lines.length > 1) {
+                while (prevToken) {
+                    startLine += prevToken.newlineCount;
+                    prevToken = prevToken.previousToken;
+                }
+                break;
+            }
+            prevToken = prevToken.previousToken;
+        }
+
+        let elementLines = this.sourceCodeLines;
+        let endLine = startLine + elementLines.length - 1;
+        let endColumn = elementLines[elementLines.length - 1].length;
+
+        if (startLine === endLine) {
+            endColumn += startColumn;
+        }
 
         return {
             start: {
-                line: lines.start,
-                column: columns.start
+                line: startLine,
+                column: startColumn
             },
             end: {
-                line: lines.end,
-                column: columns.end
+                line: endLine,
+                column: endColumn
             }
         };
     }
@@ -470,6 +414,30 @@ export default class Element {
             child = child._nextSibling;
         }
         return code;
+    }
+
+    /**
+     * Generated source code lines.
+     *
+     * @returns {String[]}
+     */
+    get sourceCodeLines() {
+        return getLines(this.sourceCode);
+    }
+
+    /**
+     * Generated source code line break count.
+     *
+     * @returns {Number}
+     */
+    get newlineCount() {
+        let count = 0;
+        let child = this._firstChild;
+        while (child) {
+            count += child.newlineCount;
+            child = child._nextSibling;
+        }
+        return count;
     }
 
     // ==== Child Element Manipulation =================================================================================

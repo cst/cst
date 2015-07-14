@@ -1,6 +1,5 @@
-const lineBreakRegex = /\r\n|\r|\n/g;
+const lineBreakRegex = /\r\n|\r|\n/;
 
-export function countLineBreaks(input) {
-    let match = input.match(lineBreakRegex);
-    return match ? match.length : 0;
+export function getLines(input) {
+    return input.split(lineBreakRegex);
 }
