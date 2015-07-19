@@ -63,8 +63,8 @@ describe('integrated/requireCurlyBraces', () => {
                     let propValue = node[propName];
                     if (propValue) {
                         var block = new BlockStatement([
-                            new Token('Punctuator', '{'),
-                            new Token('Punctuator', '}')
+                            Token.create('Punctuator', '{'),
+                            Token.create('Punctuator', '}')
                         ]);
                         if (Array.isArray(propValue)) {
                             let children = propValue;

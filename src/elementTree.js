@@ -178,13 +178,10 @@ function buildElementTreeItem(ast, state) {
             let addedTokenType = state.token.type;
 
             if (endOfAstReached && ast.type === 'Identifier' && addedTokenType === 'Keyword') {
-                addedTokenType = 'Identifier';
+                state.token.type = addedTokenType = 'Identifier';
             }
 
-            children[children.length] = new Token(
-                addedTokenType,
-                state.token.value
-            );
+            children[children.length] = Token.createFromToken(state.token);
 
             state.pos++;
             state.token = state.tokens[state.pos];
@@ -236,9 +233,11 @@ export function buildTokenList(codeTokens, commentTokens, code) {
                 commentToken = commentTokens[++commentPtr];
             } else {
                 if (prevPos !== code.length) {
+                    let value = code.substring(prevPos, code.length);
                     result[result.length] = {
                         type: 'Whitespace',
-                        value: code.substring(prevPos, code.length),
+                        value,
+                        sourceCode: value,
                         start: prevPos,
                         end: code.length
                     };
@@ -248,9 +247,11 @@ export function buildTokenList(codeTokens, commentTokens, code) {
         }
         let pos = token.start;
         if (prevPos !== pos) {
+            let value = code.substring(prevPos, pos);
             result[result.length] = {
                 type: 'Whitespace',
-                value: code.substring(prevPos, pos),
+                value,
+                sourceCode: value,
                 start: prevPos,
                 end: pos
             };
@@ -298,36 +299,40 @@ function toToken(token, source) {
         type.isAssign) {
         token.type = 'Punctuator';
         if (!token.value) {
-            token.value = type.label;
+            token.sourceCode = token.value = type.label;
         }
     } else if (type === tt.jsxTagStart) {
         token.type = 'Punctuator';
-        token.value = '<';
+        token.sourceCode = token.value = '<';
     } else if (type === tt.jsxTagEnd) {
         token.type = 'Punctuator';
-        token.value = '>';
+        token.sourceCode = token.value = '>';
     } else if (type === tt.jsxName) {
         token.type = 'JSXIdentifier';
     } else if (type === tt.jsxText) {
         token.type = 'JSXText';
     } else if (type.keyword === 'null') {
         token.type = 'Null';
+        token.value = null;
     } else if (type.keyword === 'false' || type.keyword === 'true') {
         token.type = 'Boolean';
+        token.value = type.keyword === 'true';
     } else if (type.keyword) {
         token.type = 'Keyword';
     } else if (type === tt.num) {
         token.type = 'Numeric';
-        token.value = source.slice(token.start, token.end);
     } else if (type === tt.string) {
         token.type = 'String';
-        token.value = source.slice(token.start, token.end);
     } else if (type === tt.regexp) {
         token.type = 'RegularExpression';
-        token.value = source.slice(token.start, token.end);
+        token.value = token.value.value;
     } else if (type === tt.eof) {
         token.type = 'EOF';
-        token.value = '';
+        token.sourceCode = token.value = '';
+    }
+
+    if (!('sourceCode' in token)) {
+        token.sourceCode = source.slice(token.start, token.end);
     }
 
     return token;
@@ -341,9 +346,9 @@ function toToken(token, source) {
  */
 function processCommentToken(token) {
     if (token.type === 'Line') {
-        token.value = '//' + token.value;
+        token.sourceCode = '//' + token.value;
     } else {
-        token.value = '/*' + token.value + '*/';
+        token.sourceCode = '/*' + token.value + '*/';
     }
     token.type += 'Comment';
     return token;
