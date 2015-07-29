@@ -9,6 +9,48 @@ describe('Element', () => {
         expect(secondVar.previousToken.previousToken.sourceCode).to.equal(';');
     });
 
+    describe('Element#removeChild', () => {
+        it('should remove child', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+
+            program.removeChild(program.firstChild);
+
+            expect(program.sourceCode).to.equal(' var second = 2;');
+        });
+
+        it('should remove child through parent', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+
+            program.firstChild.parentElement.removeChild(program.firstChild);
+
+            expect(program.sourceCode).to.equal(' var second = 2;');
+        });
+
+        it('should remove whitespace child', () => {
+            let program = parseAndGetProgram('\n\n\nvar first = 1; var second = 2;');
+
+            program.removeChild(program.firstChild);
+
+            expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
+        });
+
+        it('should remove child through sibling', () => {
+            let program = parseAndGetProgram('\n\n\nvar first = 1; var second = 2;');
+
+            program.removeChild(program.firstChild.nextSibling);
+
+            expect(program.sourceCode).to.equal('\n\n\n var second = 2;');
+        });
+
+        it('should remove whitespace child through parent element', () => {
+            let program = parseAndGetProgram('\n\n\nvar first = 1; var second = 2;');
+
+            program.firstChild.parentElement.removeChild(program.firstChild);
+
+            expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
+        });
+    });
+
     describe('range property', () => {
         it('should return range property for VariableDeclarator', () => {
             var program = parseAndGetProgram('var answer = 1;');
