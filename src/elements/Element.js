@@ -633,6 +633,17 @@ export default class Element {
     }
 
     /**
+     * Replaces child with specified element.
+     * Accepts multiple replacement nodes using `Fragment`.
+     *
+     * @param {Element} newElement
+     * @param {Element} oldElement
+     */
+    replaceChild(newElement, oldElement) {
+        return this.replaceChildren(newElement, oldElement, oldElement);
+    }
+
+    /**
      * Returns array of child element from firstRefChild to lastRefChild (including reference children).
      *
      * @param {Element} firstRefChild
