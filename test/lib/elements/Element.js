@@ -1,4 +1,5 @@
 import {parseAndGetProgram} from '../../utils';
+import Token from '../../../src/elements/Token';
 import {expect} from 'chai';
 
 describe('Element', () => {
@@ -48,6 +49,40 @@ describe('Element', () => {
             program.firstChild.parentElement.removeChild(program.firstChild);
 
             expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
+        });
+
+        it('should remove element references', () => {
+            let program = parseAndGetProgram('var first = 1;');
+            let firstVar = program.selectNodesByType('VariableDeclaration')[0];
+
+            program.removeChild(firstVar);
+
+            expect(firstVar.parentElement).to.not.equal(program);
+
+            expect(program.childElements.length).to.equal(1);
+            expect(program.childElements[0].type).to.equal('EOF');
+        });
+    });
+
+    describe('Element#replaceChild', () => {
+        it('should replace child', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+            let firstVar = program.selectNodesByType('VariableDeclaration')[0];
+
+            program.replaceChild(new Token('Whitespace', ';'), firstVar);
+
+            expect(program.sourceCode).to.equal('; var second = 2;');
+        });
+
+        it('should replace child with existing one', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+            let firstVar = program.selectNodesByType('VariableDeclaration')[0];
+            let secondVar = program.selectNodesByType('VariableDeclaration')[1];
+
+            program.removeChild(firstVar);
+            program.replaceChild(firstVar, secondVar);
+
+            expect(program.sourceCode).to.equal(' var first = 1;');
         });
     });
 

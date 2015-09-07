@@ -462,6 +462,8 @@ export default class Element {
         if (ownerProgram) {
             ownerProgram._removeElementsFromSearchIndex([element]);
         }
+
+        element._parentElement = null;
     }
 
     /**
@@ -630,6 +632,17 @@ export default class Element {
                 ownerProgram._addElementsToSearchIndex(newElements);
             }
         }
+    }
+
+    /**
+     * Replaces child with specified element.
+     * Accepts multiple replacement nodes using `Fragment`.
+     *
+     * @param {Element} newElement
+     * @param {Element} oldElement
+     */
+    replaceChild(newElement, oldElement) {
+        return this.replaceChildren(newElement, oldElement, oldElement);
     }
 
     /**
