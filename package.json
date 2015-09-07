@@ -31,7 +31,7 @@
     "chalk": "^1.0.0",
     "esprima-fb": "15001.1.0-dev-harmony-fb",
     "husky": "^0.8.1",
-    "jscs": "^1.13.1",
+    "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"

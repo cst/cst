@@ -1,8 +1,7 @@
 {
 	"validateIndentation": 4,
 	"maximumLineLength": 120,
-	"esprima": "esprima-fb",
-	"plugins": ["jscs-jsdoc"],
+    "esnext": true,
 	"jsDoc": {
         // "checkAnnotations": "jsdoc3", See https://github.com/jscs-dev/jscs-jsdoc/issues/118
         "checkParamNames": true,
