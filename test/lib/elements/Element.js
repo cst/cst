@@ -50,6 +50,18 @@ describe('Element', () => {
 
             expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
         });
+
+        it('should remove element references', () => {
+            let program = parseAndGetProgram('var first = 1;');
+            let firstVar = program.selectNodesByType('VariableDeclaration')[0];
+
+            program.removeChild(firstVar);
+
+            expect(firstVar.parentElement).to.not.equal(program);
+
+            expect(program.childElements.length).to.equal(1);
+            expect(program.childElements[0].type).to.equal('EOF');
+        });
     });
 
     describe('Element#replaceChild', () => {
@@ -70,7 +82,7 @@ describe('Element', () => {
             program.removeChild(firstVar);
             program.replaceChild(firstVar, secondVar);
 
-            expect(program.sourceCode).to.equal('var first = 1;');
+            expect(program.sourceCode).to.equal(' var first = 1;');
         });
     });
 

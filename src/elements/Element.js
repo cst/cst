@@ -462,6 +462,8 @@ export default class Element {
         if (ownerProgram) {
             ownerProgram._removeElementsFromSearchIndex([element]);
         }
+
+        element._parentElement = null;
     }
 
     /**
