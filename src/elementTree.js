@@ -18,7 +18,7 @@ const visitorKeys = {
     /*IT*/ BreakStatement: ['label'],
     /*IT*/ CallExpression: ['callee', 'arguments'],
     /*IT*/ CatchClause: ['param', 'body'],
-    /*--*/ ClassBody: ['body'],
+    /*IT*/ ClassBody: ['body'],
     /*IT*/ ClassDeclaration: ['id', 'superClass', 'body'],
     /*IT*/ ClassExpression: ['id', 'superClass', 'body'],
     /*--*/ ComprehensionBlock: ['left', 'right'],  // CAUTION: It's deferred to ES7.
@@ -62,7 +62,7 @@ const visitorKeys = {
     /*IT*/ ReturnStatement: ['argument'],
     /*IT*/ SequenceExpression: ['expressions'],
     /*--*/ SpreadElement: ['argument'],
-    /*--*/ Super: [],
+    /*IT*/ Super: [],
     /*IT*/ SwitchStatement: ['discriminant', 'cases'],
     /*IT*/ SwitchCase: ['test', 'consequent'],
     /*--*/ TaggedTemplateExpression: ['tag', 'quasi'],

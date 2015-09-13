@@ -34,6 +34,7 @@ import Program from './types/Program';
 import Property from './types/Property';
 import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
+import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
 import SwitchStatement from './types/SwitchStatement';
 import ThisExpression from './types/ThisExpression';
@@ -83,6 +84,7 @@ export default {
     Property,
     ReturnStatement,
     SequenceExpression,
+    Super,
     SwitchCase,
     SwitchStatement,
     ThisExpression,

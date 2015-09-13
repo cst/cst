@@ -8,7 +8,7 @@ export default class CallExpression extends Expression {
     _acceptChildren(children) {
         let args = [];
 
-        let callee = children.passExpression();
+        let callee = children.passExpressionOrSuper();
         children.skipNonCode();
 
         children.passToken('Punctuator', '(');

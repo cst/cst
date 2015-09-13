@@ -6,7 +6,7 @@ export default class MemberExpression extends Expression {
     }
 
     _acceptChildren(children) {
-        let object = children.passExpression();
+        let object = children.passExpressionOrSuper();
         children.skipNonCode();
 
         let property;

@@ -220,6 +220,28 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpression() {
+        return this._passExpressionInBraces(expression => expression.isExpression);
+    }
+
+    /**
+     * Checks if current element is an expression or super,
+     * returns current element and move pointer to the next element.
+     * Ignores parentheses.
+     *
+     * @returns {Element}
+     */
+    passExpressionOrSuper() {
+        return this._passExpressionInBraces(expression => expression.isExpression || expression.type === 'Super');
+    }
+
+    /**
+     * Passes expression ignoring braces, returns element and move pointer to the next element.
+     *
+     * @param {Function} assertCallback
+     * @returns {Element}
+     * @private
+     */
+    _passExpressionInBraces(assertCallback) {
         let openBraces = 0;
 
         while (this._currentElement.type === 'Punctuator' && this._currentElement.value === '(') {
@@ -228,8 +250,12 @@ export default class ElementAssert {
             this.skipNonCode();
         }
 
-        this.assertExpression();
         let expression = this._currentElement;
+
+        if (!assertCallback(expression)) {
+            throw new Error(`Expression expected but "${expression.type}" found`);
+        }
+
         this.moveNext();
 
         while (openBraces--) {
@@ -248,25 +274,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passAssignable() {
-        let openBraces = 0;
-
-        while (this._currentElement.type === 'Punctuator' && this._currentElement.value === '(') {
-            openBraces++;
-            this.moveNext();
-            this.skipNonCode();
-        }
-
-        this.assertAssignable();
-        let assignable = this._currentElement;
-        this.moveNext();
-
-        while (openBraces--) {
-            this.skipNonCode();
-            this.assertToken('Punctuator', ')');
-            this.moveNext();
-        }
-
-        return assignable;
+        return this._passExpressionInBraces(expression => expression.isAssignable);
     }
 
     /**
