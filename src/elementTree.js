@@ -19,8 +19,8 @@ const visitorKeys = {
     /*IT*/ CallExpression: ['callee', 'arguments'],
     /*IT*/ CatchClause: ['param', 'body'],
     /*--*/ ClassBody: ['body'],
-    /*--*/ ClassDeclaration: ['id', 'superClass', 'body'],
-    /*--*/ ClassExpression: ['id', 'superClass', 'body'],
+    /*IT*/ ClassDeclaration: ['id', 'superClass', 'body'],
+    /*IT*/ ClassExpression: ['id', 'superClass', 'body'],
     /*--*/ ComprehensionBlock: ['left', 'right'],  // CAUTION: It's deferred to ES7.
     /*--*/ ComprehensionExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
     /*IT*/ ConditionalExpression: ['test', 'consequent', 'alternate'],
@@ -51,7 +51,7 @@ const visitorKeys = {
     /*IT*/ LogicalExpression: ['left', 'right'],
     /*IT*/ MemberExpression: ['object', 'property'],
     /*--*/ MetaProperty: ['meta', 'property'],
-    /*--*/ MethodDefinition: ['key', 'value'],
+    /*IT*/ MethodDefinition: ['key', 'value'],
     /*--*/ ModuleSpecifier: [],
     /*IT*/ NewExpression: ['callee', 'arguments'],
     /*IT*/ ObjectExpression: ['properties'],
