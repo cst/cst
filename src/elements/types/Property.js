@@ -22,19 +22,15 @@ export default class Property extends Node {
             children.passToken();
             children.skipNonCode();
 
-            key = children.passNode('Identifier');
+            key = readKey(children);
             children.skipNonCode();
 
             value = children.passNode('FunctionExpression');
         } else {
             kind = 'init';
-            if (children.currentElement.type !== 'Literal') {
-                children.assertNode('Identifier');
-            }
+            key = readKey(children);
 
-            key = children.passNode();
-
-            if (children.isEnd) {
+            if (children.isEnd && key.type === 'Identifier') {
                 shorthand = true;
                 value = key;
             } else {
@@ -77,5 +73,18 @@ export default class Property extends Node {
 
     get method() {
         return this._method;
+    }
+}
+
+function readKey(children) {
+    if (children.isNode('Literal') || children.isNode('Identifier')) {
+        return children.passNode();
+    } else {
+        children.passToken('Punctuator', '[');
+        children.skipNonCode();
+        let result = children.passExpression();
+        children.skipNonCode();
+        children.passToken('Punctuator', ']');
+        return result;
     }
 }

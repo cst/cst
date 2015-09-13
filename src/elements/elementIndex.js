@@ -7,6 +7,9 @@ import BlockStatement from './types/BlockStatement';
 import BreakStatement from './types/BreakStatement';
 import CallExpression from './types/CallExpression';
 import CatchClause from './types/CatchClause';
+import ClassBody from './types/ClassBody';
+import ClassDeclaration from './types/ClassDeclaration';
+import ClassExpression from './types/ClassExpression';
 import ConditionalExpression from './types/ConditionalExpression';
 import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
@@ -23,6 +26,7 @@ import LabeledStatement from './types/LabeledStatement';
 import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
+import MethodDefinition from './types/MethodDefinition';
 import NewExpression from './types/NewExpression';
 import ObjectExpression from './types/ObjectExpression';
 import ObjectPattern from './types/ObjectPattern';
@@ -52,6 +56,9 @@ export default {
     BreakStatement,
     CallExpression,
     CatchClause,
+    ClassBody,
+    ClassDeclaration,
+    ClassExpression,
     ConditionalExpression,
     ContinueStatement,
     DebuggerStatement,
@@ -68,6 +75,7 @@ export default {
     Literal,
     LogicalExpression,
     MemberExpression,
+    MethodDefinition,
     NewExpression,
     ObjectExpression,
     ObjectPattern,

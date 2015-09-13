@@ -38,6 +38,12 @@ export function parseAndGetObjectProperty(code) {
     return program.body[0].expression.properties[0];
 }
 
+export function parseAndGetClassMember(code) {
+    var parser = new Parser();
+    var program = parser.parse(`(class{${code}})`);
+    return program.body[0].expression.body.body[0];
+}
+
 export function parseAndGetStatementInLoop(code, loopLabel) {
     var parser = new Parser();
     if (loopLabel) {
