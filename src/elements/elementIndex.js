@@ -17,6 +17,7 @@ import DoWhileStatement from './types/DoWhileStatement';
 import EmptyStatement from './types/EmptyStatement';
 import ExpressionStatement from './types/ExpressionStatement';
 import ForInStatement from './types/ForInStatement';
+import ForOfStatement from './types/ForOfStatement';
 import ForStatement from './types/ForStatement';
 import FunctionDeclaration from './types/FunctionDeclaration';
 import FunctionExpression from './types/FunctionExpression';
@@ -67,6 +68,7 @@ export default {
     EmptyStatement,
     ExpressionStatement,
     ForInStatement,
+    ForOfStatement,
     ForStatement,
     FunctionDeclaration,
     FunctionExpression,

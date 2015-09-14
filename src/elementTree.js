@@ -26,7 +26,6 @@ const visitorKeys = {
     /*IT*/ ConditionalExpression: ['test', 'consequent', 'alternate'],
     /*IT*/ ContinueStatement: ['label'],
     /*IT*/ DebuggerStatement: [],
-    /*--*/ DirectiveStatement: [],
     /*IT*/ DoWhileStatement: ['body', 'test'],
     /*IT*/ EmptyStatement: [],
     /*--*/ ExportAllDeclaration: ['source'],
