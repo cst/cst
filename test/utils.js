@@ -61,6 +61,12 @@ export function parseAndGetStatementInFunction(code) {
     return program.body[0].body.body[0];
 }
 
+export function parseAndGetExpressionInGenerator(code) {
+    var parser = new Parser();
+    var program = parser.parse(`function * _name(){(${code});}`);
+    return program.body[0].body.body[0].expression;
+}
+
 export function parseAndGetStatementInVariableDeclarator(code) {
     var parser = new Parser();
     var program = parser.parse(`var ${code};`);

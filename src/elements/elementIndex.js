@@ -47,6 +47,7 @@ import VariableDeclaration from './types/VariableDeclaration';
 import VariableDeclarator from './types/VariableDeclarator';
 import WithStatement from './types/WithStatement';
 import WhileStatement from './types/WhileStatement';
+import YieldExpression from './types/YieldExpression';
 
 export default {
     AssignmentExpression,
@@ -97,5 +98,6 @@ export default {
     VariableDeclaration,
     VariableDeclarator,
     WithStatement,
-    WhileStatement
+    WhileStatement,
+    YieldExpression
 };

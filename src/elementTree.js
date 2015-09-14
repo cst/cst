@@ -35,7 +35,7 @@ const visitorKeys = {
     /*IT*/ ExpressionStatement: ['expression'],
     /*IT*/ ForStatement: ['init', 'test', 'update', 'body'],
     /*IT*/ ForInStatement: ['left', 'right', 'body'],
-    /*--*/ ForOfStatement: ['left', 'right', 'body'],
+    /*IT*/ ForOfStatement: ['left', 'right', 'body'],
     /*IT*/ FunctionDeclaration: ['id', 'params', 'body'],
     /*IT*/ FunctionExpression: ['id', 'params', 'body'],
     /*--*/ GeneratorExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
@@ -76,7 +76,7 @@ const visitorKeys = {
     /*IT*/ VariableDeclarator: ['id', 'init'],
     /*IT*/ WhileStatement: ['test', 'body'],
     /*IT*/ WithStatement: ['object', 'body'],
-    /*--*/ YieldExpression: ['argument'],
+    /*IT*/ YieldExpression: ['argument'],
     /*--*/ JSXIdentifier: [],
     /*--*/ JSXNamespacedName: ['namespace', 'name'],
     /*--*/ JSXMemberExpression: ['object', 'property'],
