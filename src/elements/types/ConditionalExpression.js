@@ -22,7 +22,7 @@ export default class ConditionalExpression extends Expression {
         children.skipNonCode();
 
         let alternate = children.passExpression();
-        children.skipNonCode();
+        children.assertEnd();
 
         this._test = test;
         this._consequent = consequent;

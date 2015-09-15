@@ -1,4 +1,5 @@
 import {parseAndGetExpression} from '../../../utils';
+import Token from '../../../../src/elements/Token';
 import {expect} from 'chai';
 
 describe('ConditionalExpression', () => {
@@ -24,5 +25,12 @@ describe('ConditionalExpression', () => {
         expect(expression.consequent.name).to.equal('y');
         expect(expression.alternate.type).to.equal('Identifier');
         expect(expression.alternate.name).to.equal('z');
+    });
+
+    it('should not accept trailing whitespace', () => {
+        var expression = parseAndGetExpression('x ? y : z');
+        expect(() => {
+            expression.appendChild(new Token('Whitespace', '   '));
+        }).to.throw('Expected end of node list but "Whitespace" found');
     });
 });
