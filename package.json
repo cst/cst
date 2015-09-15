@@ -25,11 +25,11 @@
     "postpublish": "rm -Rf lib"
   },
   "devDependencies": {
-    "babel": "5.5.8",
+    "babel": "5.8.23",
     "benchmark": "^1.0.0",
     "chai": "^3.0.0",
     "chalk": "^1.0.0",
-    "esprima-fb": "15001.1.0-dev-harmony-fb",
+    "esprima-fb": "15001.1001.0-dev-harmony-fb",
     "husky": "^0.8.1",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",
@@ -37,6 +37,6 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "babel-core": "5.5.5"
+    "babel-core": "5.8.24"
   }
 }
