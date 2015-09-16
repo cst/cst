@@ -25,7 +25,7 @@ describe('ClassBody', () => {
     });
 
     it('should accept multiple member', () => {
-        var statement = parseAndGetStatement('class X { x(){} get y() {} set y() {} }').body;
+        var statement = parseAndGetStatement('class X { x(){} get y() {} set y(a) {} }').body;
         expect(statement.body.length).to.equal(3);
         expect(statement.body[0].type).to.equal('MethodDefinition');
         expect(statement.body[1].type).to.equal('MethodDefinition');

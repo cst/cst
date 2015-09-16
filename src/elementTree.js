@@ -339,16 +339,17 @@ function toToken(token, source) {
 
 /**
  * Babel does not add // and /*..*\/ to the token value.
- * Fixing this.
+ * Rename type from CommentLine to LineComment
  *
  * @param {Object} token
  */
 function processCommentToken(token) {
-    if (token.type === 'Line') {
+    if (token.type === 'CommentLine') {
+        token.type = 'LineComment';
         token.sourceCode = '//' + token.value;
     } else {
+        token.type = 'BlockComment';
         token.sourceCode = '/*' + token.value + '*/';
     }
-    token.type += 'Comment';
     return token;
 }
