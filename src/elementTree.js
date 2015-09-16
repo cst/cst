@@ -57,7 +57,7 @@ const visitorKeys = {
     /*IT*/ ObjectPattern: ['properties'],
     /*IT*/ Program: ['body'],
     /*IT*/ Property: ['key', 'value'],
-    /*--*/ RestElement: ['argument'],
+    /*IT*/ RestElement: ['argument'],
     /*IT*/ ReturnStatement: ['argument'],
     /*IT*/ SequenceExpression: ['expressions'],
     /*--*/ SpreadElement: ['argument'],

@@ -33,6 +33,7 @@ import ObjectExpression from './types/ObjectExpression';
 import ObjectPattern from './types/ObjectPattern';
 import Program from './types/Program';
 import Property from './types/Property';
+import RestElement from './types/RestElement';
 import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
 import Super from './types/Super';
@@ -85,6 +86,7 @@ export default {
     ObjectPattern,
     Program,
     Property,
+    RestElement,
     ReturnStatement,
     SequenceExpression,
     Super,
