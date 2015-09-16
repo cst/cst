@@ -15,12 +15,12 @@ export default class CallExpression extends Expression {
         children.skipNonCode();
 
         if (!children.isToken('Punctuator', ')')) {
-            args.push(children.passExpression());
+            args.push(children.passExpressionOrSpreadElement());
             children.skipNonCode();
             while (!children.isToken('Punctuator', ')')) {
                 children.passToken('Punctuator', ',');
                 children.skipNonCode();
-                args.push(children.passExpression());
+                args.push(children.passExpressionOrSpreadElement());
                 children.skipNonCode();
             }
         }
