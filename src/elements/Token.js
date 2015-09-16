@@ -36,10 +36,10 @@ export default class Token extends Element {
         let isComment = false;
         let isWhitespace = false;
         switch (type) {
-            case 'LineComment':
+            case 'CommentLine':
                 isComment = true;
                 break;
-            case 'BlockComment':
+            case 'CommentBlock':
                 isComment = true;
                 break;
             case 'Whitespace':

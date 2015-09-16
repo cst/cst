@@ -26,6 +26,15 @@ export function parseAndGetExpression(code, options) {
     return program.body[0].expression;
 }
 
+export function parseAndGetExpressionInFunction(code, options) {
+    var parser = new Parser();
+    if (options && options.disableStrictMode) {
+        parser.disableStrictMode();
+    }
+    var program = parser.parse('(function(){(' + code + ')})');
+    return program.body[0].expression.body.body[0].expression;
+}
+
 export function parseAndGetPattern(code) {
     var parser = new Parser();
     var program = parser.parse(`(${code} = 1)`);

@@ -30,7 +30,7 @@ describe('Program', () => {
         expect(program.body[0].type).to.equal('EmptyStatement');
         expect(program.body[1].type).to.equal('EmptyStatement');
         expect(program.body[2].type).to.equal('EmptyStatement');
-        expect(program.childElements.length).to.equal(11);
+        //expect(program.childElements.length).to.equal(11);
         expect(program.childElements.map(el => el.sourceCode)).to.deep.equal([
             ' ', ';', ' ', ';', ' ', ';', ' ', '/* */', ' ', '// cmt', ''
         ]);
@@ -42,9 +42,9 @@ describe('Program', () => {
             'Whitespace',
             'EmptyStatement',
             'Whitespace',
-            'BlockComment',
+            'CommentBlock',
             'Whitespace',
-            'LineComment',
+            'CommentLine',
             'EOF'
         ]);
     });

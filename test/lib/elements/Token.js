@@ -8,4 +8,16 @@ describe('Token', () => {
 
         expect(token.newlineCount).to.equal(3);
     });
+
+    it('should accept block comments', () => {
+        let program = parseAndGetProgram('/* Hello */');
+        let token = program.firstToken;
+        expect(token.type).to.equal('CommentBlock');
+    });
+
+    it('should accept line comments', () => {
+        let program = parseAndGetProgram('// Hello');
+        let token = program.firstToken;
+        expect(token.type).to.equal('CommentLine');
+    });
 });

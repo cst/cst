@@ -26,20 +26,17 @@ export default class Parser {
     }
 
     _parseAst(code) {
-        let comments = [];
         let tokens = [];
         let opts = {
             onToken: tokens,
-            onComment: comments,
             strictMode: this._strictModeEnabled
         };
         let ast = parse(code, opts);
         ast.tokens = tokens;
-        ast.comments = comments;
         return ast;
     }
 
     _processTokens(ast, code) {
-        return buildTokenList(ast.tokens, ast.comments, code);
+        return buildTokenList(ast.tokens, code);
     }
 }

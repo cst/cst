@@ -200,50 +200,16 @@ function buildElementTreeItem(ast, state) {
  * Build single token list using code tokens, comments and whitespace.
  *
  * @param {Array} codeTokens
- * @param {Array} commentTokens
  * @param {String} code
  * @returns {Array}
  */
-export function buildTokenList(codeTokens, commentTokens, code) {
-    let commentToken = commentTokens[0];
-    let commentPtr = 0;
-
-    let codeToken = codeTokens[0];
-    let codePtr = 0;
-
-    let token;
+export function buildTokenList(codeTokens, code) {
     let prevPos = 0;
-
     let result = [];
 
-    while (true) {
-        if (codeToken) {
-            if (commentToken && codeToken.start > commentToken.start) {
-                token = processCommentToken(commentToken);
-                commentToken = commentTokens[++commentPtr];
-            } else {
-                token = codeToken;
-                toToken(codeToken, code);
-                codeToken = codeTokens[++codePtr];
-            }
-        } else {
-            if (commentToken) {
-                token = processCommentToken(commentToken);
-                commentToken = commentTokens[++commentPtr];
-            } else {
-                if (prevPos !== code.length) {
-                    let value = code.substring(prevPos, code.length);
-                    result[result.length] = {
-                        type: 'Whitespace',
-                        value,
-                        sourceCode: value,
-                        start: prevPos,
-                        end: code.length
-                    };
-                }
-                break;
-            }
-        }
+    for (var i = 0; i < codeTokens.length; i++) {
+        let token = processToken(codeTokens[i], code);
+
         let pos = token.start;
         if (prevPos !== pos) {
             let value = code.substring(prevPos, pos);
@@ -273,7 +239,7 @@ let tt = acorn.tokTypes;
  * @param {Object} token
  * @param {String} source
  */
-function toToken(token, source) {
+function processToken(token, source) {
     var type = token.type;
 
     if (type === tt.name) {
@@ -325,6 +291,10 @@ function toToken(token, source) {
     } else if (type === tt.regexp) {
         token.type = 'RegularExpression';
         token.value = token.value.value;
+    } else if (type === 'CommentLine') {
+        token.sourceCode = '//' + token.value;
+    } else if (type === 'CommentBlock') {
+        token.sourceCode = '/*' + token.value + '*/';
     } else if (type === tt.eof) {
         token.type = 'EOF';
         token.sourceCode = token.value = '';
@@ -334,21 +304,5 @@ function toToken(token, source) {
         token.sourceCode = source.slice(token.start, token.end);
     }
 
-    return token;
-}
-
-/**
- * Babel does not add // and /*..*\/ to the token value.
- * Fixing this.
- *
- * @param {Object} token
- */
-function processCommentToken(token) {
-    if (token.type === 'Line') {
-        token.sourceCode = '//' + token.value;
-    } else {
-        token.sourceCode = '/*' + token.value + '*/';
-    }
-    token.type += 'Comment';
     return token;
 }
