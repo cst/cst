@@ -18,7 +18,7 @@ export default class ArrayExpression extends Expression {
                 children.moveNext();
                 children.skipNonCode();
             } else {
-                elements.push(children.passExpression());
+                elements.push(children.passExpressionOrSpreadElement());
                 children.skipNonCode();
                 if (children.isToken('Punctuator', ',')) {
                     children.moveNext();

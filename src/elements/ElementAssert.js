@@ -235,6 +235,18 @@ export default class ElementAssert {
     }
 
     /**
+     * Checks if current element is an expression or SpreadElement,
+     * returns current element and move pointer to the next element.
+     * Ignores parentheses.
+     *
+     * @returns {Element}
+     */
+    passExpressionOrSpreadElement() {
+        return this._passExpressionInBraces(
+            expression => expression.isExpression || expression.type === 'SpreadElement');
+    }
+
+    /**
      * Passes expression ignoring braces, returns element and move pointer to the next element.
      *
      * @param {Function} assertCallback

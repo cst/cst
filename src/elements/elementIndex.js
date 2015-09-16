@@ -36,6 +36,7 @@ import Property from './types/Property';
 import RestElement from './types/RestElement';
 import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
+import SpreadElement from './types/SpreadElement';
 import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
 import SwitchStatement from './types/SwitchStatement';
@@ -89,6 +90,7 @@ export default {
     RestElement,
     ReturnStatement,
     SequenceExpression,
+    SpreadElement,
     Super,
     SwitchCase,
     SwitchStatement,
