@@ -49,7 +49,7 @@ const visitorKeys = {
     /*IT*/ Literal: [],
     /*IT*/ LogicalExpression: ['left', 'right'],
     /*IT*/ MemberExpression: ['object', 'property'],
-    /*--*/ MetaProperty: ['meta', 'property'],
+    /*IT*/ MetaProperty: ['meta', 'property'],
     /*IT*/ MethodDefinition: ['key', 'value'],
     /*--*/ ModuleSpecifier: [],
     /*IT*/ NewExpression: ['callee', 'arguments'],
