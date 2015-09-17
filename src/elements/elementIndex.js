@@ -1,4 +1,5 @@
 import AssignmentExpression from './types/AssignmentExpression';
+import AssignmentPattern from './types/AssignmentPattern';
 import ArrayExpression from './types/ArrayExpression';
 import ArrayPattern from './types/ArrayPattern';
 import ArrowFunctionExpression from './types/ArrowFunctionExpression';
@@ -54,6 +55,7 @@ import YieldExpression from './types/YieldExpression';
 
 export default {
     AssignmentExpression,
+    AssignmentPattern,
     ArrayExpression,
     ArrayPattern,
     ArrowFunctionExpression,

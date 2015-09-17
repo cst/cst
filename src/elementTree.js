@@ -8,7 +8,7 @@ const visitorKeys = {
     // I  Implemented
     // T  Tested
     /*IT*/ AssignmentExpression: ['left', 'right'],
-    /*--*/ AssignmentPattern: ['left', 'right'],
+    /*IT*/ AssignmentPattern: ['left', 'right'],
     /*IT*/ ArrayExpression: ['elements'],
     /*IT*/ ArrayPattern: ['elements'],
     /*IT*/ ArrowFunctionExpression: ['params', 'body'],
