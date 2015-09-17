@@ -27,6 +27,7 @@ import LabeledStatement from './types/LabeledStatement';
 import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
+import MetaProperty from './types/MetaProperty';
 import MethodDefinition from './types/MethodDefinition';
 import NewExpression from './types/NewExpression';
 import ObjectExpression from './types/ObjectExpression';
@@ -81,6 +82,7 @@ export default {
     Literal,
     LogicalExpression,
     MemberExpression,
+    MetaProperty,
     MethodDefinition,
     NewExpression,
     ObjectExpression,
