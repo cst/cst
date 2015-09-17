@@ -20,7 +20,7 @@ export default class CatchClause extends Node {
         children.skipNonCode();
 
         let body = children.passStatement('BlockStatement');
-        children.skipNonCode();
+        children.assertEnd();
 
         this._param = param;
         this._body = body;
