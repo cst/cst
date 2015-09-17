@@ -21,7 +21,8 @@ const binaryOperators = {
     '^': true,
     '&': true,
     'in': true,
-    'instanceof': true
+    'instanceof': true,
+    '**': true
 };
 
 export default class BinaryExpression extends Expression {

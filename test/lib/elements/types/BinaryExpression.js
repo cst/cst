@@ -159,4 +159,11 @@ describe('BinaryExpression', () => {
         expect(assignment.left.name).to.equal('x');
         expect(assignment.right.name).to.equal('y');
     });
+
+    it('should accept **', () => {
+        var assignment = parseAndGetExpression('x ** y');
+        expect(assignment.operator).to.equal('**');
+        expect(assignment.left.name).to.equal('x');
+        expect(assignment.right.name).to.equal('y');
+    });
 });
