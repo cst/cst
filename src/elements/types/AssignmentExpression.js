@@ -12,7 +12,8 @@ const assignmentOperators = {
     '>>>=': true,
     '|=': true,
     '^=': true,
-    '&=': true
+    '&=': true,
+    '**=': true
 };
 
 export default class AssignmentExpression extends Expression {
