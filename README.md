@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mdevils/cst.svg?branch=master)](https://travis-ci.org/mdevils/cst)
+[![Build Status](https://travis-ci.org/cst/cst.svg?branch=master)](https://travis-ci.org/cst/cst)
 
 # JavaScript CST implementation
 
@@ -28,7 +28,7 @@ if (x) x++;
 
 The CST for this example:
 
-![](https://raw.githubusercontent.com/mdevils/cst/master/docs/cst-example.png)
+![](https://raw.githubusercontent.com/cst/cst/master/docs/cst-example.png)
 
 * Blue text — CST Tokens.
 * White text in blue blocks — CST Nodes (their structure is equal to an AST).
