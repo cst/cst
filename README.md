@@ -54,7 +54,7 @@ Code-related properties:
 * `sourceCode`: generates and returns JavaScript code of the specified `Element`
 * `sourceCodeLength`: returns JavaScript code length
 * `isToken`, `isNode`, `isExpression`, `isStatement`, `isWhitespace`, `isComment`, `isPattern`, `isAssignable`,
-  `isFragment`: code entity flags.
+  `isFragment`, `isModuleDeclaration`, `isModuleSpecifier` : code entity flags.
 
 Provides mutation methods:
 

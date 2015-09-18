@@ -125,6 +125,17 @@ export default class ElementAssert {
     }
 
     /**
+     * Asserts that the current element is a statement.
+     */
+    assertModuleSpecifier() {
+        let {isModuleSpecifier, type} = this._currentElement || {};
+
+        if (!isModuleSpecifier) {
+            throw new Error(`ModuleSpecifier expected but "${type}" found`);
+        }
+    }
+
+    /**
      * Asserts that the end of child list was reached.
      */
     assertEnd() {
@@ -310,6 +321,19 @@ export default class ElementAssert {
      */
     passPattern() {
         this.assertPattern();
+        let result = this._currentElement;
+        this.moveNext();
+        return result;
+    }
+
+    /**
+     * Checks if current element is a module specifier,
+     * returns current element and move pointer to the next element.
+     *
+     * @returns {Element}
+     */
+    passModuleSpecifier() {
+        this.assertModuleSpecifier();
         let result = this._currentElement;
         this.moveNext();
         return result;
