@@ -1,3 +1,5 @@
+/* @flow */
+
 import Statement from './Statement';
 
 /**
@@ -6,7 +8,7 @@ import Statement from './Statement';
  * @name ModuleDeclaration
  */
 export default class ModuleDeclaration extends Statement {
-    get isModuleDeclaration() {
+    get isModuleDeclaration(): boolean {
         return true;
     }
 }

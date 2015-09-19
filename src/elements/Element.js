@@ -1,5 +1,23 @@
+/* @flow */
+
+import type Program from './types/Program';
 import {getLines} from '../utils/lines';
 import ElementAssert from './ElementAssert';
+
+export type Position = {
+    line: number,
+    column: number
+};
+
+export type Location = {
+    start: Position,
+    end: Position
+};
+
+export type Range = [
+    number,
+    number
+];
 
 /**
  * Base class for Node, Token and Fragment.
@@ -13,7 +31,7 @@ export default class Element {
      * @param {String} type
      * @param {Element[]} children
      */
-    constructor(type, children) {
+    constructor(type: string, children: Array<Element>) {
         this._type = type;
 
         this._firstChild = null;
@@ -21,7 +39,7 @@ export default class Element {
         this._parentElement = null;
         this._nextSibling = null;
         this._previousSibling = null;
-        this._childElements = null;
+        this._childElements = [];
 
         if (children) {
             for (let i = 0; i < children.length; i++) {
@@ -33,13 +51,24 @@ export default class Element {
         }
     }
 
+    _type: string;
+    _firstChild: ?Element;
+    _lastChild: ?Element;
+    _parentElement: ?Element;
+    _nextSibling: ?Element;
+    _previousSibling: ?Element;
+    _childElements: Array<Element>;
+
+    value: ?string;
+    isModuleSpecifier: boolean;
+
     /**
      * Element type.
      * Important: some Node types also exist in Tokens. Do not rely on type only, use isToken, isNode.
      *
      * @returns {String}
      */
-    get type() {
+    get type(): string {
         return this._type;
     }
 
@@ -48,7 +77,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isToken() {
+    get isToken(): boolean {
         return false;
     }
 
@@ -57,7 +86,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isWhitespace() {
+    get isWhitespace(): boolean {
         return false;
     }
 
@@ -66,7 +95,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isCode() {
+    get isCode(): boolean {
         return true;
     }
 
@@ -75,7 +104,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isComment() {
+    get isComment(): boolean {
         return false;
     }
 
@@ -84,7 +113,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isNonCodeToken() {
+    get isNonCodeToken(): boolean {
         return this.isComment || this.isWhitespace;
     }
 
@@ -93,7 +122,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isNode() {
+    get isNode(): boolean {
         return false;
     }
 
@@ -102,7 +131,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isExpression() {
+    get isExpression(): boolean {
         return false;
     }
 
@@ -111,7 +140,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isStatement() {
+    get isStatement(): boolean {
         return false;
     }
 
@@ -120,7 +149,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isPattern() {
+    get isPattern(): boolean {
         return false;
     }
 
@@ -129,7 +158,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isAssignable() {
+    get isAssignable(): boolean {
         return false;
     }
 
@@ -138,7 +167,7 @@ export default class Element {
      *
      * @returns {Boolean}
      */
-    get isFragment() {
+    get isFragment(): boolean {
         return false;
     }
 
@@ -149,21 +178,21 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get parentElement() {
+    get parentElement(): ?Element {
         return this._parentElement;
     }
 
     /**
      * Owner Program for this element or null if element does not have Program in its parent hierarchy.
      *
-     * @returns {Element}
+     * @returns {Program}
      */
-    get ownerProgram() {
+    get ownerProgram(): Program {
         let element = this;
         while (element && !element._isProgram) {
             element = element._parentElement;
         }
-        return element;
+        return ((element: any): Program);
     }
 
     /**
@@ -172,7 +201,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextSibling() {
+    get nextSibling(): ?Element {
         return this._nextSibling;
     }
 
@@ -182,7 +211,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousSibling() {
+    get previousSibling(): ?Element {
         return this._previousSibling;
     }
 
@@ -191,7 +220,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextToken() {
+    get nextToken(): ?Element {
         if (this._nextSibling) {
             return this._nextSibling.firstToken;
         }
@@ -208,7 +237,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousToken() {
+    get previousToken(): ?Element {
         if (this._previousSibling) {
             return this._previousSibling.lastToken;
         }
@@ -225,7 +254,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextCodeToken() {
+    get nextCodeToken(): ?Element {
         let token = this.nextToken;
         while (token && !token.isCode) {
             token = token.nextToken;
@@ -238,7 +267,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousCodeToken() {
+    get previousCodeToken(): ?Element {
         let token = this.previousToken;
         while (token && !token.isCode) {
             token = token.previousToken;
@@ -251,7 +280,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextNonWhitespaceToken() {
+    get nextNonWhitespaceToken(): ?Element {
         let token = this.nextToken;
         while (token && token.isWhitespace) {
             token = token.nextToken;
@@ -264,7 +293,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousNonWhitespaceToken() {
+    get previousNonWhitespaceToken(): ?Element {
         let token = this.previousToken;
         while (token && token.isWhitespace) {
             token = token.previousToken;
@@ -277,7 +306,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get firstToken() {
+    get firstToken(): ?Element {
         let element = this._firstChild;
         while (element && !element.isToken) {
             element = element._firstChild;
@@ -290,7 +319,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get lastToken() {
+    get lastToken(): ?Element {
         let element = this._lastChild;
         while (element && !element.isToken) {
             element = element._lastChild;
@@ -303,7 +332,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get firstChild() {
+    get firstChild(): ?Element {
         return this._firstChild;
     }
 
@@ -312,7 +341,7 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get lastChild() {
+    get lastChild(): ?Element {
         return this._lastChild;
     }
 
@@ -321,7 +350,7 @@ export default class Element {
      *
      * @returns {ElementList}
      */
-    get childElements() {
+    get childElements(): Array<Element> {
         return this._childElements.concat();
     }
 
@@ -330,7 +359,7 @@ export default class Element {
      *
      * @returns {Number}
      */
-    get childCount() {
+    get childCount(): number {
         return this._childElements.length;
     }
 
@@ -339,7 +368,7 @@ export default class Element {
      *
      * @returns {Number[]}
      */
-    get range() {
+    get range(): Range {
         let counter = 0;
 
         let previous = this.previousToken;
@@ -356,7 +385,7 @@ export default class Element {
      *
      * @returns {Object}
      */
-    get loc() {
+    get loc(): Location {
         let prevToken = this.previousToken;
         let startColumn = 0;
         let startLine = 1;
@@ -366,6 +395,7 @@ export default class Element {
             if (lines.length > 1) {
                 while (prevToken) {
                     startLine += prevToken.newlineCount;
+                    // $FlowIssue: filed as https://github.com/facebook/flow/issues/973
                     prevToken = prevToken.previousToken;
                 }
                 break;
@@ -400,7 +430,7 @@ export default class Element {
      *
      * @returns {Number}
      */
-    get sourceCodeLength() {
+    get sourceCodeLength(): number {
         let length = 0;
         let child = this._firstChild;
         while (child) {
@@ -415,7 +445,7 @@ export default class Element {
      *
      * @returns {String}
      */
-    get sourceCode() {
+    get sourceCode(): string {
         let code = '';
         let child = this._firstChild;
         while (child) {
@@ -430,7 +460,7 @@ export default class Element {
      *
      * @returns {String[]}
      */
-    get sourceCodeLines() {
+    get sourceCodeLines(): Array<string> {
         return getLines(this.sourceCode);
     }
 
@@ -439,7 +469,7 @@ export default class Element {
      *
      * @returns {Number}
      */
-    get newlineCount() {
+    get newlineCount(): number {
         let count = 0;
         let child = this._firstChild;
         while (child) {
@@ -456,7 +486,7 @@ export default class Element {
      *
      * @param {Element} element
      */
-    removeChild(element) {
+    removeChild(element: Element) {
         if (element._parentElement !== this) {
             throw new Error('The element to be removed is not a child of this element.');
         }
@@ -481,7 +511,7 @@ export default class Element {
      *
      * @param {Element} newElement
      */
-    appendChild(newElement) {
+    appendChild(newElement: Element) {
         let children;
         let newElements;
         if (newElement.isFragment) {
@@ -497,6 +527,7 @@ export default class Element {
             children = this._childElements.concat(newElement);
         }
 
+        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -513,7 +544,7 @@ export default class Element {
      *
      * @param {Element} newElement
      */
-    prependChild(newElement) {
+    prependChild(newElement: Element) {
         let children;
         let newElements;
         if (newElement.isFragment) {
@@ -529,6 +560,7 @@ export default class Element {
             children = [newElement].concat(this._childElements);
         }
 
+        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -546,7 +578,7 @@ export default class Element {
      * @param {Element} newElement
      * @param {Element} referenceChild
      */
-    insertChildBefore(newElement, referenceChild) {
+    insertChildBefore(newElement: Element, referenceChild: Element) {
         if (referenceChild._parentElement !== this) {
             throw new Error('Invalid reference child');
         }
@@ -571,6 +603,7 @@ export default class Element {
             newElements = [newElement];
         }
 
+        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -589,7 +622,7 @@ export default class Element {
      * @param {Element} firstRefChild
      * @param {Element} lastRefChild
      */
-    replaceChildren(newElement, firstRefChild, lastRefChild) {
+    replaceChildren(newElement: Element, firstRefChild: Element, lastRefChild: Element) {
         if (!firstRefChild || firstRefChild._parentElement !== this) {
             throw new Error('Invalid first reference child');
         }
@@ -625,6 +658,7 @@ export default class Element {
             newElements = [newElement];
         }
 
+        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         for (let i = 0; i < replacedChildren.length; i++) {
@@ -650,7 +684,7 @@ export default class Element {
      * @param {Element} newElement
      * @param {Element} oldElement
      */
-    replaceChild(newElement, oldElement) {
+    replaceChild(newElement: Element, oldElement: Element) {
         return this.replaceChildren(newElement, oldElement, oldElement);
     }
 
@@ -661,7 +695,7 @@ export default class Element {
      * @param {Element} lastRefChild
      * @returns {Array}
      */
-    getChildrenBetween(firstRefChild, lastRefChild) {
+    getChildrenBetween(firstRefChild: Element, lastRefChild: Element): Array<Element> {
         if (!firstRefChild || firstRefChild._parentElement !== this) {
             throw new Error('Invalid first reference child');
         }
@@ -678,7 +712,6 @@ export default class Element {
         }
 
         return this._childElements.slice(firstIndex, lastIndex + 1);
-
     }
 
     /**
@@ -688,7 +721,7 @@ export default class Element {
      * @param {Element} child
      * @private
      */
-    _ensureCanAdopt(child) {
+    _ensureCanAdopt(child: Element) {
         let element = this;
         while (element) {
             if (element === child) {
@@ -704,7 +737,7 @@ export default class Element {
      * @param {Element} fragment
      * @private
      */
-    _ensureCanAdoptFragment(fragment) {
+    _ensureCanAdoptFragment(fragment: Element) {
         let fragmentChild = fragment._firstChild;
         while (fragmentChild) {
             this._ensureCanAdopt(fragmentChild);
@@ -718,7 +751,7 @@ export default class Element {
      * @param {Element[]} newChildren
      * @private
      */
-    _setChildren(newChildren) {
+    _setChildren(newChildren: Array<Element>) {
         this._acceptChildren(new ElementAssert(newChildren));
 
         if (newChildren.length > 0) {
@@ -727,7 +760,8 @@ export default class Element {
             previousChild._parentElement = this;
             previousChild._previousSibling = null;
             if (newChildren.length > 1) {
-                let child;
+                // TODO(flow): error with only `let child;`
+                let child = newChildren[1];
                 for (let i = 1; i < newChildren.length; i++) {
                     child = newChildren[i];
                     child._parentElement = this;
@@ -750,10 +784,10 @@ export default class Element {
     /**
      * Runs element syntax assertions. Should be implemented for every Node.
      *
-     * @param {Element[]} children
+     * @param {Object} children
      * @abstract
      */
-    _acceptChildren(children) {
+    _acceptChildren(children: ElementAssert): void {
         // Override
     }
 
@@ -762,11 +796,13 @@ export default class Element {
      *
      * @returns {Element}
      */
-    cloneElement() {
+    cloneElement(): Element {
         let clonedChildren = new Array(this._childElements.length);
         for (let i = 0; i < clonedChildren.length; i++) {
             clonedChildren[i] = this._childElements[i].cloneElement();
         }
+
+        // $FlowFixMe: flow doesn't understand if this is an Element or not
         return new this.constructor(clonedChildren);
     }
 }

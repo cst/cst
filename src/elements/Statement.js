@@ -1,3 +1,5 @@
+/* @flow */
+
 import Node from './Node';
 
 /**
@@ -8,7 +10,7 @@ import Node from './Node';
  * @abstract
  */
 export default class Statement extends Node {
-    get isStatement() {
+    get isStatement(): boolean {
         return true;
     }
 }

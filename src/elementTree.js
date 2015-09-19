@@ -1,7 +1,22 @@
+/* @flow */
+
+import * as babylon from 'babylon';
+
+import type Program from './elements/types/Program';
+import type Location from './elements/Element';
+
 import visitorKeys from './visitorKeys';
 import elementIndex from './elements/elementIndex';
 import Token from './elements/Token';
-import * as babylon from 'babylon';
+
+export type BabylonToken = {
+    type: string,
+    value: string,
+    start: number,
+    end: number,
+    loc?: Location,
+    sourceCode: string
+};
 
 /**
  * Creates CST using AST and token list.
@@ -10,23 +25,29 @@ import * as babylon from 'babylon';
  * @param {Array} tokens
  * @returns {Program}
  */
-export function buildElementTree(ast, tokens) {
+export function buildElementTree(ast: Object, tokens: Array<BabylonToken>): Program {
     var firstToken = tokens[0];
     ast.start = firstToken.start;
     ast.end = tokens[tokens.length - 1].end;
-    return buildElementTreeItem(ast, {
+    return ((buildElementTreeItem(ast, {
         tokens,
         token: firstToken,
         pos: 0
-    });
+    }): any): Program);
 }
+
+type ElementTreeItemState = {
+    tokens: Array<BabylonToken>,
+    token: BabylonToken,
+    pos: number
+};
 
 /**
  * @param {Object} ast
  * @param {{tokens: Array, token: Object, pos: Number}} state
  * @returns {Element}
  */
-function buildElementTreeItem(ast, state) {
+function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Element {
     var elementType = ast.type;
     let childProps = visitorKeys[elementType];
 
@@ -130,7 +151,7 @@ function buildElementTreeItem(ast, state) {
  * @param {String} code
  * @returns {Array}
  */
-export function buildTokenList(codeTokens, code) {
+export function buildTokenList(codeTokens: Array<BabylonToken>, code: string): Array<BabylonToken> {
     let prevPos = 0;
     let result = [];
 
@@ -149,6 +170,7 @@ export function buildTokenList(codeTokens, code) {
             };
         }
         result[result.length] = token;
+
         prevPos = token.end;
     }
 
@@ -166,7 +188,7 @@ let tt = babylon.tokTypes;
  * @param {Object} token
  * @param {String} source
  */
-function processToken(token, source) {
+function processToken(token: Object, source: string): BabylonToken {
     var type = token.type;
 
     if (type === tt.name) {

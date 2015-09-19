@@ -1,3 +1,5 @@
+/* @flow */
+
 import Node from './Node';
 
 /**
@@ -6,11 +8,13 @@ import Node from './Node';
  * @name ModuleSpecifier
  */
 export default class ModuleSpecifier extends Node {
-    get local() {
+    get local(): Object {
         return this._local;
     }
 
-    get isModuleSpecifier() {
+    _local: Object;
+
+    get isModuleSpecifier(): boolean {
         return true;
     }
 }

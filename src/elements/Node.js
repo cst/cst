@@ -1,3 +1,5 @@
+/* @flow */
+
 import Element from './Element';
 
 /**
@@ -6,7 +8,7 @@ import Element from './Element';
  * @name Node
  */
 export default class Node extends Element {
-    get isNode() {
+    get isNode(): boolean {
         return true;
     }
 }

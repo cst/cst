@@ -1,3 +1,5 @@
+/* @flow */
+
 import Element from './Element';
 import {getLines} from '../utils/lines';
 
@@ -8,7 +10,7 @@ export default class Token extends Element {
      * @param {String} type
      * @param {*} value
      */
-    static create(type, value) {
+    static create(type: string, value: any): Token {
         return new Token(type, value, valueToSourceCode(type, value));
     }
 
@@ -17,7 +19,7 @@ export default class Token extends Element {
      *
      * @param {{type: String, value: String, sourceCode: String}} token
      */
-    static createFromToken(token) {
+    static createFromToken(token: {type: string, value: string, sourceCode: string}): Token {
         return new Token(token.type, token.value, token.sourceCode);
     }
 
@@ -26,7 +28,7 @@ export default class Token extends Element {
      * @param {String} value
      * @param {String} _sourceCode private source code argument
      */
-    constructor(type, value, _sourceCode) {
+    constructor(type: string, value: string, _sourceCode: string) {
         super(type, []);
 
         if (arguments.length === 2) {
@@ -64,51 +66,59 @@ export default class Token extends Element {
         this._isCode = isCode;
     }
 
-    get firstToken() {
+    _value: string;
+    _sourceCode: string;
+    _sourceCodeLength: number;
+    _sourceCodeLines: Array<string>;
+    _isComment: boolean;
+    _isWhitespace: boolean;
+    _isCode: boolean;
+
+    get firstToken(): ?Token | Element {
         return this;
     }
 
-    get lastToken() {
+    get lastToken(): ?Token | Element {
         return this;
     }
 
-    get isToken() {
+    get isToken(): boolean {
         return true;
     }
 
-    get isComment() {
+    get isComment(): boolean {
         return this._isComment;
     }
 
-    get isCode() {
+    get isCode(): boolean {
         return this._isCode;
     }
 
-    get isWhitespace() {
+    get isWhitespace(): boolean {
         return this._isWhitespace;
     }
 
-    get value() {
+    get value(): ?string {
         return this._value;
     }
 
-    get sourceCode() {
+    get sourceCode(): string {
         return this._sourceCode;
     }
 
-    get sourceCodeLength() {
+    get sourceCodeLength(): number {
         return this._sourceCodeLength;
     }
 
-    get sourceCodeLines() {
+    get sourceCodeLines(): Array<string> {
         return this._sourceCodeLines.concat();
     }
 
-    get newlineCount() {
+    get newlineCount(): number {
         return this._sourceCodeLines.length - 1;
     }
 
-    _setChildren(newChildren) {
+    _setChildren(newChildren: Array<any>): void {
         if (newChildren.length > 0) {
             throw new Error('Token nodes cannot contain child nodes');
         }
@@ -121,12 +131,12 @@ export default class Token extends Element {
      *
      * @returns {Element}
      */
-    cloneElement() {
+    cloneElement(): Token {
         return new Token(this._type, this._value, this._sourceCode);
     }
 }
 
-function valueToSourceCode(type, value) {
+function valueToSourceCode(type: string, value: any): string {
     switch (type) {
         case 'LineComment':
             return '//' + value;

@@ -1,5 +1,10 @@
+/* @flow */
+
 import {parse} from 'babylon';
 
+import type {BabylonToken} from './elementTree';
+import type Program from './elements/types/Program';
+import type Token from './elements/Token';
 import {buildTokenList, buildElementTree} from './elementTree';
 
 /**
@@ -44,6 +49,19 @@ const DIRECTIVE_GRIT = {
     regexp: /^\s*<(\/?\s*(?:if|include)(?!\w)[^]*?)>/gim
 };
 
+// checking for the options passed to the babel parse method
+type CSTParserOptions = {
+  sourceType: 'script' | 'module',
+  // allowReturnOutsideFunction: boolean,
+  // allowImportExportEverywhere: boolean,
+  languageExtensions: Object,
+  experimentalFeatures: Object,
+  strictMode: ?boolean,
+
+  allowHashBang: boolean,
+  ecmaVersion: number
+};
+
 /**
  * CST Parser.
  */
@@ -51,7 +69,7 @@ export default class Parser {
     /**
      * @param {CSTParserOptions} options
      */
-    constructor(options) {
+    constructor(options: CSTParserOptions) {
         this._options = {
             sourceType: 'module',
             strictMode: true,
@@ -80,17 +98,19 @@ export default class Parser {
         }
     }
 
+    _options: CSTParserOptions;
+
     /**
      * @returns {CSTParserOptions}
      */
-    getOptions() {
+    getOptions(): CSTParserOptions {
         return this._options;
     }
 
     /**
      * @param {CSTParserOptions} newOptions
      */
-    setOptions(newOptions) {
+    setOptions(newOptions: CSTParserOptions) {
         var currentOptions = this._options;
         var currentExperimentalFeatures = currentOptions.experimentalFeatures;
         var currentLanguageExtensions = currentOptions.languageExtensions;
@@ -110,13 +130,13 @@ export default class Parser {
         };
     }
 
-    parse(code) {
+    parse(code: string): Program {
         let ast = this._parseAst(code);
         let tokens = this._processTokens(ast, code);
         return buildElementTree(ast, tokens);
     }
 
-    _parseAst(code) {
+    _parseAst(code: string): Program {
         let options = this._options;
         let languageExtensions = options.languageExtensions;
         let directiveInstances = {};
@@ -177,7 +197,7 @@ export default class Parser {
         return program;
     }
 
-    _processTokens(ast, code) {
+    _processTokens(ast: Object, code: string): Array<BabylonToken> {
         return buildTokenList(ast.tokens, code);
     }
 }
