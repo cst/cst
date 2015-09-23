@@ -15,7 +15,11 @@ export default class ObjectPattern extends Node {
                 children.skipNonCode();
                 children.assertToken('Punctuator', '}');
             } else {
-                properties.push(children.passNode('Property'));
+                if (children.isNode('SpreadProperty')) {
+                    properties.push(children.passNode('SpreadProperty'));
+                } else {
+                    properties.push(children.passNode('Property'));
+                }
                 children.skipNonCode();
                 if (children.isToken('Punctuator', ',')) {
                     children.moveNext();

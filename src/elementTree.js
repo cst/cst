@@ -61,6 +61,7 @@ const visitorKeys = {
     /*IT*/ ReturnStatement: ['argument'],
     /*IT*/ SequenceExpression: ['expressions'],
     /*IT*/ SpreadElement: ['argument'],
+    /*IT*/ SpreadProperty: ['argument'],
     /*IT*/ Super: [],
     /*IT*/ SwitchStatement: ['discriminant', 'cases'],
     /*IT*/ SwitchCase: ['test', 'consequent'],

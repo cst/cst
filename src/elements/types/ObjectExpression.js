@@ -6,7 +6,7 @@ export default class ObjectExpression extends Expression {
     }
 
     _acceptChildren(children) {
-        var properties = [];
+        let properties = [];
 
         children.passToken('Punctuator', '{');
         children.skipNonCode();
@@ -17,7 +17,11 @@ export default class ObjectExpression extends Expression {
                 children.skipNonCode();
                 children.assertToken('Punctuator', '}');
             } else {
-                properties.push(children.passNode('Property'));
+                if (children.isNode('SpreadProperty')) {
+                    properties.push(children.passNode('SpreadProperty'));
+                } else {
+                    properties.push(children.passNode('Property'));
+                }
                 children.skipNonCode();
                 if (children.isToken('Punctuator', ',')) {
                     children.moveNext();
