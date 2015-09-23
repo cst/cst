@@ -220,7 +220,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpression() {
-        return this._passExpressionInBraces(expression => expression.isExpression);
+        return this._passExpressionInParens(expression => expression.isExpression);
     }
 
     /**
@@ -231,7 +231,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpressionOrSuper() {
-        return this._passExpressionInBraces(expression => expression.isExpression || expression.type === 'Super');
+        return this._passExpressionInParens(expression => expression.isExpression || expression.type === 'Super');
     }
 
     /**
@@ -242,22 +242,22 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpressionOrSpreadElement() {
-        return this._passExpressionInBraces(
+        return this._passExpressionInParens(
             expression => expression.isExpression || expression.type === 'SpreadElement');
     }
 
     /**
-     * Passes expression ignoring braces, returns element and move pointer to the next element.
+     * Passes expression ignoring parentheses, returns element and move pointer to the next element.
      *
      * @param {Function} assertCallback
      * @returns {Element}
      * @private
      */
-    _passExpressionInBraces(assertCallback) {
-        let openBraces = 0;
+    _passExpressionInParens(assertCallback) {
+        let openParens = 0;
 
         while (this._currentElement.type === 'Punctuator' && this._currentElement.value === '(') {
-            openBraces++;
+            openParens++;
             this.moveNext();
             this.skipNonCode();
         }
@@ -270,7 +270,7 @@ export default class ElementAssert {
 
         this.moveNext();
 
-        while (openBraces--) {
+        while (openParens--) {
             this.skipNonCode();
             this.assertToken('Punctuator', ')');
             this.moveNext();
@@ -286,7 +286,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passAssignable() {
-        return this._passExpressionInBraces(expression => expression.isAssignable);
+        return this._passExpressionInParens(expression => expression.isAssignable);
     }
 
     /**
