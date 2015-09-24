@@ -71,4 +71,10 @@ describe('FunctionExpression', () => {
         expect(expression.id.name).to.equal('named');
         expect(expression.generator).to.equal(true);
     });
+
+    it('should support async', () => {
+        var expression = parseAndGetExpression('(async function ( x ) { ; })');
+        expect(expression.type).to.equal('FunctionExpression');
+        expect(expression.async).to.equal(true);
+    });
 });

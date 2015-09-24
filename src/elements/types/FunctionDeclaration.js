@@ -8,6 +8,13 @@ export default class FunctionDeclaration extends Statement {
 
     _acceptChildren(children) {
         let params = [];
+        let async = false;
+
+        if (children.isToken('Identifier', 'async')) {
+            async = true;
+            children.passToken('Identifier', 'async');
+            children.skipNonCode();
+        }
 
         children.passToken('Keyword', 'function');
         children.skipNonCode();
@@ -29,10 +36,15 @@ export default class FunctionDeclaration extends Statement {
 
         children.assertEnd();
 
+        this._async = async;
         this._id = id;
         this._params = params;
         this._body = body;
         this._generator = generator;
+    }
+
+    get async() {
+        return this._async;
     }
 
     get params() {
