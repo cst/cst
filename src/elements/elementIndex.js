@@ -17,6 +17,10 @@ import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
 import DoWhileStatement from './types/DoWhileStatement';
 import EmptyStatement from './types/EmptyStatement';
+import ExportAllDeclaration from './types/ExportAllDeclaration';
+import ExportDefaultDeclaration from './types/ExportDefaultDeclaration';
+import ExportNamedDeclaration from './types/ExportNamedDeclaration';
+import ExportSpecifier from './types/ExportSpecifier';
 import ExpressionStatement from './types/ExpressionStatement';
 import ForInStatement from './types/ForInStatement';
 import ForOfStatement from './types/ForOfStatement';
@@ -25,6 +29,10 @@ import FunctionDeclaration from './types/FunctionDeclaration';
 import FunctionExpression from './types/FunctionExpression';
 import Identifier from './types/Identifier';
 import IfStatement from './types/IfStatement';
+import ImportDeclaration from './types/ImportDeclaration';
+import ImportDefaultSpecifier from './types/ImportDefaultSpecifier';
+import ImportNamespaceSpecifier from './types/ImportNamespaceSpecifier';
+import ImportSpecifier from './types/ImportSpecifier';
 import LabeledStatement from './types/LabeledStatement';
 import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
@@ -75,6 +83,10 @@ export default {
     DebuggerStatement,
     DoWhileStatement,
     EmptyStatement,
+    ExportAllDeclaration,
+    ExportDefaultDeclaration,
+    ExportNamedDeclaration,
+    ExportSpecifier,
     ExpressionStatement,
     ForInStatement,
     ForOfStatement,
@@ -83,6 +95,10 @@ export default {
     FunctionExpression,
     Identifier,
     IfStatement,
+    ImportDeclaration,
+    ImportDefaultSpecifier,
+    ImportNamespaceSpecifier,
+    ImportSpecifier,
     LabeledStatement,
     Literal,
     LogicalExpression,
