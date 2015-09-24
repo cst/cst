@@ -42,6 +42,16 @@ describe('FunctionExpression', () => {
         expect(expression.generator).to.equal(false);
     });
 
+    it('should accept multiple arguments and a trailing comma', () => {
+        var expression = parseAndGetExpression('(function ( x , y , ) { })');
+        expect(expression.params.length).to.equal(2);
+        expect(expression.params[0].type).to.equal('Identifier');
+        expect(expression.params[0].name).to.equal('x');
+        expect(expression.params[1].type).to.equal('Identifier');
+        expect(expression.params[1].name).to.equal('y');
+        expect(expression.generator).to.equal(false);
+    });
+
     it('should accept array pattern', () => {
         var expression = parseAndGetExpression('(function ( [ x ] ) { ; })');
         expect(expression.params.length).to.equal(1);
