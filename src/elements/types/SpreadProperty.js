@@ -1,8 +1,8 @@
 import Node from '../Node';
 
-export default class SpreadElement extends Node {
+export default class SpreadProperty extends Node {
     constructor(childNodes) {
-        super('SpreadElement', childNodes);
+        super('SpreadProperty', childNodes);
     }
 
     _acceptChildren(children) {
