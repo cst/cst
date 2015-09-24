@@ -31,6 +31,16 @@ describe('CallExpression', () => {
         expect(expression.arguments[1].name).to.equal('y');
     });
 
+    it('should accept multiple arguments with a trailing comma', () => {
+        var expression = parseAndGetExpression('x ( x , y , )');
+        expect(expression.callee.name).to.equal('x');
+        expect(expression.arguments.length).to.equal(2);
+        expect(expression.arguments[0].type).to.equal('Identifier');
+        expect(expression.arguments[0].name).to.equal('x');
+        expect(expression.arguments[1].type).to.equal('Identifier');
+        expect(expression.arguments[1].name).to.equal('y');
+    });
+
     it('should accept multiple arguments with parentheses', () => {
         var expression = parseAndGetExpression('x ( (x) , (y) )');
         expect(expression.callee.name).to.equal('x');
