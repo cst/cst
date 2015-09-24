@@ -3,6 +3,7 @@ import AssignmentPattern from './types/AssignmentPattern';
 import ArrayExpression from './types/ArrayExpression';
 import ArrayPattern from './types/ArrayPattern';
 import ArrowFunctionExpression from './types/ArrowFunctionExpression';
+import AwaitExpression from './types/AwaitExpression';
 import BinaryExpression from './types/BinaryExpression';
 import BlockStatement from './types/BlockStatement';
 import BreakStatement from './types/BreakStatement';
@@ -59,6 +60,7 @@ export default {
     ArrayExpression,
     ArrayPattern,
     ArrowFunctionExpression,
+    AwaitExpression,
     BinaryExpression,
     BlockStatement,
     BreakStatement,

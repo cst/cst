@@ -82,6 +82,12 @@ export function parseAndGetExpressionInGenerator(code) {
     return program.body[0].body.body[0].expression;
 }
 
+export function parseAndGetExpressionInAsyncFunction(code) {
+    var parser = new Parser();
+    var program = parser.parse(`async function _name(){(${code});}`);
+    return program.body[0].body.body[0].expression;
+}
+
 export function parseAndGetStatementInVariableDeclarator(code) {
     var parser = new Parser();
     var program = parser.parse(`var ${code};`);

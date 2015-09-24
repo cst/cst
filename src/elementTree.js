@@ -12,7 +12,7 @@ const visitorKeys = {
     /*IT*/ ArrayExpression: ['elements'],
     /*IT*/ ArrayPattern: ['elements'],
     /*IT*/ ArrowFunctionExpression: ['params', 'body'],
-    /*--*/ AwaitExpression: ['argument'], // CAUTION: It's deferred to ES7.
+    /*IT*/ AwaitExpression: ['argument'],
     /*IT*/ BlockStatement: ['body'],
     /*IT*/ BinaryExpression: ['left', 'right'],
     /*IT*/ BreakStatement: ['label'],
