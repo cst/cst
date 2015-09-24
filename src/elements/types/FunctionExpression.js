@@ -13,11 +13,18 @@ export default class FunctionExpression extends Expression {
         let params = [];
         let id = null;
         let generator = false;
+        let async = false;
 
         if (children.isToken('Punctuator', '(')) {
             params = getFunctionParams(children);
             children.skipNonCode();
         } else {
+            if (children.isToken('Identifier', 'async')) {
+                async = true;
+                children.passToken('Identifier', 'async');
+                children.skipNonCode();
+            }
+
             children.passToken('Keyword', 'function');
             children.skipNonCode();
 
@@ -40,10 +47,15 @@ export default class FunctionExpression extends Expression {
 
         children.assertEnd();
 
+        this._async = async;
         this._id = id;
         this._params = params;
         this._body = body;
         this._generator = generator;
+    }
+
+    get async() {
+        return this._async;
     }
 
     get params() {

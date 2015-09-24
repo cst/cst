@@ -60,4 +60,10 @@ describe('FunctionDeclaration', () => {
         var expression = parseAndGetStatement('function * func ( x ) { ; }');
         expect(expression.generator).to.equal(true);
     });
+
+    it('should support async', () => {
+        var expression = parseAndGetStatement('async function func ( x ) { ; }');
+        expect(expression.type).to.equal('FunctionDeclaration');
+        expect(expression.async).to.equal(true);
+    });
 });

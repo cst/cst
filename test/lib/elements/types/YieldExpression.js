@@ -14,6 +14,23 @@ describe('YieldExpression', () => {
         expect(statement.argument.value).to.equal(1);
     });
 
+    it('should accept function call', () => {
+        var statement = parseAndGetExpressionInGenerator('yield a()');
+        expect(statement.type).to.equal('YieldExpression');
+        expect(statement.argument.type).to.equal('CallExpression');
+        expect(statement.argument.callee.type).to.equal('Identifier');
+        expect(statement.argument.callee.name).to.equal('a');
+    });
+
+    it('should accept delegate (*)', () => {
+        var statement = parseAndGetExpressionInGenerator('yield* a()');
+        expect(statement.type).to.equal('YieldExpression');
+        expect(statement.delegate).to.equal(true);
+        expect(statement.argument.type).to.equal('CallExpression');
+        expect(statement.argument.callee.type).to.equal('Identifier');
+        expect(statement.argument.callee.name).to.equal('a');
+    });
+
     it('should accept argument in parentheses', () => {
         var statement = parseAndGetExpressionInGenerator('yield ( 1 )');
         expect(statement.type).to.equal('YieldExpression');
