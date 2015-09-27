@@ -52,6 +52,9 @@ import SpreadProperty from './types/SpreadProperty';
 import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
 import SwitchStatement from './types/SwitchStatement';
+import TaggedTemplateExpression from './types/TaggedTemplateExpression';
+import TemplateElement from './types/TemplateElement';
+import TemplateLiteral from './types/TemplateLiteral';
 import ThisExpression from './types/ThisExpression';
 import ThrowStatement from './types/ThrowStatement';
 import TryStatement from './types/TryStatement';
@@ -118,6 +121,9 @@ export default {
     Super,
     SwitchCase,
     SwitchStatement,
+    TaggedTemplateExpression,
+    TemplateElement,
+    TemplateLiteral,
     ThisExpression,
     ThrowStatement,
     TryStatement,
