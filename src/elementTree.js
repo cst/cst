@@ -66,9 +66,9 @@ const visitorKeys = {
     /*IT*/ Super: [],
     /*IT*/ SwitchStatement: ['discriminant', 'cases'],
     /*IT*/ SwitchCase: ['test', 'consequent'],
-    /*--*/ TaggedTemplateExpression: ['tag', 'quasi'],
-    /*--*/ TemplateElement: [],
-    /*--*/ TemplateLiteral: ['quasis', 'expressions'],
+    /*IT*/ TaggedTemplateExpression: ['tag', 'quasi'],
+    /*IT*/ TemplateElement: [],
+    /*IT*/ TemplateLiteral: ['quasis', 'expressions'],
     /*IT*/ ThisExpression: [],
     /*IT*/ ThrowStatement: ['argument'],
     /*IT*/ TryStatement: ['block', 'handler', 'finalizer'],
@@ -152,6 +152,12 @@ function buildElementTreeItem(ast, state) {
                 childElements[childElements.length] = childAst;
             }
         }
+    }
+
+    if (elementType === 'TemplateLiteral') {
+        childElements.sort((ast1, ast2) => {
+            return ast1.start < ast2.start ? -1 : (ast1.start > ast2.start ? 1 : 0);
+        });
     }
 
     let NodeClass = elementIndex[elementType];
@@ -254,7 +260,7 @@ function processToken(token, source) {
         type === tt.ellipsis || type === tt.arrow ||
         type === tt.star || type === tt.incDec ||
         type === tt.colon || type === tt.question ||
-        type === tt.template || type === tt.backQuote ||
+        type === tt.backQuote ||
         type === tt.dollarBraceL || type === tt.at ||
         type === tt.logicalOR || type === tt.logicalAND ||
         type === tt.bitwiseOR || type === tt.bitwiseXOR ||
@@ -265,6 +271,11 @@ function processToken(token, source) {
         type === tt.doubleColon ||
         type.isAssign) {
         token.type = 'Punctuator';
+        if (!token.value) {
+            token.sourceCode = token.value = type.label;
+        }
+    } else if (type === tt.template) {
+        token.type = 'Template';
         if (!token.value) {
             token.sourceCode = token.value = type.label;
         }
