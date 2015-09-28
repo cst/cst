@@ -21,8 +21,6 @@ const visitorKeys = {
     /*IT*/ ClassBody: ['body'],
     /*IT*/ ClassDeclaration: ['id', 'superClass', 'body'],
     /*IT*/ ClassExpression: ['id', 'superClass', 'body'],
-    /*--*/ ComprehensionBlock: ['left', 'right'],  // CAUTION: It's deferred to ES7.
-    /*--*/ ComprehensionExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
     /*IT*/ ConditionalExpression: ['test', 'consequent', 'alternate'],
     /*IT*/ ContinueStatement: ['label'],
     /*IT*/ DebuggerStatement: [],
@@ -38,7 +36,6 @@ const visitorKeys = {
     /*IT*/ ForOfStatement: ['left', 'right', 'body'],
     /*IT*/ FunctionDeclaration: ['id', 'params', 'body'],
     /*IT*/ FunctionExpression: ['id', 'params', 'body'],
-    /*--*/ GeneratorExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
     /*IT*/ Identifier: [],
     /*IT*/ IfStatement: ['test', 'consequent', 'alternate'],
     /*IT*/ ImportDeclaration: ['specifiers', 'source'],
