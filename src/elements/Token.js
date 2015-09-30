@@ -108,7 +108,7 @@ export default class Token extends Element {
      * @returns {Element}
      */
     cloneElement() {
-        return new Token(this._type, this._value);
+        return new Token(this._type, this._value, this._sourceCode);
     }
 }
 
