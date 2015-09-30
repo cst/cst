@@ -5,7 +5,6 @@ describe('AwaitExpression', () => {
 
     it('should return correct type', () => {
         expect(parseAndGetExpressionInAsyncFunction('await 1').type).to.equal('AwaitExpression');
-        expect(parseAndGetExpressionInAsyncFunction('await* 1').type).to.equal('AwaitExpression');
     });
 
     it('should accept argument', () => {
@@ -18,15 +17,6 @@ describe('AwaitExpression', () => {
     it('should accept function call', () => {
         var statement = parseAndGetExpressionInAsyncFunction('await a()');
         expect(statement.type).to.equal('AwaitExpression');
-        expect(statement.argument.type).to.equal('CallExpression');
-        expect(statement.argument.callee.type).to.equal('Identifier');
-        expect(statement.argument.callee.name).to.equal('a');
-    });
-
-    it('should accept all (*)', () => {
-        var statement = parseAndGetExpressionInAsyncFunction('await* a()');
-        expect(statement.type).to.equal('AwaitExpression');
-        expect(statement.all).to.equal(true);
         expect(statement.argument.type).to.equal('CallExpression');
         expect(statement.argument.callee.type).to.equal('Identifier');
         expect(statement.argument.callee.name).to.equal('a');
