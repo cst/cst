@@ -33,6 +33,16 @@ import ImportDeclaration from './types/ImportDeclaration';
 import ImportDefaultSpecifier from './types/ImportDefaultSpecifier';
 import ImportNamespaceSpecifier from './types/ImportNamespaceSpecifier';
 import ImportSpecifier from './types/ImportSpecifier';
+import JSXAttribute from './types/JSXAttribute';
+import JSXClosingElement from './types/JSXClosingElement';
+import JSXElement from './types/JSXElement';
+import JSXEmptyExpression from './types/JSXEmptyExpression';
+import JSXExpressionContainer from './types/JSXExpressionContainer';
+import JSXIdentifier from './types/JSXIdentifier';
+import JSXMemberExpression from './types/JSXMemberExpression';
+import JSXNamespacedName from './types/JSXNamespacedName';
+import JSXOpeningElement from './types/JSXOpeningElement';
+import JSXSpreadAttribute from './types/JSXSpreadAttribute';
 import LabeledStatement from './types/LabeledStatement';
 import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
@@ -102,6 +112,16 @@ export default {
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
     ImportSpecifier,
+    JSXAttribute,
+    JSXClosingElement,
+    JSXElement,
+    JSXEmptyExpression,
+    JSXExpressionContainer,
+    JSXIdentifier,
+    JSXMemberExpression,
+    JSXNamespacedName,
+    JSXOpeningElement,
+    JSXSpreadAttribute,
     LabeledStatement,
     Literal,
     LogicalExpression,

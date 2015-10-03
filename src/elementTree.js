@@ -76,17 +76,16 @@ const visitorKeys = {
     /*IT*/ WhileStatement: ['test', 'body'],
     /*IT*/ WithStatement: ['object', 'body'],
     /*IT*/ YieldExpression: ['argument'],
-    /*--*/ JSXIdentifier: [],
-    /*--*/ JSXNamespacedName: ['namespace', 'name'],
-    /*--*/ JSXMemberExpression: ['object', 'property'],
-    /*--*/ JSXEmptyExpression: [],
-    /*--*/ JSXExpressionContainer: ['expression'],
-    /*--*/ JSXElement: ['openingElement', 'closingElement', 'children'],
-    /*--*/ JSXClosingElement: ['name'],
-    /*--*/ JSXOpeningElement: ['name', 'attributes'],
-    /*--*/ JSXAttribute: ['name', 'value'],
-    /*--*/ JSXSpreadAttribute: ['argument'],
-    /*--*/ JSXText: []
+    /*IT*/ JSXIdentifier: [],
+    /*IT*/ JSXNamespacedName: ['namespace', 'name'],
+    /*IT*/ JSXMemberExpression: ['object', 'property'],
+    /*IT*/ JSXEmptyExpression: [],
+    /*IT*/ JSXExpressionContainer: ['expression'],
+    /*IT*/ JSXElement: ['openingElement', 'closingElement', 'children'],
+    /*IT*/ JSXClosingElement: ['name'],
+    /*IT*/ JSXOpeningElement: ['name', 'attributes'],
+    /*IT*/ JSXAttribute: ['name', 'value'],
+    /*IT*/ JSXSpreadAttribute: ['argument']
     /* jscs: enable */
 };
 
@@ -151,11 +150,9 @@ function buildElementTreeItem(ast, state) {
         }
     }
 
-    if (elementType === 'TemplateLiteral') {
-        childElements.sort((ast1, ast2) => {
-            return ast1.start < ast2.start ? -1 : (ast1.start > ast2.start ? 1 : 0);
-        });
-    }
+    childElements.sort((ast1, ast2) => {
+        return ast1.start < ast2.start ? -1 : (ast1.start > ast2.start ? 1 : 0);
+    });
 
     let NodeClass = elementIndex[elementType];
 
