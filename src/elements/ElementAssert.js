@@ -81,6 +81,24 @@ export default class ElementAssert {
     }
 
     /**
+     * Asserts that the current element is a node.
+     * Can also check if any of the node type are satisfied.
+     *
+     * @param {Array} nodeTypes
+     */
+    assertOneOfNode(nodeTypes) {
+        let {isNode, type} = this._currentElement || {};
+
+        if (!isNode) {
+            throw new Error(`Node expected but "${type}" found`);
+        }
+
+        if (arguments.length > 0 && nodeTypes.indexOf(type) === -1) {
+            throw new Error(`Expected one of node types "${nodeTypes}" but "${type}" found`);
+        }
+    }
+
+    /**
      * Asserts that the current element is an expression.
      */
     assertExpression() {
@@ -218,6 +236,20 @@ export default class ElementAssert {
      */
     passNode(nodeType) {
         this.assertNode.apply(this, arguments);
+        let node = this._currentElement;
+        this.moveNext();
+        return node;
+    }
+
+    /**
+     * Checks if current element is a node (can also check if any types are satisfied),
+     * returns current element and move pointer to the next element.
+     *
+     * @param {Array} [nodeTypes]
+     * @returns {Element}
+     */
+    passOneOfNode(nodeTypes) {
+        this.assertOneOfNode(nodeTypes);
         let node = this._currentElement;
         this.moveNext();
         return node;
