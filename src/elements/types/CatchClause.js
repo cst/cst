@@ -33,8 +33,4 @@ export default class CatchClause extends Node {
     get param() {
         return this._param;
     }
-
-    get guard() {
-        return null;
-    }
 }
