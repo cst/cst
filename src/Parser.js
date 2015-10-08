@@ -1,4 +1,4 @@
-import {parse} from 'babel-core';
+import {parse} from 'babylon';
 
 import {buildTokenList, buildElementTree} from './elementTree';
 
@@ -26,14 +26,26 @@ export default class Parser {
     }
 
     _parseAst(code) {
-        let tokens = [];
         let opts = {
-            onToken: tokens,
+            sourceType: 'module',
+            features: {
+                'es7.asyncFunctions': true,
+                'es7.classProperties': true,
+                'es7.comprehensions': true,
+                'es7.decorators': true,
+                'es7.exponentiationOperator': true,
+                'es7.exportExtensions': true,
+                'es7.functionBind': true,
+                'es7.objectRestSpread': true,
+                'es7.trailingFunctionCommas': true,
+            },
+            plugins: {jsx: true, flow: true},
             strictMode: this._strictModeEnabled
         };
         let ast = parse(code, opts);
-        ast.tokens = tokens;
-        return ast;
+        let program = ast.program;
+        program.tokens = ast.tokens;
+        return program;
     }
 
     _processTokens(ast, code) {

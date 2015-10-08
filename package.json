@@ -37,6 +37,6 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "babel-core": "5.8.24"
+    "babylon": "^5.8.23"
   }
 }

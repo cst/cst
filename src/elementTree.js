@@ -1,6 +1,6 @@
 import elementIndex from './elements/elementIndex';
 import Token from './elements/Token';
-import {acorn} from 'babel-core';
+import * as babylon from 'babylon';
 
 const visitorKeys = {
     /* jscs: disable */
@@ -234,12 +234,12 @@ export function buildTokenList(codeTokens, code) {
 }
 
 /**
- * Acorn token types.
+ * Babylon token types.
  */
-let tt = acorn.tokTypes;
+let tt = babylon.tokTypes;
 
 /**
- * Transforms Acorn-style token to Esprima-style token.
+ * Transforms Babylon-style token to Esprima-style token.
  *
  * @param {Object} token
  * @param {String} source
