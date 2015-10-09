@@ -1,4 +1,4 @@
-import {parse} from 'babel-core';
+import {parse} from 'babylon';
 
 import {buildTokenList, buildElementTree} from './elementTree';
 
@@ -26,14 +26,35 @@ export default class Parser {
     }
 
     _parseAst(code) {
-        let tokens = [];
+        // let tokens = [];
         let opts = {
-            onToken: tokens,
-            strictMode: this._strictModeEnabled
+            sourceType: 'module',
+            strictMode: this._strictModeEnabled,
+            ecmaVersion: Infinity,
+            allowHashBang: true,
+            // generate with
+            // $ node -p "Object.keys(require('babel-core/lib/transformation').pipeline.transformers)
+            // .filter(/^$/.test.bind(/^es([7-9]|[0-9]{2,})./))
+            // .sort().reduce(function(o, k) { o[k] = true; return o; }, {})"
+            features: {
+                'es7.asyncFunctions': true,
+                'es7.classProperties': true,
+                'es7.comprehensions': true,
+                'es7.decorators': true,
+                'es7.doExpressions': true,
+                'es7.exponentiationOperator': true,
+                'es7.exportExtensions': true,
+                'es7.functionBind': true,
+                'es7.objectRestSpread': true,
+                'es7.trailingFunctionCommas': true
+            },
+            plugins: {jsx: true, flow: true}
         };
         let ast = parse(code, opts);
-        ast.tokens = tokens;
-        return ast;
+        let program = ast.program;
+        program.tokens = ast.tokens;
+        // ast.tokens = tokens;
+        return program;
     }
 
     _processTokens(ast, code) {
