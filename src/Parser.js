@@ -26,7 +26,6 @@ export default class Parser {
     }
 
     _parseAst(code) {
-        // let tokens = [];
         let opts = {
             sourceType: 'module',
             strictMode: this._strictModeEnabled,
@@ -53,7 +52,6 @@ export default class Parser {
         let ast = parse(code, opts);
         let program = ast.program;
         program.tokens = ast.tokens;
-        // ast.tokens = tokens;
         return program;
     }
 
