@@ -26,9 +26,12 @@ export default class Parser {
     }
 
     _parseAst(code) {
+        // let tokens = [];
         let opts = {
             sourceType: 'module',
+            strictMode: this._strictModeEnabled,
             ecmaVersion: Infinity,
+            allowHashBang: true,
             // generate with
             // $ node -p "Object.keys(require('babel-core/lib/transformation').pipeline.transformers)
             // .filter(/^$/.test.bind(/^es([7-9]|[0-9]{2,})./))
@@ -43,14 +46,14 @@ export default class Parser {
                 'es7.exportExtensions': true,
                 'es7.functionBind': true,
                 'es7.objectRestSpread': true,
-                'es7.trailingFunctionCommas': true,
+                'es7.trailingFunctionCommas': true
             },
-            plugins: {jsx: true, flow: true},
-            strictMode: this._strictModeEnabled
+            plugins: {jsx: true, flow: true}
         };
         let ast = parse(code, opts);
         let program = ast.program;
         program.tokens = ast.tokens;
+        // ast.tokens = tokens;
         return program;
     }
 
