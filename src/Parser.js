@@ -28,11 +28,17 @@ export default class Parser {
     _parseAst(code) {
         let opts = {
             sourceType: 'module',
+            ecmaVersion: Infinity,
+            // generate with
+            // $ node -p "Object.keys(require('babel-core/lib/transformation').pipeline.transformers)
+            // .filter(/^$/.test.bind(/^es([7-9]|[0-9]{2,})./))
+            // .sort().reduce(function(o, k) { o[k] = true; return o; }, {})"
             features: {
                 'es7.asyncFunctions': true,
                 'es7.classProperties': true,
                 'es7.comprehensions': true,
                 'es7.decorators': true,
+                'es7.doExpressions': true,
                 'es7.exponentiationOperator': true,
                 'es7.exportExtensions': true,
                 'es7.functionBind': true,
