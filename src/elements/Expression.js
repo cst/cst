@@ -8,7 +8,7 @@ import Node from './Node';
  * @abstract
  */
 export default class Expression extends Node {
-    isExpression() {
+    get isExpression() {
         return true;
     }
 }

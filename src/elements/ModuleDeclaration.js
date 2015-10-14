@@ -6,7 +6,7 @@ import Statement from './Statement';
  * @name ModuleDeclaration
  */
 export default class ModuleDeclaration extends Statement {
-    isModuleDeclaration() {
+    get isModuleDeclaration() {
         return true;
     }
 }
