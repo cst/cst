@@ -6,7 +6,7 @@ import Element from './Element';
  * @name Node
  */
 export default class Node extends Element {
-    isNode() {
+    get isNode() {
         return true;
     }
 }

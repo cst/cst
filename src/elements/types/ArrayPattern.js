@@ -34,11 +34,11 @@ export default class ArrayPattern extends Node {
         return this._elements.concat();
     }
 
-    isPattern() {
+    get isPattern() {
         return true;
     }
 
-    isAssignable() {
+    get isAssignable() {
         return true;
     }
 }

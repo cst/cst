@@ -10,7 +10,7 @@ export default class ModuleSpecifier extends Node {
         return this._local;
     }
 
-    isModuleSpecifier() {
+    get isModuleSpecifier() {
         return true;
     }
 }

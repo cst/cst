@@ -5,7 +5,7 @@ export default class Fragment extends Element {
         super('Fragment', children);
     }
 
-    isFragment() {
+    get isFragment() {
         return true;
     }
 }
