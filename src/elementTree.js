@@ -76,17 +76,16 @@ const visitorKeys = {
     /*IT*/ WhileStatement: ['test', 'body'],
     /*IT*/ WithStatement: ['object', 'body'],
     /*IT*/ YieldExpression: ['argument'],
-    /*--*/ JSXIdentifier: [],
-    /*--*/ JSXNamespacedName: ['namespace', 'name'],
-    /*--*/ JSXMemberExpression: ['object', 'property'],
-    /*--*/ JSXEmptyExpression: [],
-    /*--*/ JSXExpressionContainer: ['expression'],
-    /*--*/ JSXElement: ['openingElement', 'closingElement', 'children'],
-    /*--*/ JSXClosingElement: ['name'],
-    /*--*/ JSXOpeningElement: ['name', 'attributes'],
-    /*--*/ JSXAttribute: ['name', 'value'],
-    /*--*/ JSXSpreadAttribute: ['argument'],
-    /*--*/ JSXText: []
+    /*IT*/ JSXIdentifier: [],
+    /*IT*/ JSXNamespacedName: ['namespace', 'name'],
+    /*IT*/ JSXMemberExpression: ['object', 'property'],
+    /*IT*/ JSXEmptyExpression: [],
+    /*IT*/ JSXExpressionContainer: ['expression'],
+    /*IT*/ JSXElement: ['openingElement', 'closingElement', 'children'],
+    /*IT*/ JSXClosingElement: ['name'],
+    /*IT*/ JSXOpeningElement: ['name', 'attributes'],
+    /*IT*/ JSXAttribute: ['name', 'value'],
+    /*IT*/ JSXSpreadAttribute: ['argument']
     /* jscs: enable */
 };
 
@@ -151,11 +150,9 @@ function buildElementTreeItem(ast, state) {
         }
     }
 
-    if (elementType === 'TemplateLiteral') {
-        childElements.sort((ast1, ast2) => {
-            return ast1.start < ast2.start ? -1 : (ast1.start > ast2.start ? 1 : 0);
-        });
-    }
+    childElements.sort((ast1, ast2) => {
+        return ast1.start < ast2.start ? -1 : (ast1.start > ast2.start ? 1 : 0);
+    });
 
     let NodeClass = elementIndex[elementType];
 
@@ -167,15 +164,26 @@ function buildElementTreeItem(ast, state) {
     let childElementIndex = 0;
     let childElement = childElements[0];
     let end = ast.end;
+
     do {
         if (childElement && state.token.start === childElement.start) {
-            children[children.length] = buildElementTreeItem(childElement, state);
-            childElement = childElements[++childElementIndex];
+            if (state.token.end > childElement.end) {
+                let EmptyNodeClass = elementIndex[childElement.type];
+                if (!EmptyNodeClass) {
+                    throw new Error(`Cannot create ${childElement.type} instance`);
+                }
 
-            if (!state.token ||
-                (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
-            ) {
-                return new NodeClass(children);
+                children[children.length] = new EmptyNodeClass([]);
+                childElement = childElements[++childElementIndex];
+            } else {
+                children[children.length] = buildElementTreeItem(childElement, state);
+                childElement = childElements[++childElementIndex];
+
+                if (!state.token ||
+                    (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
+                ) {
+                    return new NodeClass(children);
+                }
             }
         } else {
             let endOfAstReached = state.token.end === end;
