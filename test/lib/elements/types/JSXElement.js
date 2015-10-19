@@ -56,7 +56,8 @@ describe('JSXElement', () => {
         expect(expression.openingElement.name.name).to.equal('a');
         expect(expression.openingElement.attributes.length).to.equal(0);
         expect(expression.children.length).to.equal(1);
-        expect(expression.children[0].type).to.equal('JSXEmptyExpression');
+        expect(expression.children[0].type).to.equal('JSXExpressionContainer');
+        expect(expression.children[0].expression.type).to.equal('JSXEmptyExpression');
     });
 
     it('allow opening and closing tag with literal', () => {

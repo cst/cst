@@ -164,15 +164,26 @@ function buildElementTreeItem(ast, state) {
     let childElementIndex = 0;
     let childElement = childElements[0];
     let end = ast.end;
+
     do {
         if (childElement && state.token.start === childElement.start) {
-            children[children.length] = buildElementTreeItem(childElement, state);
-            childElement = childElements[++childElementIndex];
+            if (state.token.end > childElement.end) {
+                let EmptyNodeClass = elementIndex[childElement.type];
+                if (!EmptyNodeClass) {
+                    throw new Error(`Cannot create ${childElement.type} instance`);
+                }
 
-            if (!state.token ||
-                (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
-            ) {
-                return new NodeClass(children);
+                children[children.length] = new EmptyNodeClass([]);
+                childElement = childElements[++childElementIndex];
+            } else {
+                children[children.length] = buildElementTreeItem(childElement, state);
+                childElement = childElements[++childElementIndex];
+
+                if (!state.token ||
+                    (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
+                ) {
+                    return new NodeClass(children);
+                }
             }
         } else {
             let endOfAstReached = state.token.end === end;
