@@ -7,6 +7,7 @@ import {buildTokenList, buildElementTree} from './elementTree';
  * @property {String} sourceType Type of parsed code: "module" or "script".
  * @property {Boolean} strictMode
  * @property {Boolean} allowHashBang
+ * @property {Number} ecmaVersion
  * @property {CSTParserExperimentalFeatureOptions} experimentalFeatures
  * @property {CSTParserLanguageExtensionsOptions} languageExtensions
  */
@@ -43,6 +44,7 @@ export default class Parser {
             sourceType: 'module',
             strictMode: true,
             allowHashBang: true,
+            ecmaVersion: Infinity,
             experimentalFeatures: {
                 'es7.asyncFunctions': true,
                 'es7.classProperties': true,
@@ -74,26 +76,26 @@ export default class Parser {
     }
 
     /**
-     * @param {CSTParserOptions} options
+     * @param {CSTParserOptions} newOptions
      */
-    setOptions(options) {
-        this._options = Object.assign(
-            {},
-            this._options,
-            options,
-            {
-                experimentalFeatures: Object.assign(
-                    {},
-                    this._options.experimentalFeatures,
-                    options.experimentalFeatures
-                ),
-                languageExtensions: Object.assign(
-                    {},
-                    this._options.languageExtensions,
-                    options.languageExtensions
-                )
+    setOptions(newOptions) {
+        var currentOptions = this._options;
+        var currentExperimentalFeatures = currentOptions.experimentalFeatures;
+        var currentLanguageExtensions = currentOptions.languageExtensions;
+        var newExperimentalFeatures = newOptions.experimentalFeatures;
+        var newLanguageExtensions = newOptions.languageExtensions;
+        this._options = {
+            ...currentOptions,
+            ...newOptions,
+            experimentalFeatures: {
+                ...currentExperimentalFeatures,
+                ...newExperimentalFeatures
+            },
+            languageExtensions: {
+                ...currentLanguageExtensions,
+                ...newLanguageExtensions
             }
-        );
+        };
     }
 
     parse(code) {
@@ -104,14 +106,13 @@ export default class Parser {
 
     _parseAst(code) {
         var options = this._options;
-        var experimentalFeatures = options.experimentalFeatures;
         var languageExtensions = options.languageExtensions;
         let ast = parse(code, {
             sourceType: options.sourceType,
             strictMode: options.strictMode,
-            ecmaVersion: Infinity,
+            ecmaVersion: options.ecmaVersion,
             allowHashBang: options.allowHashBang,
-            features: experimentalFeatures,
+            features: options.experimentalFeatures,
             plugins: {
                 jsx: languageExtensions.jsx,
                 flow: languageExtensions.flow

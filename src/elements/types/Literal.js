@@ -1,5 +1,3 @@
-/* jshint ignore:start */
-
 import Expression from '../Expression';
 
 export default class Literal extends Expression {
