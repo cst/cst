@@ -56,7 +56,7 @@ let exceptions = {
 
 describe('integrated/requireCurlyBraces', () => {
     it('should add curly braces to all supported statements', () => {
-        let program = parseAndGetProgram(sourceCode, {disableStrictMode: true});
+        let program = parseAndGetProgram(sourceCode, {strictMode: false});
         for (var typeName in types) {
             for (let node of program.selectNodesByType(typeName)) {
                 for (let propName of types[typeName]) {

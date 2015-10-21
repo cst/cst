@@ -1,36 +1,24 @@
 import Parser from '../src/Parser';
 
 export function parseAndGetProgram(code, options) {
-    var parser = new Parser();
-    if (options && options.disableStrictMode) {
-        parser.disableStrictMode();
-    }
+    var parser = new Parser(options);
     return parser.parse(code);
 }
 
 export function parseAndGetStatement(code, options) {
-    var parser = new Parser();
-    if (options && options.disableStrictMode) {
-        parser.disableStrictMode();
-    }
+    var parser = new Parser(options);
     var program = parser.parse(code);
     return program.body[0];
 }
 
 export function parseAndGetExpression(code, options) {
-    var parser = new Parser();
-    if (options && options.disableStrictMode) {
-        parser.disableStrictMode();
-    }
+    var parser = new Parser(options);
     var program = parser.parse('(' + code + ')');
     return program.body[0].expression;
 }
 
 export function parseAndGetExpressionInFunction(code, options) {
-    var parser = new Parser();
-    if (options && options.disableStrictMode) {
-        parser.disableStrictMode();
-    }
+    var parser = new Parser(options);
     var program = parser.parse('(function(){(' + code + ')})');
     return program.body[0].expression.body.body[0].expression;
 }

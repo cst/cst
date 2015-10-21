@@ -16,9 +16,8 @@
     "test:unit": "mocha test/utils.js test/lib test/integrated src --recursive --compilers js:babel/register",
     "test:live": "mocha test/utils.js test/lib test/integrated src --recursive --compilers js:babel/register --watch",
     "test:benchmark": "babel-node test/benchmarks/benchmarks.js",
-    "lint": "npm run lint:jscs && npm run lint:jshint",
+    "lint": "npm run lint:jscs",
     "lint:jscs": "jscs src test",
-    "lint:jshint": "jshint src test",
     "build": "babel src -d lib",
     "precommit": "npm test",
     "release": "npm run build && npm publish",
@@ -33,7 +32,6 @@
     "husky": "^0.8.1",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",
-    "jshint": "^2.8.0",
     "mocha": "^2.2.5"
   },
   "dependencies": {

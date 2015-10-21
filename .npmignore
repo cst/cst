@@ -2,5 +2,4 @@ docs
 src
 test
 .jscsrc
-.jshintrc
 .travis.yml
