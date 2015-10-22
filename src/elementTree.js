@@ -1,93 +1,7 @@
+import visitorKeys from './visitorKeys';
 import elementIndex from './elements/elementIndex';
 import Token from './elements/Token';
 import * as babylon from 'babylon';
-
-const visitorKeys = {
-    /* jscs: disable */
-    // -- Implement later
-    // I  Implemented
-    // T  Tested
-    /*IT*/ AssignmentExpression: ['left', 'right'],
-    /*IT*/ AssignmentPattern: ['left', 'right'],
-    /*IT*/ ArrayExpression: ['elements'],
-    /*IT*/ ArrayPattern: ['elements'],
-    /*IT*/ ArrowFunctionExpression: ['params', 'body'],
-    /*IT*/ AwaitExpression: ['argument'],
-    /*IT*/ BlockStatement: ['body'],
-    /*IT*/ BinaryExpression: ['left', 'right'],
-    /*IT*/ BreakStatement: ['label'],
-    /*IT*/ CallExpression: ['callee', 'arguments'],
-    /*IT*/ CatchClause: ['param', 'body'],
-    /*IT*/ ClassBody: ['body'],
-    /*IT*/ ClassDeclaration: ['id', 'superClass', 'body'],
-    /*IT*/ ClassExpression: ['id', 'superClass', 'body'],
-    /*IT*/ ConditionalExpression: ['test', 'consequent', 'alternate'],
-    /*IT*/ ContinueStatement: ['label'],
-    /*IT*/ DebuggerStatement: [],
-    /*IT*/ DoWhileStatement: ['body', 'test'],
-    /*IT*/ EmptyStatement: [],
-    /*IT*/ ExportAllDeclaration: ['source'],
-    /*IT*/ ExportDefaultDeclaration: ['declaration'],
-    /*IT*/ ExportNamedDeclaration: ['declaration', 'specifiers', 'source'],
-    /*IT*/ ExportSpecifier: ['exported', 'local'],
-    /*IT*/ ExpressionStatement: ['expression'],
-    /*IT*/ ForStatement: ['init', 'test', 'update', 'body'],
-    /*IT*/ ForInStatement: ['left', 'right', 'body'],
-    /*IT*/ ForOfStatement: ['left', 'right', 'body'],
-    /*IT*/ FunctionDeclaration: ['id', 'params', 'body'],
-    /*IT*/ FunctionExpression: ['id', 'params', 'body'],
-    /*IT*/ Identifier: [],
-    /*IT*/ IfStatement: ['test', 'consequent', 'alternate'],
-    /*IT*/ ImportDeclaration: ['specifiers', 'source'],
-    /*IT*/ ImportDefaultSpecifier: ['local'],
-    /*IT*/ ImportNamespaceSpecifier: ['local'],
-    /*IT*/ ImportSpecifier: ['imported', 'local'],
-    /*IT*/ LabeledStatement: ['label', 'body'],
-    /*IT*/ Literal: [],
-    /*IT*/ LogicalExpression: ['left', 'right'],
-    /*IT*/ MemberExpression: ['object', 'property'],
-    /*IT*/ MetaProperty: ['meta', 'property'],
-    /*IT*/ MethodDefinition: ['key', 'value'],
-    /*IT*/ ModuleDeclaration: [],
-    /*IT*/ ModuleSpecifier: ['local'],
-    /*IT*/ NewExpression: ['callee', 'arguments'],
-    /*IT*/ ObjectExpression: ['properties'],
-    /*IT*/ ObjectPattern: ['properties'],
-    /*IT*/ Program: ['body'],
-    /*IT*/ Property: ['key', 'value'],
-    /*IT*/ RestElement: ['argument'],
-    /*IT*/ ReturnStatement: ['argument'],
-    /*IT*/ SequenceExpression: ['expressions'],
-    /*IT*/ SpreadElement: ['argument'],
-    /*IT*/ SpreadProperty: ['argument'],
-    /*IT*/ Super: [],
-    /*IT*/ SwitchStatement: ['discriminant', 'cases'],
-    /*IT*/ SwitchCase: ['test', 'consequent'],
-    /*IT*/ TaggedTemplateExpression: ['tag', 'quasi'],
-    /*IT*/ TemplateElement: [],
-    /*IT*/ TemplateLiteral: ['quasis', 'expressions'],
-    /*IT*/ ThisExpression: [],
-    /*IT*/ ThrowStatement: ['argument'],
-    /*IT*/ TryStatement: ['block', 'handler', 'finalizer'],
-    /*IT*/ UnaryExpression: ['argument'],
-    /*IT*/ UpdateExpression: ['argument'],
-    /*IT*/ VariableDeclaration: ['declarations'],
-    /*IT*/ VariableDeclarator: ['id', 'init'],
-    /*IT*/ WhileStatement: ['test', 'body'],
-    /*IT*/ WithStatement: ['object', 'body'],
-    /*IT*/ YieldExpression: ['argument'],
-    /*IT*/ JSXIdentifier: [],
-    /*IT*/ JSXNamespacedName: ['namespace', 'name'],
-    /*IT*/ JSXMemberExpression: ['object', 'property'],
-    /*IT*/ JSXEmptyExpression: [],
-    /*IT*/ JSXExpressionContainer: ['expression'],
-    /*IT*/ JSXElement: ['openingElement', 'closingElement', 'children'],
-    /*IT*/ JSXClosingElement: ['name'],
-    /*IT*/ JSXOpeningElement: ['name', 'attributes'],
-    /*IT*/ JSXAttribute: ['name', 'value'],
-    /*IT*/ JSXSpreadAttribute: ['argument']
-    /* jscs: enable */
-};
 
 /**
  * Creates CST using AST and token list.
@@ -310,7 +224,12 @@ function processToken(token, source) {
         token.type = 'RegularExpression';
         token.value = token.value.value;
     } else if (type === 'CommentLine') {
-        token.sourceCode = '//' + token.value;
+        if (token.start === 0 && source.indexOf('#!') === 0) {
+            token.type = 'Hashbang';
+            token.sourceCode = '#!' + token.value;
+        } else {
+            token.sourceCode = '//' + token.value;
+        }
     } else if (type === 'CommentBlock') {
         token.sourceCode = '/*' + token.value + '*/';
     } else if (type === tt.eof) {

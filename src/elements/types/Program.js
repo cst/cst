@@ -11,6 +11,10 @@ export default class Program extends Statement {
     }
 
     _acceptChildren(children) {
+        if (children.isToken('Hashbang')) {
+            children.passToken();
+        }
+
         children.skipNonCode();
 
         let body = [];
