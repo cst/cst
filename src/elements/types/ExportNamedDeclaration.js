@@ -18,18 +18,23 @@ export default class ExportNamedDeclaration extends ModuleDeclaration {
             children.isNode('ClassDeclaration')) {
             declaration = children.passStatement();
         } else {
-            children.passToken('Punctuator', '{');
-            children.skipNonCode();
-            while (!children.isToken('Punctuator', '}')) {
-                specifiers.push(children.passModuleSpecifier());
+            // es2015 exports
+            if (children.isToken('Punctuator', '{')) {
+                children.passToken('Punctuator', '{');
                 children.skipNonCode();
-                if (children.isToken('Punctuator', ',')) {
-                    children.moveNext();
+                while (!children.isToken('Punctuator', '}')) {
+                    specifiers.push(children.passModuleSpecifier());
                     children.skipNonCode();
+                    if (children.isToken('Punctuator', ',')) {
+                        children.moveNext();
+                        children.skipNonCode();
+                    }
                 }
+                children.passToken('Punctuator', '}');
+            } else {
+                // es2016 export from
+                specifiers.push(children.passModuleSpecifier());
             }
-            children.passToken('Punctuator', '}');
-
             children.skipNonCode();
 
             if (children.isToken('Identifier', 'from')) {

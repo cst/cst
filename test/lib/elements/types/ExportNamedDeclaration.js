@@ -34,6 +34,7 @@ describe('ExportNamedDeclaration', () => {
     it('should accept a ModuleSpecifier without a new name', () => {
         var statement = parseAndGetStatement('export {x};');
         expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
         expect(statement.specifiers[0].local.name).to.equal('x');
@@ -44,6 +45,7 @@ describe('ExportNamedDeclaration', () => {
     it('should accept a ModuleSpecifier with a new name', () => {
         var statement = parseAndGetStatement('export {x as y};');
         expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
         expect(statement.specifiers[0].local.name).to.equal('x');
@@ -54,6 +56,7 @@ describe('ExportNamedDeclaration', () => {
     it('should accept a ModuleSpecifier without a new name from another module', () => {
         var statement = parseAndGetStatement('export {x} from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
         expect(statement.specifiers[0].local.name).to.equal('x');
@@ -63,14 +66,55 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.source.value).to.equal('m');
     });
 
-    it('should accept a ModuleSpecifier with a new name from another module', () => {
-        var statement = parseAndGetStatement('export {x as y} from "m";');
+    it('should accept ModuleSpecifiers with a new name from another module', () => {
+        var statement = parseAndGetStatement('export {x as y, a as b} from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(2);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
         expect(statement.specifiers[0].local.name).to.equal('x');
         expect(statement.specifiers[0].exported.type).to.equal('Identifier');
         expect(statement.specifiers[0].exported.name).to.equal('y');
+        expect(statement.specifiers[1].type).to.equal('ExportSpecifier');
+        expect(statement.specifiers[1].local.type).to.equal('Identifier');
+        expect(statement.specifiers[1].local.name).to.equal('a');
+        expect(statement.specifiers[1].exported.type).to.equal('Identifier');
+        expect(statement.specifiers[1].exported.name).to.equal('b');
+        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.value).to.equal('m');
+    });
+
+    it('should accept a default ModuleSpecifier with a new name from another module', () => {
+        var statement = parseAndGetStatement('export {default as y} from "m";');
+        expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
+        expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
+        expect(statement.specifiers[0].local.type).to.equal('Identifier');
+        expect(statement.specifiers[0].local.name).to.equal('default');
+        expect(statement.specifiers[0].exported.type).to.equal('Identifier');
+        expect(statement.specifiers[0].exported.name).to.equal('y');
+        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.value).to.equal('m');
+    });
+
+    it('should accept a ExportDefaultSpecifier from another module - exportExtensions', () => {
+        var statement = parseAndGetStatement('export x from "m";');
+        expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
+        expect(statement.specifiers[0].type).to.equal('ExportDefaultSpecifier');
+        expect(statement.specifiers[0].exported.type).to.equal('Identifier');
+        expect(statement.specifiers[0].exported.name).to.equal('x');
+        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.value).to.equal('m');
+    });
+
+    it('should accept a ExportNamespaceSpecifier from another module - exportExtensions', () => {
+        var statement = parseAndGetStatement('export * as x from "m";');
+        expect(statement.type).to.equal('ExportNamedDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
+        expect(statement.specifiers[0].type).to.equal('ExportNamespaceSpecifier');
+        expect(statement.specifiers[0].exported.type).to.equal('Identifier');
+        expect(statement.specifiers[0].exported.name).to.equal('x');
         expect(statement.source.type).to.equal('Literal');
         expect(statement.source.value).to.equal('m');
     });
