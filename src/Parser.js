@@ -32,11 +32,13 @@ import {buildTokenList, buildElementTree} from './elementTree';
  * @property {Boolean} 'es7.trailingFunctionCommas'
  */
 
+// https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
 const DIRECTIVE_APPLE_INSTRUMENTATION = {
     type: 'AppleInstrumentationDirective',
     regexp: /^#([^\n]+)/gm
 };
 
+// https://www.chromium.org/developers/web-development-style-guide
 const DIRECTIVE_GRIT = {
     type: 'GritDirective',
     regexp: /^\s*<(\/?\s*(?:if|include)(?!\w)[^]*?)>/gim
