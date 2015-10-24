@@ -376,8 +376,8 @@ export default class ElementAssert {
      */
     skipNonCode() {
         while (true) {
-            let {isWhitespace, isComment} = this._currentElement || {};
-            if (!isWhitespace && !isComment) {
+            let {isCode} = this._currentElement || {};
+            if (isCode !== false) {
                 break;
             }
             this.moveNext();
@@ -389,8 +389,8 @@ export default class ElementAssert {
      */
     skipSameLineNonCode() {
         while (true) {
-            let {isWhitespace, isComment} = this._currentElement || {};
-            if (!isWhitespace && !isComment) {
+            let {isCode} = this._currentElement || {};
+            if (isCode !== false) {
                 break;
             }
 

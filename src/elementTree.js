@@ -224,12 +224,7 @@ function processToken(token, source) {
         token.type = 'RegularExpression';
         token.value = token.value.value;
     } else if (type === 'CommentLine') {
-        if (token.start === 0 && source.indexOf('#!') === 0) {
-            token.type = 'Hashbang';
-            token.sourceCode = '#!' + token.value;
-        } else {
-            token.sourceCode = '//' + token.value;
-        }
+        token.sourceCode = '//' + token.value;
     } else if (type === 'CommentBlock') {
         token.sourceCode = '/*' + token.value + '*/';
     } else if (type === tt.eof) {

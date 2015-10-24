@@ -32,6 +32,16 @@ import {buildTokenList, buildElementTree} from './elementTree';
  * @property {Boolean} 'es7.trailingFunctionCommas'
  */
 
+const DIRECTIVE_APPLE_INSTRUMENTATION = {
+    type: 'AppleInstrumentationDirective',
+    regexp: /^#([^\n]+)/gm
+};
+
+const DIRECTIVE_GRIT = {
+    type: 'GritDirective',
+    regexp: /^\s*<(\/?\s*(?:if|include)(?!\w)[^]*?)>/gim
+};
+
 /**
  * CST Parser.
  */
@@ -105,8 +115,32 @@ export default class Parser {
     }
 
     _parseAst(code) {
-        var options = this._options;
-        var languageExtensions = options.languageExtensions;
+        let options = this._options;
+        let languageExtensions = options.languageExtensions;
+        let directiveInstances = {};
+        let hasDirectives = false;
+        let directiveTypes = [];
+
+        if (languageExtensions.appleInstrumentationDirectives) {
+            directiveTypes.push(DIRECTIVE_APPLE_INSTRUMENTATION);
+        }
+
+        if (languageExtensions.gritDirectives) {
+            directiveTypes.push(DIRECTIVE_GRIT);
+        }
+
+        for (let directive of directiveTypes) {
+            code = code.replace(directive.regexp, function(str, value, pos) {
+                hasDirectives = true;
+                directiveInstances[pos] = {
+                    type: directive.type, value
+                };
+
+                // Cut 4 characters to save correct line/column info for surrounding code
+                return '/*' + str.slice(4) + '*/';
+            });
+        }
+
         let ast = parse(code, {
             sourceType: options.sourceType,
             strictMode: options.strictMode,
@@ -118,8 +152,26 @@ export default class Parser {
                 flow: languageExtensions.flow
             }
         });
+
         let program = ast.program;
         program.tokens = ast.tokens;
+
+        if (hasDirectives) {
+            for (let token of program.tokens) {
+                let directiveInstance = directiveInstances[token.start];
+                if (directiveInstances[token.start]) {
+                    token.type = directiveInstance.type;
+                    token.value = directiveInstance.value;
+                }
+            }
+        }
+
+        if (options.allowHashBang) {
+            if (code.substr(0, 2) === '#!') {
+                program.tokens[0].type = 'Hashbang';
+            }
+        }
+
         return program;
     }
 
