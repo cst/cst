@@ -24,7 +24,7 @@
     "postpublish": "rm -Rf lib"
   },
   "devDependencies": {
-    "babel": "5.8.23",
+    "babel": "5.8.29",
     "benchmark": "^1.0.0",
     "chai": "^3.0.0",
     "chalk": "^1.0.0",
@@ -35,6 +35,6 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "babylon": "^5.8.23"
+    "babylon": "^5.8.29"
   }
 }
