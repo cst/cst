@@ -1,6 +1,9 @@
 {
 	"validateIndentation": 4,
-	"maximumLineLength": 120,
+	"maximumLineLength": {
+        "value": 120,
+        "allExcept": ["urlComments"]
+    },
     "esnext": true,
 	"jsDoc": {
         // "checkAnnotations": "jsdoc3", See https://github.com/jscs-dev/jscs-jsdoc/issues/118

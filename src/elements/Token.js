@@ -35,15 +35,24 @@ export default class Token extends Element {
 
         let isComment = false;
         let isWhitespace = false;
+        let isCode = true;
         switch (type) {
             case 'CommentLine':
                 isComment = true;
+                isCode = false;
                 break;
             case 'CommentBlock':
                 isComment = true;
+                isCode = false;
                 break;
             case 'Whitespace':
                 isWhitespace = true;
+                isCode = false;
+                break;
+            case 'AppleInstrumentationDirective':
+            case 'GritDirective':
+            case 'Hashbang':
+                isCode = false;
                 break;
         }
         this._value = value;
@@ -52,6 +61,7 @@ export default class Token extends Element {
         this._sourceCodeLines = getLines(_sourceCode);
         this._isComment = isComment;
         this._isWhitespace = isWhitespace;
+        this._isCode = isCode;
     }
 
     get firstToken() {
@@ -68,6 +78,10 @@ export default class Token extends Element {
 
     get isComment() {
         return this._isComment;
+    }
+
+    get isCode() {
+        return this._isCode;
     }
 
     get isWhitespace() {

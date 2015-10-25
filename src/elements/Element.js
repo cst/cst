@@ -62,6 +62,15 @@ export default class Element {
     }
 
     /**
+     * True if Element is a code Token.
+     *
+     * @returns {Boolean}
+     */
+    get isCode() {
+        return true;
+    }
+
+    /**
      * True if Element is a comment Token.
      *
      * @returns {Boolean}
@@ -218,7 +227,7 @@ export default class Element {
      */
     get nextCodeToken() {
         let token = this.nextToken;
-        while (token && (token.isWhitespace || token.isComment)) {
+        while (token && !token.isCode) {
             token = token.nextToken;
         }
         return token;
@@ -231,7 +240,7 @@ export default class Element {
      */
     get previousCodeToken() {
         let token = this.previousToken;
-        while (token && (token.isWhitespace || token.isComment)) {
+        while (token && !token.isCode) {
             token = token.previousToken;
         }
         return token;
