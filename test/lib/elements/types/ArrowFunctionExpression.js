@@ -91,4 +91,10 @@ describe('ArrowFunctionExpression', () => {
         expect(expression.params[0].type).to.equal('ObjectPattern');
         expect(expression.generator).to.equal(false);
     });
+
+    it('should support async', () => {
+        var expression = parseAndGetExpression('(async ({x}) => (1))');
+        expect(expression.type).to.equal('ArrowFunctionExpression');
+        expect(expression.async).to.equal(true);
+    });
 });

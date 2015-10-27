@@ -8,6 +8,13 @@ export default class ArrowFunctionExpression extends Expression {
 
     _acceptChildren(children) {
         let params = [];
+        let async = false;
+
+        if (children.isToken('Identifier', 'async')) {
+            async = true;
+            children.passToken('Identifier', 'async');
+            children.skipNonCode();
+        }
 
         if (children.isToken('Punctuator', '(')) {
             params = getFunctionParams(children);
@@ -32,9 +39,14 @@ export default class ArrowFunctionExpression extends Expression {
 
         children.assertEnd();
 
+        this._async = async;
         this._params = params;
         this._body = body;
         this._expression = expression;
+    }
+
+    get async() {
+        return this._async;
     }
 
     get params() {
