@@ -1,8 +1,14 @@
+/* @flow */
+
+import type Token from '../Token';
+import type Node from '../Node';
+import type Element from '../Element';
 import Statement from '../Statement';
 import ElementSearchIndex from './utils/ElementSearchIndex';
+import ElementAssert from '../ElementAssert';
 
 export default class Program extends Statement {
-    constructor(childNodes) {
+    constructor(childNodes: Array<any>) {
         super('Program', childNodes);
 
         this._isProgram = true;
@@ -10,7 +16,11 @@ export default class Program extends Statement {
         this._searchIndex.addElements(childNodes);
     }
 
-    _acceptChildren(children) {
+    _searchIndex: ElementSearchIndex;
+    _body: Array<any>;
+    _isProgram: boolean;
+
+    _acceptChildren(children: ElementAssert) {
         if (children.isToken('Hashbang')) {
             children.passToken();
         }
@@ -35,7 +45,7 @@ export default class Program extends Statement {
      * @param {String} type
      * @returns {Node[]}
      */
-    selectNodesByType(type) {
+    selectNodesByType(type: string): Array<Node> {
         return this._searchIndex.selectNodesByType(type);
     }
 
@@ -45,19 +55,19 @@ export default class Program extends Statement {
      * @param {String} type
      * @returns {Token[]}
      */
-    selectTokensByType(type) {
+    selectTokensByType(type: string): Array<Token> {
         return this._searchIndex.selectTokensByType(type);
     }
 
-    _addElementsToSearchIndex(elements) {
+    _addElementsToSearchIndex(elements: Array<Element>) {
         this._searchIndex.addElements(elements);
     }
 
-    _removeElementsFromSearchIndex(elements) {
+    _removeElementsFromSearchIndex(elements: Array<Element>) {
         this._searchIndex.removeElements(elements);
     }
 
-    get body() {
+    get body(): Array<any> {
         return this._body.concat();
     }
 }

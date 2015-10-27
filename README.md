@@ -41,34 +41,75 @@ The CST for this example:
 
 `Element` is the base class for `Node` and `Token`.
 
-Provides traversing properties:
+```js
+declare class Element {
+  // traversal for children
+  childElements: Array<Element>;
+  // direct child count
+  childCount: number;
+  // traversal for parent
+  parentElement: ?Element;
+  // traversing between siblings
+  nextSibling: ?Element;
+  previousSibling: ?Element;
 
-* `childElements: Element[]`, `parentElement: Element|null`: child/parent traversing.
-* `nextSibling: Element|null`, `previousSibling: Element|null`: traversing between siblings.
-* `nextToken: Token|null`, `previousToken: Token|null`: traversing to next/previous token.
-* `firstToken: Token|null`, `lastToken: Token|null`: traversing to first/last tokens (not only direct tokens).
-* `firstChild: Token|null`, `lastChild: Token|null`: traversing to first/last direct child.
+  // Code properties
+  type: string;
+  sourceCode: string;
+  sourceCodeLength: number;
+  isToken: boolean;
+  isNode: boolean;
+  isExpression: boolean;
+  isStatement: boolean;
+  isWhitespace: boolean;
+  isFragment: boolean;
+  isFragment: boolean;
+  isModuleDeclaration: boolean;
+  isModuleSpecifier: boolean;
 
-Code-related properties:
+  // Mutation methods
 
-* `sourceCode`: generates and returns JavaScript code of the specified `Element`
-* `sourceCodeLength`: returns JavaScript code length
-* `isToken`, `isNode`, `isExpression`, `isStatement`, `isWhitespace`, `isComment`, `isPattern`, `isAssignable`,
-  `isFragment`, `isModuleDeclaration`, `isModuleSpecifier` : code entity flags.
+  // appends child to the end of the `Element`
+  appendChild(newElement: Element): void;
+  // prepends child to the end of the `Element`
+  prependChild(newElement: Element): void;
+  // inserts child before `referenceChild`
+  insertChildBefore(newElement: Element, referenceChild: Element): void;
+  // replaces specified child interval (from `firstChildRef` to lastChildRef`) with specified child.
+  replaceChildren(newElement: Element, firstRefChild: Element, lastRefChild: Element): void;
 
-Provides mutation methods:
+  // Location properties
+  range(): Range;
+  loc(): Location;
+} 
 
-* `appendChild(element)`: appends child to the end of the `Element`
-* `prependChild(element)`: prepends child to the end of the `Element`
-* `insertChildBefore(element, referenceChild)`: inserts child before `referenceChild`
-* `replaceChildren(element, firstChildRef, lastChildRef)`: replaces specified child interval (from `firstChildRef` to
-  `lastChildRef`) with specified child.
+declare class Token extends Element {
+  // traversing next/previous token
+  nextToken: ?Token;
+  previousToken: ?Token;
+  // traversing to first/last tokens (not only direct tokens)
+  firstToken: ?Token;
+  lastToken: ?Token; 
+  // traversing to first/last direct child
+  firstChild: ?Token;
+  lastChild: ?Token;
+}
 
-Location properties:
+type Range = [
+    start: number;
+    end: number;
+];
 
-* `range: [Number, Number]`: calculates and returns `Element` range.
-* `loc: {start: {line: Number, column: Number}, end: {line: Number, column: Number}}`: calculates and returns
-  `Element` location.
+type Position = {
+  line: number,
+  column: number
+};
+
+type Location = {
+  start: Position,
+  end: Position
+};
+```
 
 ### Node
 

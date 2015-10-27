@@ -1,12 +1,16 @@
+import type Element from './Element';
+
 /**
  * Element assertion class.
  * Used in specific Node types to check children for syntax correctness.
+ *
+ * @flow
  */
 export default class ElementAssert {
     /**
      * @param {Element[]} elements
      */
-    constructor(elements) {
+    constructor(elements: Array<Element>) {
         this._elements = elements;
         this._currentElement = null;
 
@@ -15,12 +19,16 @@ export default class ElementAssert {
         }
     }
 
+    _elements: Array<Element>;
+    _currentElement: ?Element;
+    _position: number;
+
     /**
      * True if end of child list was reached.
      *
      * @returns {Boolean}
      */
-    get isEnd() {
+    get isEnd(): boolean {
         return this._currentElement === null;
     }
 
@@ -29,7 +37,7 @@ export default class ElementAssert {
      *
      * @returns {Element|null}
      */
-    get currentElement() {
+    get currentElement(): ?Element {
         return this._currentElement;
     }
 
@@ -40,7 +48,7 @@ export default class ElementAssert {
      * @param {String} [tokenType]
      * @param {String|Object} [tokenValue] if object is given, checks if value of token exists as object key.
      */
-    assertToken(tokenType, tokenValue) {
+    assertToken(tokenType: string, tokenValue: string | Object) {
         let {isToken, type, value} = this._currentElement || {};
 
         if (!isToken) {
@@ -68,7 +76,7 @@ export default class ElementAssert {
      *
      * @param {String} nodeType
      */
-    assertNode(nodeType) {
+    assertNode(nodeType: string) {
         let {isNode, type} = this._currentElement || {};
 
         if (!isNode) {
@@ -171,7 +179,7 @@ export default class ElementAssert {
      * @param {String|Object} [tokenValue] if object is given, checks if value of token exists as object key.
      * @returns {Boolean}
      */
-    isToken(tokenType, tokenValue) {
+    isToken(tokenType: string, tokenValue: string | Object): boolean {
         let {isToken, type, value} = this._currentElement || {};
 
         if (!isToken || (arguments.length > 0 && type !== tokenType)) {
@@ -195,7 +203,7 @@ export default class ElementAssert {
      * @param {String} [nodeType]
      * @returns {Boolean}
      */
-    isNode(nodeType) {
+    isNode(nodeType: string): boolean {
         let {isNode, type} = this._currentElement || {};
 
         return !(!isNode || (arguments.length > 0 && type !== nodeType));
@@ -206,7 +214,7 @@ export default class ElementAssert {
      *
      * @returns {Boolean}
      */
-    isStatement() {
+    isStatement(): boolean {
         let {isStatement} = this._currentElement || {};
 
         return isStatement;
@@ -220,7 +228,7 @@ export default class ElementAssert {
      * @param {String|Object} [tokenValue]
      * @returns {Element}
      */
-    passToken(tokenType, tokenValue) {
+    passToken(tokenType: string, tokenValue?: string | Object): Element {
         this.assertToken.apply(this, arguments);
         let token = this._currentElement;
         this.moveNext();
@@ -234,7 +242,7 @@ export default class ElementAssert {
      * @param {String} [nodeType]
      * @returns {Element}
      */
-    passNode(nodeType) {
+    passNode(nodeType: string): Element {
         this.assertNode.apply(this, arguments);
         let node = this._currentElement;
         this.moveNext();
@@ -262,7 +270,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passExpression() {
+    passExpression(): Element {
         return this._passExpressionInParens(expression => expression.isExpression);
     }
 
@@ -273,7 +281,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passExpressionOrSuper() {
+    passExpressionOrSuper(): Element {
         return this._passExpressionInParens(expression => expression.isExpression || expression.type === 'Super');
     }
 
@@ -284,7 +292,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passExpressionOrSpreadElement() {
+    passExpressionOrSpreadElement(): Element {
         return this._passExpressionInParens(
             expression => expression.isExpression || expression.type === 'SpreadElement');
     }
@@ -296,7 +304,7 @@ export default class ElementAssert {
      * @returns {Element}
      * @private
      */
-    _passExpressionInParens(assertCallback) {
+    _passExpressionInParens(assertCallback: Function): Element {
         let openParens = 0;
 
         while (this._currentElement.type === 'Punctuator' && this._currentElement.value === '(') {
@@ -328,7 +336,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passAssignable() {
+    passAssignable(): Element {
         return this._passExpressionInParens(expression => expression.isAssignable);
     }
 
@@ -338,7 +346,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passStatement() {
+    passStatement(): Element {
         this.assertStatement();
         let result = this._currentElement;
         this.moveNext();
@@ -351,7 +359,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passPattern() {
+    passPattern(): Element {
         this.assertPattern();
         let result = this._currentElement;
         this.moveNext();
@@ -364,7 +372,7 @@ export default class ElementAssert {
      *
      * @returns {Element}
      */
-    passModuleSpecifier() {
+    passModuleSpecifier(): Element {
         this.assertModuleSpecifier();
         let result = this._currentElement;
         this.moveNext();
@@ -424,7 +432,7 @@ export default class ElementAssert {
      * @param {Number} position
      * @private
      */
-    _navigate(position) {
+    _navigate(position: number) {
         this._position = position;
         this._currentElement = this._elements[position] || null;
     }

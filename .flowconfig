@@ -1,0 +1,12 @@
+[ignore]
+.*/node_modules/.*
+
+[include]
+
+[libs]
+interfaces/
+
+[options]
+unsafe.enable_getters_and_setters=true
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
+suppress_comment= \\(.\\|\n\\)*\\$FlowIssue
