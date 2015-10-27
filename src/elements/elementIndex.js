@@ -19,7 +19,9 @@ import DoWhileStatement from './types/DoWhileStatement';
 import EmptyStatement from './types/EmptyStatement';
 import ExportAllDeclaration from './types/ExportAllDeclaration';
 import ExportDefaultDeclaration from './types/ExportDefaultDeclaration';
+import ExportDefaultSpecifier from './types/ExportDefaultSpecifier';
 import ExportNamedDeclaration from './types/ExportNamedDeclaration';
+import ExportNamespaceSpecifier from './types/ExportNamespaceSpecifier';
 import ExportSpecifier from './types/ExportSpecifier';
 import ExpressionStatement from './types/ExpressionStatement';
 import ForInStatement from './types/ForInStatement';
@@ -98,7 +100,9 @@ export default {
     EmptyStatement,
     ExportAllDeclaration,
     ExportDefaultDeclaration,
+    ExportDefaultSpecifier,
     ExportNamedDeclaration,
+    ExportNamespaceSpecifier,
     ExportSpecifier,
     ExpressionStatement,
     ForInStatement,
