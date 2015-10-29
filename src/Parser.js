@@ -50,7 +50,7 @@ const DIRECTIVE_GRIT = {
 };
 
 // checking for the options passed to the babel parse method
-type CSTParserOptions = {
+export type CSTParserOptions = {
   sourceType: 'script' | 'module',
   // allowReturnOutsideFunction: boolean,
   // allowImportExportEverywhere: boolean,
@@ -69,7 +69,7 @@ export default class Parser {
     /**
      * @param {CSTParserOptions} options
      */
-    constructor(options: CSTParserOptions) {
+    constructor(options?: CSTParserOptions) {
         this._options = {
             sourceType: 'module',
             strictMode: true,

@@ -1,10 +1,11 @@
+/* @flow */
+
 import type Element from './Element';
 
 /**
  * Element assertion class.
  * Used in specific Node types to check children for syntax correctness.
  *
- * @flow
  */
 export default class ElementAssert {
     /**
@@ -20,7 +21,7 @@ export default class ElementAssert {
     }
 
     _elements: Array<Element>;
-    _currentElement: ?Element;
+    _currentElement: Element;
     _position: number;
 
     /**
@@ -48,7 +49,7 @@ export default class ElementAssert {
      * @param {String} [tokenType]
      * @param {String|Object} [tokenValue] if object is given, checks if value of token exists as object key.
      */
-    assertToken(tokenType: string, tokenValue: string | Object) {
+    assertToken(tokenType: string, tokenValue: string | Object): void {
         let {isToken, type, value} = this._currentElement || {};
 
         if (!isToken) {
@@ -76,7 +77,7 @@ export default class ElementAssert {
      *
      * @param {String} nodeType
      */
-    assertNode(nodeType: string) {
+    assertNode(nodeType: string): void {
         let {isNode, type} = this._currentElement || {};
 
         if (!isNode) {
@@ -94,7 +95,7 @@ export default class ElementAssert {
      *
      * @param {Array} nodeTypes
      */
-    assertOneOfNode(nodeTypes) {
+    assertOneOfNode(nodeTypes: Array<string>): void {
         let {isNode, type} = this._currentElement || {};
 
         if (!isNode) {
@@ -109,7 +110,7 @@ export default class ElementAssert {
     /**
      * Asserts that the current element is an expression.
      */
-    assertExpression() {
+    assertExpression(): void {
         let {isExpression, type} = this._currentElement || {};
 
         if (!isExpression) {
@@ -120,7 +121,7 @@ export default class ElementAssert {
     /**
      * Asserts that the current element is an assignment.
      */
-    assertAssignable() {
+    assertAssignable(): void {
         let {isAssignable, type} = this._currentElement || {};
 
         if (!isAssignable) {
@@ -131,7 +132,7 @@ export default class ElementAssert {
     /**
      * Asserts that the current element is a pattern.
      */
-    assertPattern() {
+    assertPattern(): void {
         let {isPattern, type} = this._currentElement || {};
 
         if (!isPattern) {
@@ -142,7 +143,7 @@ export default class ElementAssert {
     /**
      * Asserts that the current element is a statement.
      */
-    assertStatement() {
+    assertStatement(): void {
         let {isStatement, type} = this._currentElement || {};
 
         if (!isStatement) {
@@ -153,7 +154,7 @@ export default class ElementAssert {
     /**
      * Asserts that the current element is a statement.
      */
-    assertModuleSpecifier() {
+    assertModuleSpecifier(): void {
         let {isModuleSpecifier, type} = this._currentElement || {};
 
         if (!isModuleSpecifier) {
@@ -164,7 +165,7 @@ export default class ElementAssert {
     /**
      * Asserts that the end of child list was reached.
      */
-    assertEnd() {
+    assertEnd(): void {
         if (this._currentElement !== null) {
             let {type} = this._currentElement;
             throw new Error(`Expected end of node list but "${type}" found`);
@@ -179,7 +180,7 @@ export default class ElementAssert {
      * @param {String|Object} [tokenValue] if object is given, checks if value of token exists as object key.
      * @returns {Boolean}
      */
-    isToken(tokenType: string, tokenValue: string | Object): boolean {
+    isToken(tokenType: string, tokenValue?: string | Object): boolean {
         let {isToken, type, value} = this._currentElement || {};
 
         if (!isToken || (arguments.length > 0 && type !== tokenType)) {
@@ -256,7 +257,7 @@ export default class ElementAssert {
      * @param {Array} [nodeTypes]
      * @returns {Element}
      */
-    passOneOfNode(nodeTypes) {
+    passOneOfNode(nodeTypes: Array<string>): Element {
         this.assertOneOfNode(nodeTypes);
         let node = this._currentElement;
         this.moveNext();

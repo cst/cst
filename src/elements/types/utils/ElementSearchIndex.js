@@ -1,18 +1,27 @@
+/* @flow */
+
+import type Element from '../../Element';
+import type Node from '../../Node';
+import type Token from '../../Token';
+
 export default class ElementSearchIndex {
     constructor() {
         this._nodeIndex = new ElementIndexByType();
         this._tokenIndex = new ElementIndexByType();
     }
 
-    selectNodesByType(type) {
+    _nodeIndex: ElementIndexByType;
+    _tokenIndex: ElementIndexByType;
+
+    selectNodesByType(type: string): Array<Node> {
         return this._nodeIndex.select(type);
     }
 
-    selectTokensByType(type) {
+    selectTokensByType(type: string): Array<Token> {
         return this._tokenIndex.select(type);
     }
 
-    addElements(elements) {
+    addElements(elements: Array<Element>): void {
         let nodeIndex = this._nodeIndex;
         let tokenIndex = this._tokenIndex;
 
@@ -34,7 +43,7 @@ export default class ElementSearchIndex {
         }
     }
 
-    removeElements(elements) {
+    removeElements(elements: Array<Element>): void {
         let nodeIndex = this._nodeIndex;
         let tokenIndex = this._tokenIndex;
 
@@ -62,7 +71,9 @@ class ElementIndexByType {
         this._index = {};
     }
 
-    select(type) {
+    _index: Object;
+
+    select(type: string): Array<any> {
         let items = this._index[type];
         if (items) {
             return items.concat();
@@ -71,7 +82,7 @@ class ElementIndexByType {
         }
     }
 
-    addElement(element) {
+    addElement(element: Element): void {
         let items = this._index[element._type];
         if (!items) {
             items = this._index[element._type] = [];
@@ -79,7 +90,7 @@ class ElementIndexByType {
         items[items.length] = element;
     }
 
-    removeElement(element) {
+    removeElement(element: Element): void {
         let items = this._index[element._type];
         items.splice(items.indexOf(element), 1);
     }
