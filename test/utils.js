@@ -1,47 +1,52 @@
+/* @flow */
+
+import type {CSTParserOptions} from '../src/Parser';
+import type Element from '../src/elements/Element';
+import type Program from '../src/elements/types/Program';
 import Parser from '../src/Parser';
 
-export function parseAndGetProgram(code, options) {
+export function parseAndGetProgram(code: string, options: CSTParserOptions): Program {
     var parser = new Parser(options);
     return parser.parse(code);
 }
 
-export function parseAndGetStatement(code, options) {
+export function parseAndGetStatement(code: string, options: CSTParserOptions): Object {
     var parser = new Parser(options);
     var program = parser.parse(code);
     return program.body[0];
 }
 
-export function parseAndGetExpression(code, options) {
+export function parseAndGetExpression(code: string, options: CSTParserOptions): Object {
     var parser = new Parser(options);
     var program = parser.parse('(' + code + ')');
     return program.body[0].expression;
 }
 
-export function parseAndGetExpressionInFunction(code, options) {
+export function parseAndGetExpressionInFunction(code: string, options: CSTParserOptions): Object {
     var parser = new Parser(options);
     var program = parser.parse('(function(){(' + code + ')})');
     return program.body[0].expression.body.body[0].expression;
 }
 
-export function parseAndGetPattern(code) {
+export function parseAndGetPattern(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`(${code} = 1)`);
     return program.body[0].expression.left;
 }
 
-export function parseAndGetObjectProperty(code) {
+export function parseAndGetObjectProperty(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`({${code}})`);
     return program.body[0].expression.properties[0];
 }
 
-export function parseAndGetClassMember(code) {
+export function parseAndGetClassMember(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`(class{${code}})`);
     return program.body[0].expression.body.body[0];
 }
 
-export function parseAndGetStatementInLoop(code, loopLabel) {
+export function parseAndGetStatementInLoop(code: string, loopLabel: string): Object {
     var parser = new Parser();
     if (loopLabel) {
         let program = parser.parse(`${loopLabel}: while(true){${code}}`);
@@ -52,37 +57,37 @@ export function parseAndGetStatementInLoop(code, loopLabel) {
     }
 }
 
-export function parseAndGetStatementInFunction(code) {
+export function parseAndGetStatementInFunction(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`function _name(){${code}}`);
     return program.body[0].body.body[0];
 }
 
-export function parseAndGetStatementInFunctionParams(code) {
+export function parseAndGetStatementInFunctionParams(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`function _name(${code}){}`);
     return program.body[0].params;
 }
 
-export function parseAndGetExpressionInGenerator(code) {
+export function parseAndGetExpressionInGenerator(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`function * _name(){(${code});}`);
     return program.body[0].body.body[0].expression;
 }
 
-export function parseAndGetExpressionInAsyncFunction(code) {
+export function parseAndGetExpressionInAsyncFunction(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`async function _name(){(${code});}`);
     return program.body[0].body.body[0].expression;
 }
 
-export function parseAndGetStatementInVariableDeclarator(code) {
+export function parseAndGetStatementInVariableDeclarator(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`var ${code};`);
     return program.body[0].declarations[0];
 }
 
-export function assertChildren(element, children) {
+export function assertChildren(element: Element, children: Array<Element>): void {
     if (element.childCount !== children.length) {
         throw new Error('Invalid child count');
     }
@@ -98,7 +103,7 @@ export function assertChildren(element, children) {
     }
 }
 
-export function validateStructure(element) {
+export function validateStructure(element: Element): void {
     let childElements = element.childElements;
     if (childElements.length !== element.childCount) {
         throw new Error('Inconsistend child count');

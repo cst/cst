@@ -3,9 +3,9 @@
 import type Token from '../Token';
 import type Node from '../Node';
 import type Element from '../Element';
+import type ElementAssert from '../ElementAssert';
 import Statement from '../Statement';
 import ElementSearchIndex from './utils/ElementSearchIndex';
-import ElementAssert from '../ElementAssert';
 
 export default class Program extends Statement {
     constructor(childNodes: Array<any>) {
@@ -22,7 +22,7 @@ export default class Program extends Statement {
 
     _acceptChildren(children: ElementAssert) {
         if (children.isToken('Hashbang')) {
-            children.passToken();
+            children.passToken('Hashbang');
         }
 
         children.skipNonCode();

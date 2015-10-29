@@ -1,10 +1,15 @@
+/* @flow */
+
+import type ElementAssert from '../../ElementAssert';
+import type Element from '../../Element';
+
 /**
  * Processes function parameters.
  *
  * @param {ElementAssert} children
  * @returns {Pattern[]}
  */
-export default function getFunctionParams(children) {
+export default function getFunctionParams(children: ElementAssert): Array<Element> {
     let params = [];
     children.passToken('Punctuator', '(');
     children.skipNonCode();
