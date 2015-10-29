@@ -3,6 +3,10 @@ export default {
     // -- Implement later
     // I  Implemented
     // T  Tested
+
+    // babel 6.0
+    /*IT*/ RestProperty: ['argument'],
+
     /*IT*/ AssignmentExpression: ['left', 'right'],
     /*IT*/ AssignmentPattern: ['left', 'right'],
     /*IT*/ ArrayExpression: ['elements'],

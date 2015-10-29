@@ -42,13 +42,92 @@ type ElementTreeItemState = {
     pos: number
 };
 
+function babelKeysToESTree(ast: Object) {
+    if (t.isNumericLiteral() ||
+        t.isStringLiteral()) {
+        node.type = 'Literal';
+        if (!node.raw) {
+            node.raw = node.extra && node.extra.raw;
+        }
+    }
+
+    if (t.isBooleanLiteral()) {
+        node.type = 'Literal';
+        node.raw = String(node.value);
+    }
+
+    if (t.isNullLiteral()) {
+        node.type = 'Literal';
+        node.raw = 'null';
+        node.value = null;
+    }
+
+    if (t.isRegExpLiteral()) {
+        node.type = 'Literal';
+        node.raw = node.extra.raw;
+        node.value = new RegExp(node.raw);
+        node.regex = {
+            pattern: node.pattern,
+            flags: node.flags
+        };
+        delete node.extra;
+        delete node.pattern;
+        delete node.flags;
+    }
+
+    if (t.isObjectProperty()) {
+        node.type = 'Property';
+        node.kind = 'init';
+    }
+
+    if (t.isClassMethod() || t.isObjectMethod()) {
+        node.value = {
+            type: 'FunctionExpression',
+            id: node.id,
+            params: node.params,
+            body: node.body,
+            generator: node.generator,
+            expression: node.expression,
+            range: [node.body.range[0] - 3, node.body.range[1]],
+            loc: {
+                start: {
+                    line: node.body.loc.start.line,
+                    column: node.body.loc.start.column - 3
+                },
+                end: node.body.loc.end
+            },
+            returnType: node.returnType,
+            typeParameters: node.typeParameters
+        };
+
+        delete node.body;
+        delete node.id;
+        delete node.generator;
+        delete node.expression;
+        delete node.params;
+        delete node.returnType;
+        delete node.typeParameters;
+
+        if (t.isClassMethod()) {
+            node.type = 'MethodDefinition';
+        }
+
+        if (t.isObjectMethod()) {
+            node.type = 'Property';
+            node.kind = 'init';
+        }
+    }
+}
+
 /**
  * @param {Object} ast
  * @param {{tokens: Array, token: Object, pos: Number}} state
  * @returns {Element}
  */
 function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Element {
-    var elementType = ast.type;
+    babelKeysToESTree(ast);
+
+    let elementType = ast.type;
     let childProps = visitorKeys[elementType];
 
     if (!childProps) {
