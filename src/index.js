@@ -1,4 +1,5 @@
 export {default as Parser} from './Parser';
+export {default as visitorKeys} from './visitorKeys';
 
 export {default as Element} from './elements/Element';
 export {default as Node} from './elements/Node';
