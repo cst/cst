@@ -29,11 +29,14 @@ export function buildElementTree(ast: Object, tokens: Array<BabylonToken>): Prog
     var firstToken = tokens[0];
     ast.start = firstToken.start;
     ast.end = tokens[tokens.length - 1].end;
-    return ((buildElementTreeItem(ast, {
+    const program = ((buildElementTreeItem(ast, {
         tokens,
         token: firstToken,
         pos: 0
     }): any): Program);
+
+    program.tokens = tokens;
+    return program;
 }
 
 type ElementTreeItemState = {
