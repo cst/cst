@@ -19,6 +19,7 @@
     "lint": "npm run lint:jscs",
     "lint:jscs": "jscs src test",
     "build": "babel src -d lib",
+    "build-watch": "babel src -d lib --watch",
     "precommit": "npm test",
     "release": "npm run build && npm publish",
     "postpublish": "rm -Rf lib"
