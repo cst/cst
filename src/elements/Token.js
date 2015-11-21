@@ -138,10 +138,10 @@ export default class Token extends Element {
 
 function valueToSourceCode(type: string, value: any): string {
     switch (type) {
-        case 'LineComment':
+        case 'CommentLine':
             return '//' + value;
 
-        case 'BlockComment':
+        case 'CommentBlock':
             return '/*' + value + '*/';
 
         case 'String':
