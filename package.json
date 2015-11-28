@@ -3,6 +3,13 @@
   "version": "0.0.14",
   "description": "JavaScript CST Implementation",
   "author": "Marat Dulin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cst/cst"
+  },
+  "bugs": {
+    "url": "https://github.com/cst/cst/issues"
+  },
   "contributors": [
     {
       "name": "Henry Zhu",
@@ -28,7 +35,6 @@
     "benchmark": "^1.0.0",
     "chai": "^3.0.0",
     "chalk": "^1.0.0",
-    "esprima-fb": "15001.1001.0-dev-harmony-fb",
     "husky": "^0.8.1",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",

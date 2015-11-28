@@ -12,7 +12,6 @@ export default class CatchClause extends Node {
         children.passToken('Punctuator', '(');
         children.skipNonCode();
 
-        // TODO: Using `esprima-fb` we have expressions... why?
         let param = children.passExpression();
         children.skipNonCode();
 

@@ -32,7 +32,7 @@ function test(testName, cases) {
 let availableTypes = Object.keys(elementIndex);
 
 (() => {
-    const code = readFileSync(__dirname + '/../../node_modules/esprima-fb/esprima.js', 'utf8');
+    const code = readFileSync(__dirname + '/../../node_modules/jshint/src/jshint.js', 'utf8');
     let parser = new Parser();
     test('CST building costs', {
         'Parse (babel)': function() {
