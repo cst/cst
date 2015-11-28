@@ -80,42 +80,52 @@ function babelKeysToESTree(ast: Object) {
         node.kind = 'init';
     }
 
-    if (t.isClassMethod() || t.isObjectMethod()) {
+    if (path.isClassMethod() || path.isObjectMethod()) {
         node.value = {
             type: 'FunctionExpression',
             id: node.id,
             params: node.params,
             body: node.body,
+            async: node.async,
             generator: node.generator,
             expression: node.expression,
-            range: [node.body.range[0] - 3, node.body.range[1]],
             loc: {
                 start: {
-                    line: node.body.loc.start.line,
-                    column: node.body.loc.start.column - 3
+                    line: node.key.loc.start.line,
+                    column: node.key.loc.end.column // a[() {]
                 },
                 end: node.body.loc.end
-            },
-            returnType: node.returnType,
-            typeParameters: node.typeParameters
+            }
         };
+
+        // [asdf]() {
+        node.value.range = [node.key.range[1], node.body.range[1]];
+
+        if (node.returnType) {
+            node.value.returnType = node.returnType;
+        }
+
+        if (node.typeParameters) {
+            node.value.typeParameters = node.typeParameters;
+        }
+
+        if (path.isClassMethod()) {
+            node.type = 'MethodDefinition';
+        }
+
+        if (path.isObjectMethod()) {
+            node.type = 'Property';
+            node.kind = 'init';
+        }
 
         delete node.body;
         delete node.id;
+        delete node.async;
         delete node.generator;
         delete node.expression;
         delete node.params;
         delete node.returnType;
         delete node.typeParameters;
-
-        if (t.isClassMethod()) {
-            node.type = 'MethodDefinition';
-        }
-
-        if (t.isObjectMethod()) {
-            node.type = 'Property';
-            node.kind = 'init';
-        }
     }
 }
 

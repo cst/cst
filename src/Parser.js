@@ -10,9 +10,9 @@ import {buildTokenList, buildElementTree} from './elementTree';
 /**
  * @typedef {Object} CSTParserOptions
  * @property {String} sourceType Type of parsed code: "module" or "script".
- * @property {Boolean} strictMode
- * @property {Boolean} allowHashBang
- * @property {Number} ecmaVersion
+ * @property {Boolean} allowReturnOutsideFunction
+ * @property {Boolean} allowImportExportEverywhere
+ * @property {Boolean} allowSuperOutsideMethod
  * @property {CSTParserLanguageExtensionsOptions} languageExtensions
  */
 
@@ -31,13 +31,11 @@ const DIRECTIVE_GRIT = {
 // checking for the options passed to the babel parse method
 export type CSTParserOptions = {
   sourceType: 'script' | 'module',
-  // allowReturnOutsideFunction: boolean,
-  // allowImportExportEverywhere: boolean,
+  allowReturnOutsideFunction: boolean,
+  allowImportExportEverywhere: boolean,
+  allowSuperOutsideMethod: boolean,
   languageExtensions: Array<string>,
-  strictMode: ?boolean,
-
-  allowHashBang: boolean,
-  ecmaVersion: number
+  strictMode: ?boolean
 };
 
 /**
@@ -51,8 +49,9 @@ export default class Parser {
         this._options = {
             sourceType: 'module',
             strictMode: true,
-            allowHashBang: true,
-            ecmaVersion: Infinity,
+            allowImportExportEverywhere: false,
+            allowReturnOutsideFunction: true,
+            allowSuperOutsideMethod: true,
             languageExtensions: [
                 'flow',
                 'jsx',
@@ -65,6 +64,7 @@ export default class Parser {
                 'exponentiationOperator',
                 'exportExtensions',
                 'functionBind',
+                'functionSent',
                 'objectRestSpread',
                 'trailingFunctionCommas'
             ]
