@@ -21,6 +21,10 @@ export default class Traversal {
         return this._tokenIndex.select(type);
     }
 
+    selectTokensByValue(value: string): Array<Token> {
+        return this._tokenIndex.values(value);
+    }
+
     addElements(elements: Array<Element>): void {
         let nodeIndex = this._nodeIndex;
         let tokenIndex = this._tokenIndex;
@@ -80,6 +84,21 @@ class ElementIndexByType {
         } else {
             return [];
         }
+    }
+
+    values(value: string): Array<any> {
+        let result = [];
+        console.log(this._index);
+
+        for (let type in this._index) {
+            this._index[type].forEach(token => {
+                if (token.value === value) {
+                    result.push(token);
+                }
+            });
+        }
+
+        return result;
     }
 
     addElement(element: Element): void {
