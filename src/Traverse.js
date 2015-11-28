@@ -1,10 +1,10 @@
 /* @flow */
 
-import type Element from '../../Element';
-import type Node from '../../Node';
-import type Token from '../../Token';
+import type Element from './elements/Element';
+import type Node from './elements/Node';
+import type Token from './elements/Token';
 
-export default class ElementSearchIndex {
+export default class Traversal {
     constructor() {
         this._nodeIndex = new ElementIndexByType();
         this._tokenIndex = new ElementIndexByType();
