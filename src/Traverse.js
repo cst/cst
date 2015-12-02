@@ -4,7 +4,7 @@ import type Element from './elements/Element';
 import type Node from './elements/Node';
 import type Token from './elements/Token';
 
-export default class Traversal {
+export default class Traverse {
     constructor() {
         this._nodeIndex = new ElementIndexByType();
         this._tokenIndex = new ElementIndexByType();
@@ -88,7 +88,6 @@ class ElementIndexByType {
 
     values(value: string): Array<any> {
         let result = [];
-        console.log(this._index);
 
         for (let type in this._index) {
             this._index[type].forEach(token => {
