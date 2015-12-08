@@ -1,6 +1,7 @@
 /* @flow */
 
 import * as babylon from 'babylon';
+import * as t from 'babel-types';
 
 import type Program from './elements/types/Program';
 import type Location from './elements/Element';
@@ -42,27 +43,27 @@ type ElementTreeItemState = {
     pos: number
 };
 
-function babelKeysToESTree(ast: Object) {
-    if (t.isNumericLiteral() ||
-        t.isStringLiteral()) {
+function babelKeysToESTree(node: Object) {
+    if (t.isNumericLiteral(node) ||
+        t.isStringLiteral(node)) {
         node.type = 'Literal';
         if (!node.raw) {
             node.raw = node.extra && node.extra.raw;
         }
     }
 
-    if (t.isBooleanLiteral()) {
+    if (t.isBooleanLiteral(node)) {
         node.type = 'Literal';
         node.raw = String(node.value);
     }
 
-    if (t.isNullLiteral()) {
+    if (t.isNullLiteral(node)) {
         node.type = 'Literal';
         node.raw = 'null';
         node.value = null;
     }
 
-    if (t.isRegExpLiteral()) {
+    if (t.isRegExpLiteral(node)) {
         node.type = 'Literal';
         node.raw = node.extra.raw;
         node.value = new RegExp(node.raw);
@@ -75,12 +76,12 @@ function babelKeysToESTree(ast: Object) {
         delete node.flags;
     }
 
-    if (t.isObjectProperty()) {
+    if (t.isObjectProperty(node)) {
         node.type = 'Property';
         node.kind = 'init';
     }
 
-    if (path.isClassMethod() || path.isObjectMethod()) {
+    if (t.isClassMethod(node) || t.isObjectMethod(node)) {
         node.value = {
             type: 'FunctionExpression',
             id: node.id,
@@ -109,11 +110,11 @@ function babelKeysToESTree(ast: Object) {
             node.value.typeParameters = node.typeParameters;
         }
 
-        if (path.isClassMethod()) {
+        if (t.isClassMethod(node)) {
             node.type = 'MethodDefinition';
         }
 
-        if (path.isObjectMethod()) {
+        if (t.isObjectMethod(node)) {
             node.type = 'Property';
             node.kind = 'init';
         }

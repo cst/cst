@@ -40,6 +40,7 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
+    "babel-types": "^6.3.14",
     "babylon": "^6.0.2"
   }
 }
