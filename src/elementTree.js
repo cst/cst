@@ -1,6 +1,7 @@
 /* @flow */
 
 import * as babylon from 'babylon';
+import * as t from 'babel-types';
 
 import type Program from './elements/types/Program';
 import type Location from './elements/Element';
@@ -42,13 +43,102 @@ type ElementTreeItemState = {
     pos: number
 };
 
+function babelKeysToESTree(node: Object) {
+    if (t.isNumericLiteral(node) ||
+        t.isStringLiteral(node)) {
+        node.type = 'Literal';
+        if (!node.raw) {
+            node.raw = node.extra && node.extra.raw;
+        }
+    }
+
+    if (t.isBooleanLiteral(node)) {
+        node.type = 'Literal';
+        node.raw = String(node.value);
+    }
+
+    if (t.isNullLiteral(node)) {
+        node.type = 'Literal';
+        node.raw = 'null';
+        node.value = null;
+    }
+
+    if (t.isRegExpLiteral(node)) {
+        node.type = 'Literal';
+        node.raw = node.extra.raw;
+        node.value = new RegExp(node.raw);
+        node.regex = {
+            pattern: node.pattern,
+            flags: node.flags
+        };
+        delete node.extra;
+        delete node.pattern;
+        delete node.flags;
+    }
+
+    if (t.isObjectProperty(node)) {
+        node.type = 'Property';
+        node.kind = 'init';
+    }
+
+    if (t.isClassMethod(node) || t.isObjectMethod(node)) {
+        node.value = {
+            type: 'FunctionExpression',
+            id: node.id,
+            params: node.params,
+            body: node.body,
+            async: node.async,
+            generator: node.generator,
+            expression: node.expression,
+            loc: {
+                start: {
+                    line: node.key.loc.start.line,
+                    column: node.key.loc.end.column // a[() {]
+                },
+                end: node.body.loc.end
+            }
+        };
+
+        // [asdf]() {
+        node.value.range = [node.key.range[1], node.body.range[1]];
+
+        if (node.returnType) {
+            node.value.returnType = node.returnType;
+        }
+
+        if (node.typeParameters) {
+            node.value.typeParameters = node.typeParameters;
+        }
+
+        if (t.isClassMethod(node)) {
+            node.type = 'MethodDefinition';
+        }
+
+        if (t.isObjectMethod(node)) {
+            node.type = 'Property';
+            node.kind = 'init';
+        }
+
+        delete node.body;
+        delete node.id;
+        delete node.async;
+        delete node.generator;
+        delete node.expression;
+        delete node.params;
+        delete node.returnType;
+        delete node.typeParameters;
+    }
+}
+
 /**
  * @param {Object} ast
  * @param {{tokens: Array, token: Object, pos: Number}} state
  * @returns {Element}
  */
 function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Element {
-    var elementType = ast.type;
+    babelKeysToESTree(ast);
+
+    let elementType = ast.type;
     let childProps = visitorKeys[elementType];
 
     if (!childProps) {

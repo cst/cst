@@ -3,8 +3,7 @@ type babylonOptions = {
   sourceType: 'script' | 'module',
   // allowReturnOutsideFunction: boolean,
   // allowImportExportEverywhere: boolean,
-  plugins: Object,
-  features: Object,
+  plugins: Array<string>,
   strictMode: ?boolean,
 
   allowHashBang: boolean,

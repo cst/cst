@@ -10,31 +10,10 @@ import {buildTokenList, buildElementTree} from './elementTree';
 /**
  * @typedef {Object} CSTParserOptions
  * @property {String} sourceType Type of parsed code: "module" or "script".
- * @property {Boolean} strictMode
- * @property {Boolean} allowHashBang
- * @property {Number} ecmaVersion
- * @property {CSTParserExperimentalFeatureOptions} experimentalFeatures
+ * @property {Boolean} allowReturnOutsideFunction
+ * @property {Boolean} allowImportExportEverywhere
+ * @property {Boolean} allowSuperOutsideMethod
  * @property {CSTParserLanguageExtensionsOptions} languageExtensions
- */
-
-/**
- * @typedef {Object} CSTParserLanguageExtensionsOptions
- * @property {Boolean} jsx
- * @property {Boolean} flow
- */
-
-/**
- * @typedef {Object} CSTParserExperimentalFeatureOptions
- * @property {Boolean} 'es7.asyncFunctions'
- * @property {Boolean} 'es7.classProperties'
- * @property {Boolean} 'es7.comprehensions'
- * @property {Boolean} 'es7.decorators'
- * @property {Boolean} 'es7.doExpressions'
- * @property {Boolean} 'es7.exponentiationOperator'
- * @property {Boolean} 'es7.exportExtensions'
- * @property {Boolean} 'es7.functionBind'
- * @property {Boolean} 'es7.objectRestSpread'
- * @property {Boolean} 'es7.trailingFunctionCommas'
  */
 
 // https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
@@ -52,14 +31,11 @@ const DIRECTIVE_GRIT = {
 // checking for the options passed to the babel parse method
 export type CSTParserOptions = {
   sourceType: 'script' | 'module',
-  // allowReturnOutsideFunction: boolean,
-  // allowImportExportEverywhere: boolean,
-  languageExtensions: Object,
-  experimentalFeatures: Object,
-  strictMode: ?boolean,
-
-  allowHashBang: boolean,
-  ecmaVersion: number
+  allowReturnOutsideFunction: boolean,
+  allowImportExportEverywhere: boolean,
+  allowSuperOutsideMethod: boolean,
+  languageExtensions: Array<string>,
+  strictMode: ?boolean
 };
 
 /**
@@ -73,24 +49,25 @@ export default class Parser {
         this._options = {
             sourceType: 'module',
             strictMode: true,
-            allowHashBang: true,
-            ecmaVersion: Infinity,
-            experimentalFeatures: {
-                'es7.asyncFunctions': true,
-                'es7.classProperties': true,
-                'es7.comprehensions': true,
-                'es7.decorators': true,
-                'es7.doExpressions': true,
-                'es7.exponentiationOperator': true,
-                'es7.exportExtensions': true,
-                'es7.functionBind': true,
-                'es7.objectRestSpread': true,
-                'es7.trailingFunctionCommas': true
-            },
-            languageExtensions: {
-                jsx: true,
-                flow: true
-            }
+            allowImportExportEverywhere: false,
+            allowReturnOutsideFunction: true,
+            allowSuperOutsideMethod: true,
+            languageExtensions: [
+                'flow',
+                'jsx',
+                'asyncFunctions',
+                'asyncGenerators',
+                'classConstructorCall',
+                'classProperties',
+                'decorators',
+                'doExpressions',
+                'exponentiationOperator',
+                'exportExtensions',
+                'functionBind',
+                'functionSent',
+                'objectRestSpread',
+                'trailingFunctionCommas'
+            ]
         };
 
         if (options) {
@@ -112,21 +89,12 @@ export default class Parser {
      */
     setOptions(newOptions: CSTParserOptions) {
         var currentOptions = this._options;
-        var currentExperimentalFeatures = currentOptions.experimentalFeatures;
         var currentLanguageExtensions = currentOptions.languageExtensions;
-        var newExperimentalFeatures = newOptions.experimentalFeatures;
         var newLanguageExtensions = newOptions.languageExtensions;
         this._options = {
             ...currentOptions,
             ...newOptions,
-            experimentalFeatures: {
-                ...currentExperimentalFeatures,
-                ...newExperimentalFeatures
-            },
-            languageExtensions: {
-                ...currentLanguageExtensions,
-                ...newLanguageExtensions
-            }
+            languageExtensions: currentLanguageExtensions.concat(newLanguageExtensions)
         };
     }
 
@@ -143,11 +111,11 @@ export default class Parser {
         let hasDirectives = false;
         let directiveTypes = [];
 
-        if (languageExtensions.appleInstrumentationDirectives) {
+        if (languageExtensions.indexOf('appleInstrumentationDirectives') >= 0) {
             directiveTypes.push(DIRECTIVE_APPLE_INSTRUMENTATION);
         }
 
-        if (languageExtensions.gritDirectives) {
+        if (languageExtensions.indexOf('gritDirectives') >= 0) {
             directiveTypes.push(DIRECTIVE_GRIT);
         }
 
@@ -168,11 +136,7 @@ export default class Parser {
             strictMode: options.strictMode,
             ecmaVersion: options.ecmaVersion,
             allowHashBang: options.allowHashBang,
-            features: options.experimentalFeatures,
-            plugins: {
-                jsx: languageExtensions.jsx,
-                flow: languageExtensions.flow
-            }
+            plugins: languageExtensions
         });
 
         let program = ast.program;

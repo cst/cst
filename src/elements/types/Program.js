@@ -7,7 +7,7 @@ import type ElementAssert from '../ElementAssert';
 import Statement from '../Statement';
 import ElementSearchIndex from './utils/ElementSearchIndex';
 
-export default class Program extends Statement {
+class Program extends Statement {
     constructor(childNodes: Array<any>) {
         super('Program', childNodes);
 
@@ -71,3 +71,5 @@ export default class Program extends Statement {
         return this._body.concat();
     }
 }
+
+export default Program;

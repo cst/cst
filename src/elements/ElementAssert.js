@@ -181,9 +181,9 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isToken(tokenType: string, tokenValue?: string | Object): boolean {
-        let {isToken, type, value} = this._currentElement || {};
+        let {isToken: isToken2, type, value} = this._currentElement || {};
 
-        if (!isToken || (arguments.length > 0 && type !== tokenType)) {
+        if (!isToken2 || (arguments.length > 0 && type !== tokenType)) {
             return false;
         }
 
@@ -205,9 +205,9 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isNode(nodeType: string): boolean {
-        let {isNode, type} = this._currentElement || {};
+        let {isNode: isNode2, type} = this._currentElement || {};
 
-        return !(!isNode || (arguments.length > 0 && type !== nodeType));
+        return !(!isNode2 || (arguments.length > 0 && type !== nodeType));
     }
 
     /**
@@ -216,9 +216,9 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isStatement(): boolean {
-        let {isStatement} = this._currentElement || {};
+        let {isStatement: isStatement2} = this._currentElement || {};
 
-        return isStatement;
+        return isStatement2;
     }
 
     /**
