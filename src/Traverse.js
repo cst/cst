@@ -21,8 +21,16 @@ export default class Traverse {
         return this._tokenIndex.select(type);
     }
 
-    selectTokensByValue(value: string): Array<Token> {
-        return this._tokenIndex.values(value);
+    selectTokensByTypeAndValue(type: string, value: string): Array<Token> {
+        let tokens = this._tokenIndex.select(type);
+
+        if (value) {
+            return tokens.filter(function(token) {
+                return token.value === value;
+            });
+        }
+
+        return tokens;
     }
 
     addElements(elements: Array<Element>): void {
@@ -84,20 +92,6 @@ class ElementIndexByType {
         } else {
             return [];
         }
-    }
-
-    values(value: string): Array<any> {
-        let result = [];
-
-        for (let type in this._index) {
-            this._index[type].forEach(token => {
-                if (token.value === value) {
-                    result.push(token);
-                }
-            });
-        }
-
-        return result;
     }
 
     addElement(element: Element): void {
