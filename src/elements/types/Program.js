@@ -5,18 +5,18 @@ import type Node from '../Node';
 import type Element from '../Element';
 import type ElementAssert from '../ElementAssert';
 import Statement from '../Statement';
-import ElementSearchIndex from './utils/ElementSearchIndex';
+import Traverse from '../../Traverse';
 
 export default class Program extends Statement {
     constructor(childNodes: Array<any>) {
         super('Program', childNodes);
 
         this._isProgram = true;
-        this._searchIndex = new ElementSearchIndex();
+        this._searchIndex = new Traverse();
         this._searchIndex.addElements(childNodes);
     }
 
-    _searchIndex: ElementSearchIndex;
+    _searchIndex: Traverse;
     _body: Array<any>;
     _isProgram: boolean;
 

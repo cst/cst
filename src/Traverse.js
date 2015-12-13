@@ -1,10 +1,10 @@
 /* @flow */
 
-import type Element from '../../Element';
-import type Node from '../../Node';
-import type Token from '../../Token';
+import type Element from './elements/Element';
+import type Node from './elements/Node';
+import type Token from './elements/Token';
 
-export default class ElementSearchIndex {
+export default class Traverse {
     constructor() {
         this._nodeIndex = new ElementIndexByType();
         this._tokenIndex = new ElementIndexByType();
@@ -19,6 +19,18 @@ export default class ElementSearchIndex {
 
     selectTokensByType(type: string): Array<Token> {
         return this._tokenIndex.select(type);
+    }
+
+    selectTokensByTypeAndValue(type: string, value: string): Array<Token> {
+        let tokens = this._tokenIndex.select(type);
+
+        if (value) {
+            return tokens.filter(function(token) {
+                return token.value === value;
+            });
+        }
+
+        return tokens;
     }
 
     addElements(elements: Array<Element>): void {

@@ -3,6 +3,13 @@
   "version": "0.0.15",
   "description": "JavaScript CST Implementation",
   "author": "Marat Dulin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cst/cst"
+  },
+  "bugs": {
+    "url": "https://github.com/cst/cst/issues"
+  },
   "contributors": [
     {
       "name": "Henry Zhu",
@@ -13,8 +20,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
-    "test:unit": "mocha test/utils.js test/lib test/integrated src --recursive --compilers js:babel/register",
-    "test:live": "mocha test/utils.js test/lib test/integrated src --recursive --compilers js:babel/register --watch",
+    "test:unit": "mocha",
+    "test:live": "mocha --watch",
     "test:benchmark": "babel-node test/benchmarks/benchmarks.js",
     "lint": "npm run lint:jscs",
     "lint:jscs": "jscs src test",
@@ -28,7 +35,6 @@
     "benchmark": "^1.0.0",
     "chai": "^3.0.0",
     "chalk": "^1.0.0",
-    "esprima-fb": "15001.1001.0-dev-harmony-fb",
     "husky": "^0.8.1",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",
