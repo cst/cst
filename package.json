@@ -25,6 +25,7 @@
     "test:benchmark": "babel-node test/benchmarks/benchmarks.js",
     "lint": "npm run lint:jscs",
     "lint:jscs": "jscs src test",
+    "flow": "./node_modules/.bin/flow check"
     "build": "babel src -d lib",
     "precommit": "npm test",
     "release": "npm run build && npm publish",
@@ -35,6 +36,7 @@
     "benchmark": "^1.0.0",
     "chai": "^3.0.0",
     "chalk": "^1.0.0",
+    "flow-bin": "^0.19.1",
     "husky": "^0.8.1",
     "jscs": "^2.0.0",
     "jscs-jsdoc": "^1.1.0",
