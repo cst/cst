@@ -506,6 +506,13 @@ export default class Element {
     }
 
     /**
+     * Removes element
+     */
+    remove() {
+        this.parentElement.removeChild(this);
+    }
+
+    /**
      * Appends specified element to the end of the child list.
      * Accepts multiple nodes using `Fragment`.
      *

@@ -64,6 +64,16 @@ describe('Element', () => {
         });
     });
 
+    describe('Element#remove', () => {
+        it('should remove element', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+
+            program.firstChild.remove();
+
+            expect(program.sourceCode).to.equal(' var second = 2;');
+        });
+    });
+
     describe('Element#replaceChild', () => {
         it('should replace child', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
