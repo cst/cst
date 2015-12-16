@@ -441,7 +441,7 @@ export default class Element {
         return {
             start: {
                 line: startLine,
-                column: startColumn
+                column: startColumn === 0 ? 1 : startColumn
             },
             end: {
                 line: endLine,

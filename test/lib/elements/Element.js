@@ -145,7 +145,7 @@ describe('Element', () => {
             expect(node.loc).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 1
                 },
                 'end': {
                     'line': 1,
@@ -193,7 +193,7 @@ describe('Element', () => {
             expect(node.loc).to.deep.equal({
                 'start': {
                     'line': 4,
-                    'column': 0
+                    'column': 1
                 },
                 'end': {
                     'line': 4,
@@ -241,7 +241,7 @@ describe('Element', () => {
             expect(node.loc).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 1
                 },
                 'end': {
                     'line': 4,
@@ -257,7 +257,7 @@ describe('Element', () => {
             expect(node.loc).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 1
                 },
                 'end': {
                     'line': 3,
