@@ -46,4 +46,27 @@ describe('Parser', () => {
         expect(program.childElements[4].type).to.equal('CommentBlock');
         expect(program.childElements[4].value).to.equal(' hello ');
     });
+
+    // https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
+    it('should support ios imports', () => {
+        let program = parseAndGetProgram('#import "abc.js"\n#import abc.js\nvar a = 5;', {
+            languageExtensions: {
+                appleInstrumentationDirectives: true
+            }
+        });
+
+        expect(program.childElements[0].type).to.equal('AppleInstrumentationDirective');
+        expect(program.childElements[0].value).to.equal('import "abc.js"');
+
+        expect(program.childElements[1].type).to.equal('Whitespace');
+        expect(program.childElements[1].value).to.equal('\n');
+
+        expect(program.childElements[2].type).to.equal('AppleInstrumentationDirective');
+        expect(program.childElements[2].value).to.equal('import abc.js');
+
+        expect(program.childElements[3].type).to.equal('Whitespace');
+        expect(program.childElements[3].value).to.equal('\n');
+
+        expect(program.childElements[4].type).to.equal('VariableDeclaration');
+    });
 });
