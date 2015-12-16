@@ -3,11 +3,29 @@ import Token from '../../../src/elements/Token';
 import {expect} from 'chai';
 
 describe('Element', () => {
-    it('should get previous token', () => {
-        let program = parseAndGetProgram('var first = 1; var second = 2;');
-        let secondVar = program.selectTokensByType('Keyword')[1];
+    describe('Traversing', () => {
+        let program;
+        let firstVar;
+        let secondVar;
 
-        expect(secondVar.previousToken.previousToken.sourceCode).to.equal(';');
+        beforeEach(() => {
+            program = parseAndGetProgram('var\nfirst = 1; var second = 2;');
+            firstVar = program.selectTokensByType('Keyword')[0];
+            secondVar = program.selectTokensByType('Keyword')[1];
+        });
+
+        it('should get previous token', () => {
+            expect(secondVar.previousToken.previousToken.sourceCode).to.equal(';');
+        });
+
+        it('should get next whitespace token', () => {
+            expect(firstVar.nextWhitespaceToken.sourceCode).to.equal('\n');
+        });
+
+        it('should get previous whitespace token', () => {
+            let identifier = firstVar.nextNonWhitespaceToken;
+            expect(identifier.previousWhitespaceToken.sourceCode).to.equal('\n');
+        });
     });
 
     describe('Element#removeChild', () => {

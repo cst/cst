@@ -216,7 +216,7 @@ export default class Element {
     }
 
     /**
-     * Next token. Null if token was not foung.
+     * Next token. Null if token was not found.
      *
      * @returns {Element|null}
      */
@@ -233,7 +233,7 @@ export default class Element {
     }
 
     /**
-     * Previous token. Null if token was not foung.
+     * Previous token. Null if token was not found.
      *
      * @returns {Element|null}
      */
@@ -250,7 +250,7 @@ export default class Element {
     }
 
     /**
-     * Next token (non-whitespace and non-comment). Null if token was not foung.
+     * Next token (non-whitespace and non-comment). Null if token was not found.
      *
      * @returns {Element|null}
      */
@@ -263,7 +263,7 @@ export default class Element {
     }
 
     /**
-     * Previous token (non-whitespace and non-comment). Null if token was not foung.
+     * Previous token (non-whitespace and non-comment). Null if token was not found.
      *
      * @returns {Element|null}
      */
@@ -276,7 +276,7 @@ export default class Element {
     }
 
     /**
-     * Next non-whitespace token. Null if token was not foung.
+     * Next non-whitespace token. Null if token was not found.
      *
      * @returns {Element|null}
      */
@@ -289,13 +289,40 @@ export default class Element {
     }
 
     /**
-     * Previous non-whitespace token. Null if token was not foung.
+     * Previous non-whitespace token. Null if token was not found.
      *
      * @returns {Element|null}
      */
     get previousNonWhitespaceToken(): ?Element {
         let token = this.previousToken;
         while (token && token.isWhitespace) {
+            token = token.previousToken;
+        }
+        return token;
+    }
+
+    /**
+     * Next whitespace token. Null if token was not found.
+     *
+     * @returns {Element|null}
+     */
+    get nextWhitespaceToken(): ?Element {
+        let token = this.nextToken;
+        while (token && !(token.isWhitespace)) {
+            token = token.nextToken;
+        }
+        return token;
+    }
+
+    /**
+     * Previous whitespace token. Null if token was not found.
+     *
+     * @returns {Element|null}
+     */
+    get previousWhitespaceToken(): ?Element {
+        let token = this.previousToken;
+
+        while (token && !(token.isWhitespace)) {
             token = token.previousToken;
         }
         return token;
