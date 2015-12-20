@@ -9,6 +9,12 @@ describe('Parser', () => {
         expect(program.firstToken.sourceCode).to.equal('#!/usr/bin/env node');
     });
 
+    it.skip('should handle simple newlines', () => {
+        expect(() => {
+            parseAndGetProgram('function foo(){ return\n; }')
+        }).to.not.throw();
+    });
+
     // https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
     it('should support apple instrumentation directives', () => {
         let program = parseAndGetProgram('#import "1.js"\n#import "2.js"\n/* hello */', {
