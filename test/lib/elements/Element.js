@@ -265,5 +265,25 @@ describe('Element', () => {
                 }
             });
         });
+
+        it('should return loc property for apple pragmas', () => {
+            var program = parseAndGetProgram('#!/usr/bin/env node', {
+                languageExtensions: {
+                    appleInstrumentationDirectives: true
+                }
+            });
+            var node = program.firstToken;
+
+            expect(node.loc).to.deep.equal({
+                'start': {
+                    'line': 1,
+                    'column': 0
+                },
+                'end': {
+                    'line': 1,
+                    'column': 19
+                }
+            });
+        });
     });
 });
