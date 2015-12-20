@@ -276,6 +276,17 @@ export default class ElementAssert {
     }
 
     /**
+     * Checks if current element is an expression or whitespace
+     * returns current element and move pointer to the next element.
+     * Ignores parentheses.
+     *
+     * @returns {Element}
+     */
+    passExpressionOrWhitespace(): Element {
+        return this._passExpressionInParens(expression => expression.isExpression || expression.isWhitespace);
+    }
+
+    /**
      * Checks if current element is an expression or super,
      * returns current element and move pointer to the next element.
      * Ignores parentheses.

@@ -17,7 +17,7 @@ export default class ReturnStatement extends Statement {
             if (children.isToken('Punctuator', ';')) {
                 children.passToken();
             } else {
-                argument = children.passExpression();
+                argument = children.passExpressionOrWhitespace();
                 children.skipNonCode();
                 children.skipSemicolon();
             }

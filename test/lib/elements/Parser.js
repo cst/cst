@@ -9,9 +9,9 @@ describe('Parser', () => {
         expect(program.firstToken.sourceCode).to.equal('#!/usr/bin/env node');
     });
 
-    it.skip('should handle simple newlines', () => {
+    it('should handle simple newlines', () => {
         expect(() => {
-            parseAndGetProgram('function foo(){ return\n; }')
+            parseAndGetProgram('function foo(){ return\n; }');
         }).to.not.throw();
     });
 
