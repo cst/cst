@@ -15,6 +15,7 @@ export default class Property extends Node {
         let value;
         let shorthand = false;
         let method = false;
+        let computed = false;
         let kind;
 
         if (children.isToken('Identifier', getterAndSetter)) {
@@ -28,6 +29,7 @@ export default class Property extends Node {
             value = children.passNode('FunctionExpression');
         } else {
             kind = 'init';
+            computed = children.isToken('Punctuator', '[');
             key = readKey(children);
 
             if (children.isEnd && key.type === 'Identifier') {
@@ -39,6 +41,7 @@ export default class Property extends Node {
                     method = true;
                     value = children.passNode('FunctionExpression');
                 } else {
+
                     children.passToken('Punctuator', ':');
                     children.skipNonCode();
                     value = children.passExpression();
@@ -52,6 +55,7 @@ export default class Property extends Node {
         this._key = key;
         this._value = value;
         this._shorthand = shorthand;
+        this._computed = computed;
         this._method = method;
     }
 
@@ -73,6 +77,10 @@ export default class Property extends Node {
 
     get method() {
         return this._method;
+    }
+
+    get computed() {
+        return this._computed;
     }
 }
 

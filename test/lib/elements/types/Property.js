@@ -13,6 +13,7 @@ describe('Property', () => {
         expect(property.value.type).to.equal('Identifier');
         expect(property.value.name).to.equal('y');
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
         expect(property.method).to.equal(false);
         expect(property.kind).to.equal('init');
     });
@@ -27,6 +28,7 @@ describe('Property', () => {
         expect(property.value.type).to.equal('Identifier');
         expect(property.value.name).to.equal('y');
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(true);
         expect(property.method).to.equal(false);
         expect(property.kind).to.equal('init');
     });
@@ -38,6 +40,7 @@ describe('Property', () => {
         expect(property.value.type).to.equal('Identifier');
         expect(property.value.name).to.equal('x');
         expect(property.shorthand).to.equal(true);
+        expect(property.computed).to.equal(false);
         expect(property.kind).to.equal('init');
     });
 
@@ -50,6 +53,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('get');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
     });
 
     it('should accept getters with calculated name', () => {
@@ -64,6 +68,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('get');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
     });
 
     it('should accept setters', () => {
@@ -76,6 +81,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('set');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
     });
 
     it('should accept setters with calculated name', () => {
@@ -91,6 +97,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('set');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
     });
 
     it('should accept methods', () => {
@@ -105,6 +112,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('init');
         expect(property.method).to.equal(true);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
     });
 
     it('should accept methods with calculated name', () => {
@@ -122,5 +130,12 @@ describe('Property', () => {
         expect(property.kind).to.equal('init');
         expect(property.method).to.equal(true);
         expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(true);
+    });
+
+    it('should have `computed` property', () => {
+        let property = parseAndGetObjectProperty('[key]: 1');
+
+        expect(property.computed).to.equal(true);
     });
 });
