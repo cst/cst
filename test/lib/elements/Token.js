@@ -1,5 +1,5 @@
 import {parseAndGetProgram} from '../../utils';
-import Token from '/Users/arkel/Workspace/cst/src/elements/Token.js';
+import Token from '../../../src/elements/Token.js';
 
 import {expect} from 'chai';
 
