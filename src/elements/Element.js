@@ -512,8 +512,10 @@ export default class Element {
      * Removes specified element from the element child list.
      *
      * @param {Element} element
+     *
+     * @returns {Element}
      */
-    removeChild(element: Element) {
+    removeChild(element: Element): Element {
         if (element._parentElement !== this) {
             throw new Error('The element to be removed is not a child of this element.');
         }
@@ -530,13 +532,21 @@ export default class Element {
         }
 
         element._parentElement = null;
+
+        return element;
     }
 
     /**
      * Removes element
+     *
+     * @returns {Element}
      */
     remove() {
-        this.parentElement.removeChild(this);
+        if (!this.parentElement) {
+            return this;
+        }
+
+        return this.parentElement.removeChild(this);
     }
 
     /**

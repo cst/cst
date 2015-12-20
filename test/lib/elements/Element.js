@@ -37,6 +37,13 @@ describe('Element', () => {
             expect(program.sourceCode).to.equal(' var second = 2;');
         });
 
+        it('should return removed child', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+            var child = program.firstChild;
+
+            expect(program.removeChild(program.firstChild)).to.equal(child);
+        });
+
         it('should remove child through parent', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
 
@@ -89,6 +96,21 @@ describe('Element', () => {
             program.firstChild.remove();
 
             expect(program.sourceCode).to.equal(' var second = 2;');
+        });
+
+        it('should return removed element', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+            var child = program.firstChild;
+
+            expect(child.remove()).to.equal(child);
+        });
+
+        it('should be a noop for parentless element', () => {
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+
+            expect(() => {
+                parseAndGetProgram('function foo(){ return\n; }').remove().remove();
+            }).to.not.throw();
         });
 
         it.skip('should remove semi-colon', () => {
