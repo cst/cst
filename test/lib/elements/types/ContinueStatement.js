@@ -25,4 +25,9 @@ describe('ContinueStatement', () => {
         var statement = parseAndGetStatementInLoop('continue');
         expect(statement.type).to.equal('ContinueStatement');
     });
+
+    it('should work with newline', () => {
+        var statement = parseAndGetStatementInLoop('continue\n;');
+        expect(statement.type).to.equal('ContinueStatement');
+    });
 });
