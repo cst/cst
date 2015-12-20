@@ -90,6 +90,14 @@ describe('Element', () => {
 
             expect(program.sourceCode).to.equal(' var second = 2;');
         });
+
+        it.skip('should remove semi-colon', () => {
+            let program = parseAndGetProgram('d();');
+
+            program.lastToken.previousToken.remove();
+
+            expect(program.sourceCode).to.equal('d()');
+        });
     });
 
     describe('Element#replaceChild', () => {
