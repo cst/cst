@@ -144,9 +144,6 @@ function valueToSourceCode(type: string, value: any): string {
         case 'CommentBlock':
             return '/*' + value + '*/';
 
-        case 'String':
-            return JSON.stringify(value);
-
         case 'RegularExpression':
             return String(value);
 
