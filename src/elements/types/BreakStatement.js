@@ -15,11 +15,17 @@ export default class BreakStatement extends Statement {
         let label = null;
         if (!children.isEnd) {
             children.skipSameLineNonCode();
-            if (children.isToken('Punctuator', ';')) {
-                children.passToken();
-            } else {
+
+            if (children.isNode('Identifier')) {
                 label = children.passNode('Identifier');
                 children.skipNonCode();
+                children.skipSemicolon();
+
+            } else if (children.isToken('Punctuator', ';')) {
+                children.passToken();
+
+            } else {
+                children.passToken();
                 children.skipSemicolon();
             }
         }

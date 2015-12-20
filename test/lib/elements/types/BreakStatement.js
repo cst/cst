@@ -25,4 +25,9 @@ describe('BreakStatement', () => {
         var statement = parseAndGetStatementInLoop('break');
         expect(statement.type).to.equal('BreakStatement');
     });
+
+    it('should work with new line', () => {
+        var statement = parseAndGetStatementInLoop('break\n;');
+        expect(statement.type).to.equal('BreakStatement');
+    });
 });
