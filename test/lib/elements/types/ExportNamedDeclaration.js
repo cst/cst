@@ -119,6 +119,11 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.source.value).to.equal('m');
     });
 
+    it('should not throw if there is no semicolon at the end', () => {
+        var statement = parseAndGetStatement('export { foo as default }');
+        expect(statement.type).to.equal('ExportNamedDeclaration');
+    });
+
     it('should not accept trailing whitespace', () => {
         var statement = parseAndGetStatement('export var a;');
         expect(() => {

@@ -45,7 +45,7 @@ export default class ExportNamedDeclaration extends ModuleDeclaration {
                     children.skipNonCode();
                     children.passToken('Punctuator', ';');
                 }
-            } else {
+            } else if (!children.isEnd) {
                 children.passToken('Punctuator', ';');
             }
         }
