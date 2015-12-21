@@ -138,4 +138,18 @@ describe('Property', () => {
 
         expect(property.computed).to.equal(true);
     });
+
+    it('should handle generator property', () => {
+        let property = parseAndGetObjectProperty('* foo() {} ');
+
+        expect(property.key.type).to.equal('Identifier');
+        expect(property.key.name).to.equal('foo');
+        expect(property.kind).to.equal('init');
+        expect(property.method).to.equal(true);
+        expect(property.shorthand).to.equal(false);
+        expect(property.computed).to.equal(false);
+
+        expect(property.value.type).to.equal('FunctionExpression');
+        // expect(property.value.generator).to.equal(true); See (#86)
+    });
 });

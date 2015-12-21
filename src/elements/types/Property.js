@@ -28,6 +28,11 @@ export default class Property extends Node {
 
             value = children.passNode('FunctionExpression');
         } else {
+            if (children.isToken('Punctuator', '*')) {
+                children.passToken();
+                children.skipNonCode();
+            }
+
             kind = 'init';
             computed = children.isToken('Punctuator', '[');
             key = readKey(children);
