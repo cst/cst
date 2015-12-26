@@ -109,7 +109,8 @@ describe('Element', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
 
             expect(() => {
-                parseAndGetProgram('function foo(){ return\n; }').remove().remove();
+                program.remove();
+                program.remove();
             }).to.not.throw();
         });
 

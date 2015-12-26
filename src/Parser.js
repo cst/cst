@@ -6,6 +6,7 @@ import type {BabylonToken} from './elementTree';
 import type Program from './elements/types/Program';
 import type Token from './elements/Token';
 import {buildTokenList, buildElementTree} from './elementTree';
+import type BasePlugin from './plugins/BasePlugin';
 
 /**
  * @typedef {Object} CSTParserOptions
@@ -51,15 +52,15 @@ const DIRECTIVE_GRIT = {
 
 // checking for the options passed to the babel parse method
 export type CSTParserOptions = {
-  sourceType: 'script' | 'module',
-  // allowReturnOutsideFunction: boolean,
-  // allowImportExportEverywhere: boolean,
-  languageExtensions: Object,
-  experimentalFeatures: Object,
-  strictMode: ?boolean,
-
-  allowHashBang: boolean,
-  ecmaVersion: number
+    sourceType: 'script' | 'module',
+    // allowReturnOutsideFunction: boolean,
+    // allowImportExportEverywhere: boolean,
+    languageExtensions: Object,
+    experimentalFeatures: Object,
+    strictMode: ?boolean,
+    allowHashBang: boolean,
+    ecmaVersion: number,
+    plugins: BasePlugin[]
 };
 
 /**
@@ -90,7 +91,8 @@ export default class Parser {
             languageExtensions: {
                 jsx: true,
                 flow: true
-            }
+            },
+            plugins: []
         };
 
         if (options) {
@@ -133,7 +135,19 @@ export default class Parser {
     parse(code: string): Program {
         let ast = this._parseAst(code);
         let tokens = this._processTokens(ast, code);
-        return buildElementTree(ast, tokens);
+        let program = buildElementTree(ast, tokens);
+        let programPlugins = {};
+        let plugins = this._options.plugins;
+        for (let plugin of plugins) {
+            let api = plugin.getProgramApi(program);
+            if (api) {
+                programPlugins[plugin.getPluginName()] = api;
+            }
+        }
+
+        program._acceptPlugins(programPlugins);
+
+        return program;
     }
 
     _parseAst(code: string): Program {
