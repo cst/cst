@@ -795,7 +795,7 @@ export default class Element {
      * @param {Element[]} newChildren
      * @private
      */
-    _setChildren(newChildren: Array<Element>) {
+    _setChildren(newChildren: Element[]) {
         this._acceptChildren(new ElementAssert(newChildren));
 
         if (newChildren.length > 0) {
@@ -816,6 +816,7 @@ export default class Element {
                 child._nextSibling = null;
                 this._lastChild = child;
             } else {
+                previousChild._nextSibling = null;
                 this._lastChild = previousChild;
             }
         } else {

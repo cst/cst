@@ -113,7 +113,7 @@ describe('Element', () => {
             }).to.not.throw();
         });
 
-        it.skip('should remove semi-colon', () => {
+        it('should remove semi-colon', () => {
             let program = parseAndGetProgram('d();');
 
             program.lastToken.previousToken.remove();
