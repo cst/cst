@@ -12,11 +12,11 @@ export default class Program extends Statement {
         super('Program', childNodes);
 
         this._isProgram = true;
-        this._searchIndex = new Traverse();
-        this._searchIndex.addElements(childNodes);
+        this._traverse = new Traverse();
+        this._traverse.addElements(childNodes);
     }
 
-    _searchIndex: Traverse;
+    _traverse: Traverse;
     _body: Array<any>;
     _isProgram: boolean;
 
@@ -46,7 +46,7 @@ export default class Program extends Statement {
      * @returns {Node[]}
      */
     selectNodesByType(type: string): Array<Node> {
-        return this._searchIndex.selectNodesByType(type);
+        return this._traverse.selectNodesByType(type);
     }
 
     /**
@@ -56,15 +56,15 @@ export default class Program extends Statement {
      * @returns {Token[]}
      */
     selectTokensByType(type: string): Array<Token> {
-        return this._searchIndex.selectTokensByType(type);
+        return this._traverse.selectTokensByType(type);
     }
 
     _addElementsToSearchIndex(elements: Array<Element>) {
-        this._searchIndex.addElements(elements);
+        this._traverse.addElements(elements);
     }
 
     _removeElementsFromSearchIndex(elements: Array<Element>) {
-        this._searchIndex.removeElements(elements);
+        this._traverse.removeElements(elements);
     }
 
     get body(): Array<any> {
