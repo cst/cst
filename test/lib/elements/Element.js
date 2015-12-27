@@ -132,6 +132,15 @@ describe('Element', () => {
             expect(program.sourceCode).to.equal('; var second = 2;');
         });
 
+        it('should replace property', () => {
+            let program = parseAndGetProgram('({ test: 1 })');
+            let iden = program.selectTokensByType('Identifier')[0];
+
+            iden.parentElement.replaceChild(new Token('Identifier', '"t"'), iden);
+
+            expect(program.sourceCode).to.equal('({ "t": 1 })');
+        });
+
         it('should replace child with existing one', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
             let firstVar = program.selectNodesByType('VariableDeclaration')[0];
