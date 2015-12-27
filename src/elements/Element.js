@@ -422,7 +422,6 @@ export default class Element {
             if (lines.length > 1) {
                 while (prevToken) {
                     startLine += prevToken.newlineCount;
-                    // $FlowIssue: filed as https://github.com/facebook/flow/issues/973
                     prevToken = prevToken.previousToken;
                 }
                 break;
@@ -541,7 +540,7 @@ export default class Element {
      *
      * @returns {Element}
      */
-    remove() {
+    remove(): Element {
         if (!this.parentElement) {
             return this;
         }
@@ -571,7 +570,6 @@ export default class Element {
             children = this._childElements.concat(newElement);
         }
 
-        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -604,7 +602,6 @@ export default class Element {
             children = [newElement].concat(this._childElements);
         }
 
-        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -647,7 +644,6 @@ export default class Element {
             newElements = [newElement];
         }
 
-        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         if (newElements) {
@@ -702,7 +698,6 @@ export default class Element {
             newElements = [newElement];
         }
 
-        // $FlowIssue: filed as https://github.com/facebook/flow/issues/987
         this._setChildren(children);
 
         for (let i = 0; i < replacedChildren.length; i++) {

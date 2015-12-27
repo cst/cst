@@ -21,7 +21,7 @@ export default class ElementAssert {
     }
 
     _elements: Array<Element>;
-    _currentElement: Element;
+    _currentElement: ?Element;
     _position: number;
 
     /**
@@ -167,7 +167,7 @@ export default class ElementAssert {
      */
     assertEnd(): void {
         if (this._currentElement !== null) {
-            let {type} = this._currentElement;
+            let {type} = this._currentElement || {};
             throw new Error(`Expected end of node list but "${type}" found`);
         }
     }
@@ -227,9 +227,9 @@ export default class ElementAssert {
      *
      * @param {String} [tokenType]
      * @param {String|Object} [tokenValue]
-     * @returns {Element}
+     * @returns {Element|null}
      */
-    passToken(tokenType: string, tokenValue?: string | Object): Element {
+    passToken(tokenType: string, tokenValue?: string | Object): ?Element {
         this.assertToken.apply(this, arguments);
         let token = this._currentElement;
         this.moveNext();
@@ -241,9 +241,9 @@ export default class ElementAssert {
      * returns current element and move pointer to the next element.
      *
      * @param {String} [nodeType]
-     * @returns {Element}
+     * @returns {Element|null}
      */
-    passNode(nodeType: string): Element {
+    passNode(nodeType: string): ?Element {
         this.assertNode.apply(this, arguments);
         let node = this._currentElement;
         this.moveNext();
@@ -255,9 +255,9 @@ export default class ElementAssert {
      * returns current element and move pointer to the next element.
      *
      * @param {Array} [nodeTypes]
-     * @returns {Element}
+     * @returns {Element|null}
      */
-    passOneOfNode(nodeTypes: Array<string>): Element {
+    passOneOfNode(nodeTypes: Array<string>): ?Element {
         this.assertOneOfNode(nodeTypes);
         let node = this._currentElement;
         this.moveNext();
@@ -369,9 +369,9 @@ export default class ElementAssert {
      * Checks if current element is a pattern,
      * returns current element and move pointer to the next element.
      *
-     * @returns {Element}
+     * @returns {Element|null}
      */
-    passPattern(): Element {
+    passPattern(): ?Element {
         this.assertPattern();
         let result = this._currentElement;
         this.moveNext();
@@ -382,9 +382,9 @@ export default class ElementAssert {
      * Checks if current element is a module specifier,
      * returns current element and move pointer to the next element.
      *
-     * @returns {Element}
+     * @returns {Element|null}
      */
-    passModuleSpecifier(): Element {
+    passModuleSpecifier(): ?Element {
         this.assertModuleSpecifier();
         let result = this._currentElement;
         this.moveNext();
@@ -414,7 +414,7 @@ export default class ElementAssert {
                 break;
             }
 
-            if (this._currentElement.newlineCount > 0) {
+            if (this._currentElement && this._currentElement.newlineCount > 0) {
                 break;
             }
 

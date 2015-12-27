@@ -25,7 +25,7 @@
     "test:benchmark": "babel-node test/benchmarks/benchmarks.js",
     "lint": "npm run lint:jscs",
     "lint:jscs": "jscs src test",
-    "flow": "./node_modules/.bin/flow check",
+    "flow": "flow check",
     "build": "babel src -d lib",
     "precommit": "npm test",
     "release": "npm run build && npm publish",
