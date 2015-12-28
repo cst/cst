@@ -89,7 +89,7 @@ export default class Scope {
                 let varDepth = refVar._scope._depth;
                 if (varDepth === depth) {
                     if (typeOrder[variable.type] < typeOrder[refVar.type]) {
-                        refVar._transferTo(variable);
+                        refVar._transferReferences(variable);
                         removeVariableIfRequired(refVar);
                     }
                 } else if (varDepth < depth) {
@@ -140,11 +140,11 @@ export default class Scope {
                     !currentScope._isArrowFunctionScope &&
                     !currentScope._isProgramScope
                 ) {
-                    let argumentsVariable = new Variable({
+                    let functionBuiltInVariable = new Variable({
                         name, type: types.BuiltIn, scope: currentScope
                     });
-                    argumentsVariable._addReference(reference);
-                    currentScope._addVariable(argumentsVariable);
+                    functionBuiltInVariable._addReference(reference);
+                    currentScope._addVariable(functionBuiltInVariable);
                     break;
                 }
                 currentScope = currentScope._parentScope;

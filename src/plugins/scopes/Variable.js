@@ -37,12 +37,7 @@ export default class Variable {
         this._references.delete(reference);
     }
 
-    _transferTo(variable: Variable) {
-        for (let definition of this._definitions) {
-            this._definitions.delete(definition);
-            variable._definitions.add(definition);
-            definition._variable = variable;
-        }
+    _transferReferences(variable: Variable) {
         for (let reference of this._references) {
             this._references.delete(reference);
             variable._references.add(reference);

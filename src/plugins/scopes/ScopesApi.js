@@ -18,13 +18,15 @@ import MemberExpression from '../../elements/types/MemberExpression';
 import Property from '../../elements/types/Property';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
 import ThisExpression from '../../elements/types/ThisExpression';
+import CatchClause from '../../elements/types/CatchClause';
 import {types} from './Definition';
 
 const scopedBlocks = {
     'ForStatement': true,
     'ForInStatement': true,
     'ForOfStatement': true,
-    'SwitchStatement': true
+    'SwitchStatement': true,
+    'CatchClause': true
 };
 
 export default class ScopesApi {
@@ -160,6 +162,7 @@ export default class ScopesApi {
         let parentElement = node.parentElement;
 
         if (scope && parentElement) {
+            let name = node.name;
             if (parentElement instanceof Property) {
                 if (parentElement.parentElement) {
                     if (node === parentElement.key && !parentElement.shorthand) {
@@ -170,7 +173,6 @@ export default class ScopesApi {
                     }
                 }
             }
-            let name = node.name;
             let topLevelPattern = node;
             while (topLevelPattern.parentElement) {
                 if (topLevelPattern.parentElement instanceof Property) {
@@ -216,9 +218,16 @@ export default class ScopesApi {
                     }
                     return;
                 }
+                if (container instanceof CatchClause) {
+                    if (container.param === topLevelPattern) {
+                        scope._addDefinition({node, name, type: types.CatchClauseError});
+                        return;
+                    }
+                }
                 if (container instanceof AssignmentExpression) {
                     if (container.left === topLevelPattern) {
                         scope._addReference({node, name, read: container.operator !== '=', write: true});
+                        return;
                     }
                 }
                 if (container instanceof UpdateExpression) {
@@ -253,8 +262,13 @@ export default class ScopesApi {
                                 write: true
                             });
                         }
+                        return;
                     }
-                    return;
+                }
+                if (container instanceof FunctionExpression) {
+                    if (node === container.id) {
+                        return;
+                    }
                 }
                 scope._addReference({node, name, read: true, write: false});
             }

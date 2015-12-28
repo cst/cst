@@ -38,6 +38,7 @@ export const types = {
     Constant: 'Constant',
     Variable: 'Variable',
     Parameter: 'Parameter',
+    CatchClauseError: 'CatchClauseError',
     ImportBinding: 'ImportBinding',
     ImplicitGlobal: 'ImplicitGlobal',
     BuiltIn: 'BuiltIn'
@@ -49,6 +50,7 @@ export const typeOrder = {
     Variable: 0,
     ImportBinding: 1,
     Parameter: 1,
+    CatchClauseError: 1,
     BuiltIn: 2,
     ImplicitGlobal: 2
 };

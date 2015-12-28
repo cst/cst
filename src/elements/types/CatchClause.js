@@ -12,7 +12,7 @@ export default class CatchClause extends Node {
         children.passToken('Punctuator', '(');
         children.skipNonCode();
 
-        let param = children.passExpression();
+        let param = children.passPattern();
         children.skipNonCode();
 
         children.passToken('Punctuator', ')');
