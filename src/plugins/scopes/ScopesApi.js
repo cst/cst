@@ -1,7 +1,8 @@
 /* @flow */
-import type Program from '../../elements/types/Program';
 import type Element from '../../elements/Element';
 import Node from '../../elements/Node';
+import Program from '../../elements/types/Program';
+import BlockStatement from '../../elements/types/BlockStatement';
 import Identifier from '../../elements/types/Identifier';
 import Scope from './Scope';
 import FunctionExpression from '../../elements/types/FunctionExpression';
@@ -16,7 +17,15 @@ import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
 import Property from '../../elements/types/Property';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
+import ThisExpression from '../../elements/types/ThisExpression';
 import {types} from './Definition';
+
+const scopedBlocks = {
+    'ForStatement': true,
+    'ForInStatement': true,
+    'ForOfStatement': true,
+    'SwitchStatement': true
+};
 
 export default class ScopesApi {
     constructor(program: Program) {
@@ -53,92 +62,123 @@ export default class ScopesApi {
     }
 
     _addNode(node: Node) {
-        if (node.type === 'Program') {
-            this._scopesMap.set(node, new Scope({
-                node,
-                parentScope: undefined,
-                isFunctionScope: true
-            }));
-            return;
+        if (node instanceof Program) {
+            return this._addProgram(node);
         }
 
+        if (node instanceof FunctionExpression) {
+            return this._addFunctionExpression(node);
+        }
+
+        if (node instanceof FunctionDeclaration) {
+            return this._addFunctionDeclaration(node);
+        }
+
+        if (node instanceof ArrowFunctionExpression) {
+            return this._addArrowFunctionExpression(node);
+        }
+
+        if (node.type in scopedBlocks) {
+            return this._addScopedBlock(node);
+        }
+
+        if (node instanceof BlockStatement) {
+            return this._addBlockStatement(node);
+        }
+
+        if (node instanceof ThisExpression) {
+            return this._addThisExpression(node);
+        }
+
+        if (node instanceof Identifier) {
+            return this._addIdentifier(node);
+        }
+    }
+
+    _addProgram(node: Program) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: undefined,
+            isFunctionScope: true
+        }));
+    }
+
+    _addFunctionExpression(node: FunctionExpression) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isFunctionScope: true
+        }));
+    }
+
+    _addFunctionDeclaration(node: FunctionDeclaration) {
+        let parentScope = this._getParentScopeFor(node);
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope,
+            isFunctionScope: true
+        }));
+    }
+
+    _addArrowFunctionExpression(node: ArrowFunctionExpression) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isFunctionScope: true,
+            isArrowFunctionScope: true
+        }));
+    }
+
+    _addScopedBlock(node: Node) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getParentScopeFor(node)
+        }));
+    }
+
+    _addBlockStatement(node: BlockStatement) {
         let parentElement = node.parentElement;
-        let parentScope = this._getScopeFor(parentElement);
-
-        if (!parentScope || !parentElement) {
+        if (
+            parentElement &&
+            (
+                parentElement.type === 'ForStatement' ||
+                parentElement.type === 'ForInStatement' ||
+                parentElement.type === 'ForOfStatement' ||
+                parentElement.type === 'CatchClause'
+            )
+        ) {
             return;
         }
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getScopeFor(parentElement)
+        }));
+    }
 
-        switch (node.type) {
-            case 'FunctionExpression':
-                this._scopesMap.set(node, new Scope({
-                    node,
-                    parentScope,
-                    isFunctionScope: true
-                }));
-                return;
-            case 'FunctionDeclaration':
-                let functionId = node.id;
-                if (functionId instanceof Identifier) {
-                    parentScope._addDefinition({
-                        node: functionId,
-                        name: functionId.name,
-                        type: types.Variable
-                    });
-                    parentScope._addReference({
-                        node: functionId,
-                        name: functionId.name,
-                        read: false,
-                        write: true
-                    });
-                }
-                this._scopesMap.set(node, new Scope({
-                    node,
-                    parentScope,
-                    isFunctionScope: true
-                }));
-                return;
-            case 'ArrowFunctionExpression':
-                this._scopesMap.set(node, new Scope({
-                    node,
-                    parentScope,
-                    isFunctionScope: true,
-                    isArrowFunctionScope: true
-                }));
-                return;
-            case 'ForStatement':
-            case 'ForInStatement':
-            case 'ForOfStatement':
-            case 'SwitchStatement':
-                this._scopesMap.set(node, new Scope({
-                    node,
-                    parentScope
-                }));
-                return;
-            case 'BlockStatement':
-                if (
-                    parentElement &&
-                    (
-                        parentElement.type === 'ForStatement' ||
-                        parentElement.type === 'ForInStatement' ||
-                        parentElement.type === 'CatchClause'
-                    )
-                ) {
-                    return;
-                }
-                this._scopesMap.set(node, new Scope({
-                    node,
-                    parentScope
-                }));
-                return;
-        }
-
+    _addIdentifier(node: Identifier) {
         let scope = this._getScopeFor(node);
+        let parentElement = node.parentElement;
 
-        if (scope && node instanceof Identifier) {
+        if (scope && parentElement) {
+            if (parentElement instanceof Property) {
+                if (parentElement.parentElement) {
+                    if (node === parentElement.key && !parentElement.shorthand) {
+                        if (parentElement.computed) {
+                            scope._addReference({node, name, read: true, write: false});
+                        }
+                        return;
+                    }
+                }
+            }
             let name = node.name;
             let topLevelPattern = node;
             while (topLevelPattern.parentElement) {
+                if (topLevelPattern.parentElement instanceof Property) {
+                    if (topLevelPattern.parentElement.parentElement.isPattern) {
+                        topLevelPattern = topLevelPattern.parentElement.parentElement;
+                        continue;
+                    }
+                }
                 if (!topLevelPattern.parentElement.isPattern) {
                     break;
                 }
@@ -167,7 +207,7 @@ export default class ScopesApi {
                             type = types.Constant;
                         }
                         scope._addDefinition({node, name, type});
-                        let write = container.expression.init ||
+                        let write = container.init ||
                             variableDeclaration.parentElement instanceof ForOfStatement ||
                             variableDeclaration.parentElement instanceof ForInStatement;
                         if (write) {
@@ -184,6 +224,7 @@ export default class ScopesApi {
                 if (container instanceof UpdateExpression) {
                     if (container.argument === topLevelPattern) {
                         scope._addReference({node, name, read: true, write: true});
+                        return;
                     }
                 }
                 if (container instanceof MemberExpression) {
@@ -196,13 +237,43 @@ export default class ScopesApi {
                         return;
                     }
                 }
+                if (container instanceof FunctionDeclaration) {
+                    if (node === container.id) {
+                        let parentScope = this._getParentScopeFor(container);
+                        if (parentScope) {
+                            parentScope._addDefinition({
+                                node: node,
+                                name: node.name,
+                                type: types.Variable
+                            });
+                            parentScope._addReference({
+                                node: node,
+                                name: node.name,
+                                read: false,
+                                write: true
+                            });
+                        }
+                    }
+                    return;
+                }
                 scope._addReference({node, name, read: true, write: false});
             }
         }
     }
 
+    _addThisExpression(node: ThisExpression) {
+        let scope = this._getScopeFor(node);
+        if (scope) {
+            scope._addReference({node, name: 'this', read: true, write: false});
+        }
+    }
+
     _removeNode(node: Node) {
 
+    }
+
+    _getParentScopeFor(element: Element): ?Scope {
+        return this._getScopeFor(element.parentElement);
     }
 
     _getScopeFor(element: ?Element): ?Scope {

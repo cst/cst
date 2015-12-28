@@ -6,12 +6,12 @@ import Variable from './Variable';
 import {default as Definition, types, typeOrder} from './Definition';
 
 export default class Scope {
-    constructor({node, parentScope, isFunctionScope, isArrowFunctionScope}: {
+    constructor({node, parentScope, isProgramScope, isFunctionScope, isArrowFunctionScope}: {
         node: Node,
         parentScope: ?Scope,
-        isFunctionScope: ?boolean,
-        isArrowFunctionScope: ?boolean,
-        isBlockScope: ?boolean
+        isProgramScope?: boolean,
+        isFunctionScope?: boolean,
+        isArrowFunctionScope?: boolean
     }) {
         this._node = node;
         this._parentScope = parentScope;
@@ -24,11 +24,12 @@ export default class Scope {
         this._childScopes = [];
         this._variables = new Map();
         this._references = new Map();
+        this._isProgramScope = Boolean(isProgramScope);
         this._isFunctionScope = Boolean(isFunctionScope);
         this._isArrowFunctionScope = Boolean(isArrowFunctionScope);
     }
 
-    _isBlockScope: boolean;
+    _isProgramScope: boolean;
     _isFunctionScope: boolean;
     _isArrowFunctionScope: boolean;
     _node: Node;
@@ -109,6 +110,12 @@ export default class Scope {
         let {name} = referenceInfo;
         let reference = new Reference({scope: this, ...referenceInfo});
         this._assignReference(reference, name);
+        let references = this._references.get(name);
+        if (references) {
+            references.push(reference);
+        } else {
+            this._references.set(name, [reference]);
+        }
     }
 
     _assignReference(reference: Reference, name: string) {
@@ -124,8 +131,22 @@ export default class Scope {
                     name, type: types.ImplicitGlobal, scope: currentScope
                 });
                 globalVariable._addReference(reference);
+                currentScope._addVariable(globalVariable);
                 break;
             } else {
+                if (
+                    (name === 'arguments' || name === 'this') &&
+                    currentScope._isFunctionScope &&
+                    !currentScope._isArrowFunctionScope &&
+                    !currentScope._isProgramScope
+                ) {
+                    let argumentsVariable = new Variable({
+                        name, type: types.BuiltIn, scope: currentScope
+                    });
+                    argumentsVariable._addReference(reference);
+                    currentScope._addVariable(argumentsVariable);
+                    break;
+                }
                 currentScope = currentScope._parentScope;
             }
         } while (true);
