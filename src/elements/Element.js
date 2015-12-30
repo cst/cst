@@ -690,7 +690,7 @@ export default class Element {
             newElements = newElement._childElements;
         } else {
             if (newElement._parentElement) {
-                newElement.remove();
+                throw new Error('Remove element before adding again');
             }
 
             this._ensureCanAdopt(newElement);
