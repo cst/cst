@@ -15,6 +15,19 @@ describe('Element::replaceChildren', () => {
         validateStructure(parent);
     });
 
+    it('should replace attached node', () => {
+        let token1 = new Token('Punctuator', '(');
+        let token2 = new Token('Punctuator', ')');
+
+        let parent1 = new Element('CustomElement', [token1]);
+        let parent2 = new Element('CustomElement', [token2]);
+
+        parent1.replaceChildren(token2, token1, token1);
+
+        assertChildren(parent1, [token2]);
+        validateStructure(parent1);
+    });
+
     it('should replace one token in the middle', () => {
         let token1 = new Token('Punctuator', '(');
         let token2 = new Token('Punctuator', '?');
