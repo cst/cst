@@ -74,4 +74,8 @@ export default class MethodDefinition extends Node {
     get static() {
         return this._static;
     }
+
+    get computed() {
+        return this._computed;
+    }
 }

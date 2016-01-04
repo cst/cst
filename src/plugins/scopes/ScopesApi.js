@@ -17,6 +17,7 @@ import ForOfStatement from '../../elements/types/ForOfStatement';
 import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
 import Property from '../../elements/types/Property';
+import MethodDefinition from '../../elements/types/MethodDefinition';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
 import ImportNamespaceSpecifier from '../../elements/types/ImportNamespaceSpecifier';
 import ImportSpecifier from '../../elements/types/ImportSpecifier';
@@ -25,6 +26,8 @@ import CatchClause from '../../elements/types/CatchClause';
 import LabeledStatement from '../../elements/types/LabeledStatement';
 import BreakStatement from '../../elements/types/BreakStatement';
 import ContinueStatement from '../../elements/types/ContinueStatement';
+import ClassExpression from '../../elements/types/ClassExpression';
+import ClassDeclaration from '../../elements/types/ClassDeclaration';
 import {types} from './Definition';
 
 const scopedBlocks = {
@@ -260,19 +263,44 @@ export default class ScopesApi {
                         return;
                     }
                 }
+                if (container instanceof MethodDefinition) {
+                    if (node === container.key && !container.computed) {
+                        return;
+                    }
+                }
                 if (container instanceof ImportDefaultSpecifier) {
-                    scope._addDefinition({node, name, type: 'ImportBinding'});
+                    scope._addDefinition({node, name, type: types.ImportBinding});
                     return;
                 }
                 if (container instanceof ImportNamespaceSpecifier) {
-                    scope._addDefinition({node, name, type: 'ImportBinding'});
+                    scope._addDefinition({node, name, type: types.ImportBinding});
                     return;
                 }
                 if (container instanceof ImportSpecifier) {
                     if (container.local === node) {
-                        scope._addDefinition({node, name, type: 'ImportBinding'});
+                        scope._addDefinition({node, name, type: types.ImportBinding});
                     }
                     return;
+                }
+                if (container instanceof ClassExpression) {
+                    if (container.id === node) {
+                        return;
+                    }
+                }
+                if (container instanceof ClassDeclaration) {
+                    if (container.id === node) {
+                        let parentScope = this._getParentScopeFor(container);
+                        if (parentScope) {
+                            parentScope._addDefinition({node, name, type: types.LetVariable});
+                            parentScope._addReference({
+                                node: node,
+                                name: node.name,
+                                read: false,
+                                write: true
+                            });
+                            return;
+                        }
+                    }
                 }
                 if (container instanceof FunctionDeclaration) {
                     if (node === container.id) {
