@@ -11,11 +11,11 @@ function parse(codeLines) {
 describe('ScopesPlugin', () => {
     describe('arguments', () => {
         it('should process normal arguments', () => {
-            let program = parse([
-                '(function(a) {',
-                '    a++;',
-                '})'
-            ]);
+            let program = parse(`
+                (function(a) {
+                    a++;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             let param = globalScope.childScopes[0].variables[0];
             expect(param.name).to.equal('a');
@@ -27,12 +27,12 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process rest arguments', () => {
-            let program = parse([
-                '(function(a, ...b) {',
-                '    a++;',
-                '    b;',
-                '})'
-            ]);
+            let program = parse(`
+                (function(a, ...b) {
+                    a++;
+                    b;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let paramA = globalScope.childScopes[0].variables[0];
@@ -54,12 +54,12 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process patterns', () => {
-            let program = parse([
-                '(function({a}, [b]) {',
-                '    a++;',
-                '    b;',
-                '})'
-            ]);
+            let program = parse(`
+                (function({a}, [b]) {
+                    a++;
+                    b;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let paramA = globalScope.childScopes[0].variables[1];
@@ -82,12 +82,12 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process non-shortcut patterns', () => {
-            let program = parse([
-                '(function({name: a}, [[b]]) {',
-                '    a++;',
-                '    b;',
-                '})'
-            ]);
+            let program = parse(`
+                (function({name: a}, [[b]]) {
+                    a++;
+                    b;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let paramA = globalScope.childScopes[0].variables[0];
@@ -110,12 +110,12 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process nested patterns', () => {
-            let program = parse([
-                '(function({name: {title: a}}, [[b]]) {',
-                '    a++;',
-                '    b;',
-                '})'
-            ]);
+            let program = parse(`
+                (function({name: {title: a}}, [[b]]) {
+                    a++;
+                    b;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let paramA = globalScope.childScopes[0].variables[1];
@@ -138,11 +138,11 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process arguments built-in', () => {
-            let program = parse([
-                '(function() {',
-                '    arguments;',
-                '})'
-            ]);
+            let program = parse(`
+                (function() {
+                    arguments;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             let param = globalScope.childScopes[0].variables[0];
             expect(param.name).to.equal('arguments');
@@ -153,11 +153,11 @@ describe('ScopesPlugin', () => {
         });
 
         it('should process this built-in', () => {
-            let program = parse([
-                '(function() {',
-                '    this;',
-                '})'
-            ]);
+            let program = parse(`
+                (function() {
+                    this;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             let param = globalScope.childScopes[0].variables[0];
             expect(param.name).to.equal('this');
@@ -168,9 +168,9 @@ describe('ScopesPlugin', () => {
         });
 
         it('should treat arguments in program as global', () => {
-            let program = parse([
-                'arguments;'
-            ]);
+            let program = parse(`
+                arguments;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             expect(globalScope.variables[0].name).to.equal('arguments');
@@ -180,9 +180,9 @@ describe('ScopesPlugin', () => {
         });
 
         it('should treat this in program as global', () => {
-            let program = parse([
-                'this;'
-            ]);
+            let program = parse(`
+                this;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             expect(globalScope.variables[0].name).to.equal('this');

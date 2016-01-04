@@ -8,12 +8,12 @@ function parse(codeLines) {
     });
 }
 
-describe.only('ScopesPlugin', () => {
+describe('ScopesPlugin', () => {
     describe('variable', () => {
         it('should support var', () => {
-            let program = parse([
-                'var a;'
-            ]);
+            let program = parse(`
+                var a;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -25,10 +25,10 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support reference-first', () => {
-            let program = parse([
-                'a;',
-                'var a;'
-            ]);
+            let program = parse(`
+                a;
+                var a;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -41,9 +41,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support var with init', () => {
-            let program = parse([
-                'var a = 1;'
-            ]);
+            let program = parse(`
+                var a = 1;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -56,10 +56,10 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should merge multiple vars', () => {
-            let program = parse([
-                'var a = 1;',
-                'var a = 2;'
-            ]);
+            let program = parse(`
+                var a = 1;
+                var a = 2;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -74,14 +74,14 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should merge multiple vars in sub block scopes', () => {
-            let program = parse([
-                'var a = 1;',
-                'if (true) {',
-                    'if (true) {',
-                        'var a = 2;',
-                    '}',
-                '}'
-            ]);
+            let program = parse(`
+                var a = 1;
+                if (true) {
+                    if (true) {
+                        var a = 2;
+                    }
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -95,10 +95,48 @@ describe.only('ScopesPlugin', () => {
             expect(variableA.references[0].isWriteOnly).to.equal(true);
         });
 
+        it('should support var patterns', () => {
+            let program = parse(`
+                var {a, b} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('Variable');
+            expect(variableA.definitions[0].type).to.equal('Variable');
+            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('Variable');
+            expect(variableB.definitions[0].type).to.equal('Variable');
+            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
+        it('should support nested var patterns', () => {
+            let program = parse(`
+                var {prop1: {a}, prop2: {b}} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('Variable');
+            expect(variableA.definitions[0].type).to.equal('Variable');
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('Variable');
+            expect(variableB.definitions[0].type).to.equal('Variable');
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
         it('should support multiple var', () => {
-            let program = parse([
-                'var a, b;'
-            ]);
+            let program = parse(`
+                var a, b;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(2);
 
@@ -118,9 +156,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support multiple var with init', () => {
-            let program = parse([
-                'var a = 1, b = 2;'
-            ]);
+            let program = parse(`
+                var a = 1, b = 2;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(2);
 
@@ -142,9 +180,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support let', () => {
-            let program = parse([
-                'let a;'
-            ]);
+            let program = parse(`
+                let a;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -156,9 +194,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support let with init', () => {
-            let program = parse([
-                'let a = 1;'
-            ]);
+            let program = parse(`
+                let a = 1;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -171,10 +209,10 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should merge multiple lets', () => {
-            let program = parse([
-                'let a = 1;',
-                'let a = 2;'
-            ]);
+            let program = parse(`
+                let a = 1;
+                let a = 2;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -189,12 +227,12 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support referencing in nested blocks', () => {
-            let program = parse([
-                'let a = 1;',
-                'if (true) {',
-                    'a++;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                if (true) {
+                    a++;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -209,12 +247,12 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support let-let definitions in nested blocks', () => {
-            let program = parse([
-                'let a = 1;',
-                'if (true) {',
-                    'let a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                if (true) {
+                    let a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
 
@@ -236,12 +274,12 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support var-let definitions in nested blocks', () => {
-            let program = parse([
-                'var a = 1;',
-                'if (true) {',
-                    'let a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                var a = 1;
+                if (true) {
+                    let a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
 
@@ -263,12 +301,12 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support const-let definitions in nested blocks', () => {
-            let program = parse([
-                'const a = 1;',
-                'if (true) {',
-                    'let a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                const a = 1;
+                if (true) {
+                    let a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
 
@@ -290,12 +328,12 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support let-const definitions in nested blocks', () => {
-            let program = parse([
-                'let a = 1;',
-                'if (true) {',
-                    'const a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                if (true) {
+                    const a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
 
@@ -317,9 +355,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support multiple let', () => {
-            let program = parse([
-                'let a, b;'
-            ]);
+            let program = parse(`
+                let a, b;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(2);
 
@@ -339,9 +377,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support multiple let with init', () => {
-            let program = parse([
-                'let a = 1, b = 2;'
-            ]);
+            let program = parse(`
+                let a = 1, b = 2;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(2);
 
@@ -362,10 +400,48 @@ describe.only('ScopesPlugin', () => {
             expect(variableB.references[0].isWriteOnly).to.equal(true);
         });
 
+        it('should support let patterns', () => {
+            let program = parse(`
+                let {a, b} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('LetVariable');
+            expect(variableA.definitions[0].type).to.equal('LetVariable');
+            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('LetVariable');
+            expect(variableB.definitions[0].type).to.equal('LetVariable');
+            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
+        it('should support nested let patterns', () => {
+            let program = parse(`
+                let {prop1: {a}, prop2: {b}} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('LetVariable');
+            expect(variableA.definitions[0].type).to.equal('LetVariable');
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('LetVariable');
+            expect(variableB.definitions[0].type).to.equal('LetVariable');
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
         it('should support const', () => {
-            let program = parse([
-                'const a = 1;'
-            ]);
+            let program = parse(`
+                const a = 1;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -378,9 +454,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support multiple const', () => {
-            let program = parse([
-                'const a = 1, b = 2;'
-            ]);
+            let program = parse(`
+                const a = 1, b = 2;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(2);
 
@@ -398,6 +474,44 @@ describe.only('ScopesPlugin', () => {
             expect(variableB.definitions[0].type).to.equal('Constant');
             expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
             expect(variableB.references[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
+        it('should support const patterns', () => {
+            let program = parse(`
+                const {a, b} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('Constant');
+            expect(variableA.definitions[0].type).to.equal('Constant');
+            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('Constant');
+            expect(variableB.definitions[0].type).to.equal('Constant');
+            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.references[0].isWriteOnly).to.equal(true);
+        });
+
+        it('should support nested let patterns', () => {
+            let program = parse(`
+                const {prop1: {a}, prop2: {b}} = 1;
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            let variableA = globalScope.variables[0];
+            expect(variableA.name).to.equal('a');
+            expect(variableA.type).to.equal('Constant');
+            expect(variableA.definitions[0].type).to.equal('Constant');
+            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            let variableB = globalScope.variables[1];
+            expect(variableB.name).to.equal('b');
+            expect(variableB.type).to.equal('Constant');
+            expect(variableB.definitions[0].type).to.equal('Constant');
             expect(variableB.references[0].isWriteOnly).to.equal(true);
         });
     });

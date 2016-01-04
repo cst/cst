@@ -23,6 +23,7 @@ export default class Property extends Node {
             children.passToken();
             children.skipNonCode();
 
+            computed = children.isToken('Punctuator', '[');
             key = readKey(children);
             children.skipNonCode();
 

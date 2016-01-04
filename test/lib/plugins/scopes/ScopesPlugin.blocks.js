@@ -11,12 +11,12 @@ function parse(codeLines) {
 describe('ScopesPlugin', () => {
     describe('blocks', () => {
         it('should support custom block', () => {
-            let program = parse([
-                'let a = 1;',
-                '{',
-                    'let a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                {
+                    let a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -30,13 +30,35 @@ describe('ScopesPlugin', () => {
             expect(variableA2.references[0].node.parentElement.init.value).to.equal(2);
         });
 
+        it('should support function declaration block scope (ES6 behaviour)', () => {
+            let program = parse(`
+                {
+                    function test() {}
+                    test();
+                }
+                test();
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableTestGlobal = globalScope.variables[0];
+            expect(variableTestGlobal.name).to.equal('test');
+            expect(variableTestGlobal.type).to.equal('ImplicitGlobal');
+            expect(variableTestGlobal.references[0].node.parentElement.type).to.equal('CallExpression');
+
+            let variableTest = globalScope.childScopes[0].variables[0];
+            expect(variableTest.name).to.equal('test');
+            expect(variableTest.type).to.equal('LetVariable');
+            expect(variableTest.references[0].node.parentElement.type).to.equal('FunctionDeclaration');
+            expect(variableTest.references[1].node.parentElement.type).to.equal('CallExpression');
+        });
+
         it('should support if block', () => {
-            let program = parse([
-                'let a = 1;',
-                'if (true) {',
-                    'let a = 2;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                if (true) {
+                    let a = 2;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -47,16 +69,39 @@ describe('ScopesPlugin', () => {
             let variableA2 = globalScope.childScopes[0].variables[0];
             expect(variableA2.name).to.equal('a');
             expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.references[0].node.parentElement.init.value).to.equal(2);
+        });
+
+        it('should support switch block', () => {
+            let program = parse(`
+                var a = 1;
+                switch (true) {
+                    case true:
+                        let a = 2;
+                        a = 3;
+                }
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('Variable');
             expect(variableA1.references[0].node.parentElement.init.value).to.equal(1);
+
+            let variableA2 = globalScope.childScopes[0].variables[0];
+            expect(variableA2.name).to.equal('a');
+            expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.references[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.references[1].node.parentElement.right.value).to.equal(3);
         });
 
         it('should support for block', () => {
-            let program = parse([
-                'let a = 1;',
-                'for (let a = 2;;) {',
-                    'let a = 3;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                for (let a = 2;;) {
+                    let a = 3;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -75,12 +120,12 @@ describe('ScopesPlugin', () => {
         });
 
         it('should support for-in block', () => {
-            let program = parse([
-                'let a = 1;',
-                'for (let a in 2) {',
-                    'let a = 3;',
-                '}'
-            ]);
+            let program = parse(`
+                let a = 1;
+                for (let a in 2) {
+                    let a = 3;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -100,13 +145,38 @@ describe('ScopesPlugin', () => {
             expect(variableA2.references[1].isWriteOnly).to.equal(true);
         });
 
-        it('should support for-in block', () => {
-            let program = parse([
-                'let a = 1;',
-                'for (let a of 2) {',
-                    'let a = 3;',
-                '}'
-            ]);
+        it('should support patterns in for-in block', () => {
+            let program = parse(`
+                let a = 1;
+                for (let [a] in 2) {
+                    let a = 3;
+                }
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('LetVariable');
+            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.references[0].node.parentElement.init.value).to.equal(1);
+
+            let variableA2 = globalScope.childScopes[0].variables[0];
+            expect(variableA2.name).to.equal('a');
+            expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.definitions[0].type).to.equal('LetVariable');
+            expect(variableA2.definitions[1].node.parentElement.init.value).to.equal(3);
+            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.references[1].node.parentElement.init.value).to.equal(3);
+            expect(variableA2.references[1].isWriteOnly).to.equal(true);
+        });
+
+        it('should support for-of block', () => {
+            let program = parse(`
+                let a = 1;
+                for (let a of 2) {
+                    let a = 3;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -121,20 +191,45 @@ describe('ScopesPlugin', () => {
             expect(variableA2.definitions[0].node.parentElement.parentElement.parentElement.right.value).to.equal(2);
             expect(variableA2.definitions[1].node.parentElement.init.value).to.equal(3);
             expect(variableA2.references[0].node.parentElement.parentElement.parentElement.right.value).to.equal(2);
+            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.references[1].node.parentElement.init.value).to.equal(3);
+            expect(variableA2.references[1].isWriteOnly).to.equal(true);
+        });
+
+        it('should support patterns in for-of block', () => {
+            let program = parse(`
+                let a = 1;
+                for (let [a] of 2) {
+                    let a = 3;
+                }
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('LetVariable');
+            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.references[0].node.parentElement.init.value).to.equal(1);
+
+            let variableA2 = globalScope.childScopes[0].variables[0];
+            expect(variableA2.name).to.equal('a');
+            expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.definitions[0].type).to.equal('LetVariable');
+            expect(variableA2.definitions[1].node.parentElement.init.value).to.equal(3);
             expect(variableA2.references[0].isWriteOnly).to.equal(true);
             expect(variableA2.references[1].node.parentElement.init.value).to.equal(3);
             expect(variableA2.references[1].isWriteOnly).to.equal(true);
         });
 
         it('should support try-catch block', () => {
-            let program = parse([
-                'var a = 1;',
-                'try {',
-                    'let a = 2;',
-                '} catch (a) {',
-                    'a = 3;',
-                '}'
-            ]);
+            let program = parse(`
+                var a = 1;
+                try {
+                    let a = 2;
+                } catch (a) {
+                    a = 3;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             let variableA1 = globalScope.variables[0];
@@ -159,17 +254,17 @@ describe('ScopesPlugin', () => {
         });
 
         it('should support patterns try-catch block', () => {
-            let program = parse([
-                'try {',
-                '} catch ({ a, b, c, d }) {',
-                    'let e = 20;',
-                    'a;',
-                    'b;',
-                    'let c = 30;',
-                    'c;',
-                    'd;',
-                '}'
-            ]);
+            let program = parse(`
+                try {
+                } catch ({ a, b, c, d }) {
+                    let e = 20;
+                    a;
+                    b;
+                    let c = 30;
+                    c;
+                    d;
+                }
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
 
             expect(globalScope.variables.length).to.equal(0);
@@ -208,6 +303,76 @@ describe('ScopesPlugin', () => {
             expect(variableE.type).to.equal('LetVariable');
             expect(variableE.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
             expect(variableE.references[0].node.parentElement.type).to.equal('VariableDeclarator');
+        });
+
+        it('should support arrow function expression block', () => {
+            let program = parse(`
+                var a = 1;
+                (() => {
+                    let a = 2;
+                    a = 3;
+                })();
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('Variable');
+            expect(variableA1.references.length).to.equal(1);
+            expect(variableA1.references[0].node.parentElement.init.value).to.equal(1);
+
+            let variableA2 = globalScope.childScopes[0].variables[0];
+            expect(variableA2.name).to.equal('a');
+            expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.references[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.references[1].node.parentElement.right.value).to.equal(3);
+        });
+
+        it('should support arrow function expression block', () => {
+            let program = parse(`
+                function func() {
+                    var a = 1;
+                    ((z) => {
+                        let a = 2;
+                        a = 3;
+                        arguments;
+                        this;
+                    })();
+                }
+            `);
+
+            let functionScope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(functionScope.variables.length).to.equal(3);
+
+            let variableA1 = functionScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('Variable');
+            expect(variableA1.references.length).to.equal(1);
+            expect(variableA1.references[0].node.parentElement.init.value).to.equal(1);
+
+            let variableArgs = functionScope.variables[1];
+            expect(variableArgs.name).to.equal('arguments');
+            expect(variableArgs.type).to.equal('BuiltIn');
+            expect(variableArgs.references.length).to.equal(1);
+            expect(variableArgs.references[0].node.parentElement.type).to.equal('ExpressionStatement');
+
+            let variableThis = functionScope.variables[2];
+            expect(variableThis.name).to.equal('this');
+            expect(variableThis.type).to.equal('BuiltIn');
+            expect(variableThis.references.length).to.equal(1);
+            expect(variableThis.references[0].node.parentElement.type).to.equal('ExpressionStatement');
+
+            let arrowFunctionScope = functionScope.childScopes[0];
+            let variableZ = arrowFunctionScope.variables[0];
+            expect(variableZ.name).to.equal('z');
+            expect(variableZ.type).to.equal('Parameter');
+            expect(variableZ.definitions[0].node.parentElement.type).to.equal('ArrowFunctionExpression');
+
+            let variableA2 = arrowFunctionScope.variables[1];
+            expect(variableA2.name).to.equal('a');
+            expect(variableA2.type).to.equal('LetVariable');
+            expect(variableA2.references[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.references[1].node.parentElement.right.value).to.equal(3);
         });
     });
 });

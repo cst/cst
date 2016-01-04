@@ -5,6 +5,7 @@ import Program from '../../elements/types/Program';
 import BlockStatement from '../../elements/types/BlockStatement';
 import Identifier from '../../elements/types/Identifier';
 import Scope from './Scope';
+import AssignmentPattern from '../../elements/types/AssignmentPattern';
 import FunctionExpression from '../../elements/types/FunctionExpression';
 import FunctionDeclaration from '../../elements/types/FunctionDeclaration';
 import ArrowFunctionExpression from '../../elements/types/ArrowFunctionExpression';
@@ -19,6 +20,9 @@ import Property from '../../elements/types/Property';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
 import ThisExpression from '../../elements/types/ThisExpression';
 import CatchClause from '../../elements/types/CatchClause';
+import LabeledStatement from '../../elements/types/LabeledStatement';
+import BreakStatement from '../../elements/types/BreakStatement';
+import ContinueStatement from '../../elements/types/ContinueStatement';
 import {types} from './Definition';
 
 const scopedBlocks = {
@@ -114,10 +118,9 @@ export default class ScopesApi {
     }
 
     _addFunctionDeclaration(node: FunctionDeclaration) {
-        let parentScope = this._getParentScopeFor(node);
         this._scopesMap.set(node, new Scope({
             node,
-            parentScope,
+            parentScope: this._getParentScopeFor(node),
             isFunctionScope: true
         }));
     }
@@ -146,7 +149,10 @@ export default class ScopesApi {
                 parentElement.type === 'ForStatement' ||
                 parentElement.type === 'ForInStatement' ||
                 parentElement.type === 'ForOfStatement' ||
-                parentElement.type === 'CatchClause'
+                parentElement.type === 'CatchClause' ||
+                parentElement.type === 'ArrowFunctionExpression' ||
+                parentElement.type === 'FunctionExpression' ||
+                parentElement.type === 'FunctionDeclaration'
             )
         ) {
             return;
@@ -163,14 +169,12 @@ export default class ScopesApi {
 
         if (scope && parentElement) {
             let name = node.name;
-            if (parentElement instanceof Property) {
-                if (parentElement.parentElement) {
-                    if (node === parentElement.key && !parentElement.shorthand) {
-                        if (parentElement.computed) {
-                            scope._addReference({node, name, read: true, write: false});
-                        }
-                        return;
+            if (parentElement instanceof Property && parentElement.parentElement) {
+                if (node === parentElement.key && !parentElement.shorthand) {
+                    if (parentElement.computed) {
+                        scope._addReference({node, name, read: true, write: false});
                     }
+                    return;
                 }
             }
             let topLevelPattern = node;
@@ -179,6 +183,11 @@ export default class ScopesApi {
                     if (topLevelPattern.parentElement.parentElement.isPattern) {
                         topLevelPattern = topLevelPattern.parentElement.parentElement;
                         continue;
+                    }
+                }
+                if (topLevelPattern.parentElement instanceof AssignmentPattern) {
+                    if (topLevelPattern === topLevelPattern.parentElement.right) {
+                        break;
                     }
                 }
                 if (!topLevelPattern.parentElement.isPattern) {
@@ -195,6 +204,9 @@ export default class ScopesApi {
                 ) {
                     if (container.params.indexOf(topLevelPattern) !== -1) {
                         scope._addDefinition({node, name, type: types.Parameter});
+                        if (topLevelPattern instanceof AssignmentPattern) {
+                            scope._addReference({node, name, read: false, write: true});
+                        }
                         return;
                     }
                 }
@@ -242,7 +254,7 @@ export default class ScopesApi {
                     }
                 }
                 if (container instanceof Property) {
-                    if (node === container.key && !container.computed) {
+                    if (node === container.key && !container.computed && !container.shorthand) {
                         return;
                     }
                 }
@@ -253,7 +265,7 @@ export default class ScopesApi {
                             parentScope._addDefinition({
                                 node: node,
                                 name: node.name,
-                                type: types.Variable
+                                type: types.LetVariable
                             });
                             parentScope._addReference({
                                 node: node,
@@ -269,6 +281,14 @@ export default class ScopesApi {
                     if (node === container.id) {
                         return;
                     }
+                }
+                if (container instanceof LabeledStatement) {
+                    if (node === container.label) {
+                        return;
+                    }
+                }
+                if (container instanceof BreakStatement || container instanceof ContinueStatement) {
+                    return;
                 }
                 scope._addReference({node, name, read: true, write: false});
             }

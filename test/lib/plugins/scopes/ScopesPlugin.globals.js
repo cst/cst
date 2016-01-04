@@ -11,9 +11,9 @@ function parse(codeLines) {
 describe.only('ScopesPlugin', () => {
     describe('globals', () => {
         it('should support read reference', () => {
-            let program = parse([
-                'x;'
-            ]);
+            let program = parse(`
+                x;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -24,9 +24,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support write reference', () => {
-            let program = parse([
-                'x = 1;'
-            ]);
+            let program = parse(`
+                x = 1;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -37,9 +37,9 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support increment reference', () => {
-            let program = parse([
-                'x++;'
-            ]);
+            let program = parse(`
+                x++;
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -50,11 +50,11 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support read reference in nested scope', () => {
-            let program = parse([
-                '(function() {',
-                    'x;',
-                '})'
-            ]);
+            let program = parse(`
+                (function() {
+                    x;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -65,11 +65,11 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support write reference in nested scope', () => {
-            let program = parse([
-                '(function() {',
-                    'x = 1;',
-                '})'
-            ]);
+            let program = parse(`
+                (function() {
+                    x = 1;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
@@ -80,11 +80,11 @@ describe.only('ScopesPlugin', () => {
         });
 
         it('should support increment reference in nested scope', () => {
-            let program = parse([
-                '(function() {',
-                    'x++;',
-                '})'
-            ]);
+            let program = parse(`
+                (function() {
+                    x++;
+                })
+            `);
             let globalScope = program.plugins.scopes.acquire(program);
             expect(globalScope.variables.length).to.equal(1);
             let variableA = globalScope.variables[0];
