@@ -235,5 +235,53 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].definitions[0].type).to.equal('Parameter');
             expect(scope.variables[0].references[0].isWriteOnly).to.equal(true);
         });
+
+        it('should handle array patterns in assignments', () => {
+            let program = parse(`
+                ([a, b.c] = []);
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.variables[0].name).to.equal('a');
+            expect(globalScope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[0].references.length).to.equal(1);
+            expect(globalScope.variables[0].references[0].isWriteOnly).to.equal(true);
+            expect(globalScope.variables[1].name).to.equal('b');
+            expect(globalScope.variables[1].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[1].references.length).to.equal(1);
+            expect(globalScope.variables[1].references[0].isReadOnly).to.equal(true);
+        });
+
+        it('should handle nested array patterns in assignments', () => {
+            let program = parse(`
+                ([[a, ...b.c]] = []);
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.variables[0].name).to.equal('a');
+            expect(globalScope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[0].references.length).to.equal(1);
+            expect(globalScope.variables[0].references[0].isWriteOnly).to.equal(true);
+            expect(globalScope.variables[1].name).to.equal('b');
+            expect(globalScope.variables[1].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[1].references.length).to.equal(1);
+            expect(globalScope.variables[1].references[0].isReadOnly).to.equal(true);
+        });
+
+        it('should handle object patterns in assignments', () => {
+            let program = parse(`
+                ({a, b} = []);
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.variables[0].name).to.equal('a');
+            expect(globalScope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[0].references.length).to.equal(1);
+            expect(globalScope.variables[0].references[0].isWriteOnly).to.equal(true);
+            expect(globalScope.variables[1].name).to.equal('b');
+            expect(globalScope.variables[1].type).to.equal('ImplicitGlobal');
+            expect(globalScope.variables[1].references.length).to.equal(1);
+            expect(globalScope.variables[1].references[0].isWriteOnly).to.equal(true);
+        });
     });
 });

@@ -6,11 +6,9 @@ export default class SpreadElement extends Node {
     }
 
     _acceptChildren(children) {
-        let argument = null;
-
         children.passToken('Punctuator', '...');
         children.skipNonCode();
-        argument = children.passExpression();
+        let argument = children.passExpression();
         children.assertEnd();
 
         this._argument = argument;

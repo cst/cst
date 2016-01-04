@@ -9,14 +9,15 @@ export default class RestElement extends Node {
     }
 
     _acceptChildren(children) {
-        let argument = null;
-
         children.passToken('Punctuator', '...');
 
         children.skipNonCode();
 
-        children.assertPattern();
-        argument = children.currentElement;
+        if (!children.isNode('MemberExpression')) {
+            children.assertPattern();
+        }
+
+        let argument = children.currentElement;
         children.moveNext();
 
         children.assertEnd();

@@ -8,7 +8,7 @@ function parse(codeLines) {
     });
 }
 
-describe.only('ScopesPlugin', () => {
+describe('ScopesPlugin', () => {
     describe('globals', () => {
         it('should support read reference', () => {
             let program = parse(`

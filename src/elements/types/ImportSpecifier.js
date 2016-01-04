@@ -9,24 +9,15 @@ export default class ImportSpecifier extends ModuleSpecifier {
 
     _acceptChildren(children) {
         let local;
-        let imported;
-
-        if (children.isNode('Identifier')) {
-            local = children.passNode();
-            imported = local;
-        } else {
-            local = children.passToken();
-            if (!local.name && local.value) {
-                local.name = local.value;
-            }
-        }
-
-        children.skipNonCode();
+        let imported = children.passNode('Identifier');
 
         if (!children.isEnd) {
+            children.skipNonCode();
             children.passToken('Identifier', 'as');
             children.skipNonCode();
-            imported = children.passNode('Identifier');
+            local = children.passNode('Identifier');
+        } else {
+            local = imported;
         }
 
         children.assertEnd();

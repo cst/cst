@@ -18,6 +18,8 @@ import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
 import Property from '../../elements/types/Property';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
+import ImportNamespaceSpecifier from '../../elements/types/ImportNamespaceSpecifier';
+import ImportSpecifier from '../../elements/types/ImportSpecifier';
 import ThisExpression from '../../elements/types/ThisExpression';
 import CatchClause from '../../elements/types/CatchClause';
 import LabeledStatement from '../../elements/types/LabeledStatement';
@@ -257,6 +259,20 @@ export default class ScopesApi {
                     if (node === container.key && !container.computed && !container.shorthand) {
                         return;
                     }
+                }
+                if (container instanceof ImportDefaultSpecifier) {
+                    scope._addDefinition({node, name, type: 'ImportBinding'});
+                    return;
+                }
+                if (container instanceof ImportNamespaceSpecifier) {
+                    scope._addDefinition({node, name, type: 'ImportBinding'});
+                    return;
+                }
+                if (container instanceof ImportSpecifier) {
+                    if (container.local === node) {
+                        scope._addDefinition({node, name, type: 'ImportBinding'});
+                    }
+                    return;
                 }
                 if (container instanceof FunctionDeclaration) {
                     if (node === container.id) {

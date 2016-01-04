@@ -68,7 +68,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('get');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
-        expect(property.computed).to.equal(false);
+        expect(property.computed).to.equal(true);
     });
 
     it('should accept setters', () => {
@@ -97,7 +97,7 @@ describe('Property', () => {
         expect(property.kind).to.equal('set');
         expect(property.method).to.equal(false);
         expect(property.shorthand).to.equal(false);
-        expect(property.computed).to.equal(false);
+        expect(property.computed).to.equal(true);
     });
 
     it('should accept methods', () => {
