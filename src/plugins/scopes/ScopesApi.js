@@ -28,6 +28,11 @@ import BreakStatement from '../../elements/types/BreakStatement';
 import ContinueStatement from '../../elements/types/ContinueStatement';
 import ClassExpression from '../../elements/types/ClassExpression';
 import ClassDeclaration from '../../elements/types/ClassDeclaration';
+import JSXIdentifier from '../../elements/types/JSXIdentifier';
+import JSXAttribute from '../../elements/types/JSXAttribute';
+import JSXElement from '../../elements/types/JSXElement';
+import JSXMemberExpression from '../../elements/types/JSXMemberExpression';
+import JSXNamespacedName from '../../elements/types/JSXNamespacedName';
 import {types} from './Definition';
 
 const scopedBlocks = {
@@ -104,6 +109,10 @@ export default class ScopesApi {
         if (node instanceof Identifier) {
             return this._addIdentifier(node);
         }
+
+        if (node instanceof JSXIdentifier) {
+            return this._addJSXIdentifier(node);
+        }
     }
 
     _addProgram(node: Program) {
@@ -166,6 +175,30 @@ export default class ScopesApi {
             node,
             parentScope: this._getScopeFor(parentElement)
         }));
+    }
+
+    _addJSXIdentifier(node: JSXIdentifier) {
+        let name = node.name;
+        let scope = this._getScopeFor(node);
+        let parentElement = node.parentElement;
+        if (scope && parentElement) {
+            if (parentElement instanceof JSXAttribute) {
+                if (node === parentElement.name) {
+                    return;
+                }
+            }
+            if (parentElement instanceof JSXMemberExpression) {
+                if (node === parentElement.property) {
+                    return;
+                }
+            }
+            if (parentElement instanceof JSXNamespacedName) {
+                if (node === parentElement.name) {
+                    return;
+                }
+            }
+            scope._addReference({node, name, read: true, write: false});
+        }
     }
 
     _addIdentifier(node: Identifier) {
@@ -323,6 +356,17 @@ export default class ScopesApi {
                 }
                 if (container instanceof FunctionExpression) {
                     if (node === container.id) {
+                        scope._addDefinition({
+                            node: node,
+                            name: node.name,
+                            type: types.LetVariable
+                        });
+                        scope._addReference({
+                            node: node,
+                            name: node.name,
+                            read: false,
+                            write: true
+                        });
                         return;
                     }
                 }
