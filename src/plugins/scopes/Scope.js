@@ -6,11 +6,12 @@ import Variable from './Variable';
 import {default as Definition, types, typeOrder} from './Definition';
 
 export default class Scope {
-    constructor({node, parentScope, isProgramScope, isFunctionScope, isArrowFunctionScope}: {
+    constructor({node, parentScope, isProgramScope, isFunctionScope, isClassScope, isArrowFunctionScope}: {
         node: Node,
         parentScope: ?Scope,
         isProgramScope?: boolean,
         isFunctionScope?: boolean,
+        isClassScope?: boolean,
         isArrowFunctionScope?: boolean
     }) {
         this._node = node;
@@ -26,11 +27,13 @@ export default class Scope {
         this._references = new Map();
         this._isProgramScope = Boolean(isProgramScope);
         this._isFunctionScope = Boolean(isFunctionScope);
+        this._isClassScope = Boolean(isClassScope);
         this._isArrowFunctionScope = Boolean(isArrowFunctionScope);
     }
 
     _isProgramScope: boolean;
     _isFunctionScope: boolean;
+    _isClassScope: boolean;
     _isArrowFunctionScope: boolean;
     _node: Node;
     _depth: number;
@@ -46,7 +49,13 @@ export default class Scope {
             variables.sort((variable1: Variable, variable2: Variable) => {
                 let typeOrder1 = typeOrder[variable1._type];
                 let typeOrder2 = typeOrder[variable2._type];
-                return typeOrder1 > typeOrder2 ? 1 : (typeOrder1 < typeOrder2 ? -1 : 0);
+                if (typeOrder1 > typeOrder2) {
+                    return 1;
+                }
+                if (typeOrder1 < typeOrder2) {
+                    return -1;
+                }
+                return 0;
             });
         } else {
             this._variables.set(variable.name, [variable]);
@@ -135,16 +144,21 @@ export default class Scope {
                 break;
             } else {
                 if (
-                    (name === 'arguments' || name === 'this') &&
-                    currentScope._isFunctionScope &&
-                    !currentScope._isArrowFunctionScope &&
-                    !currentScope._isProgramScope
+                    (
+                        (name === 'arguments' || name === 'this') &&
+                        currentScope._isFunctionScope &&
+                        !currentScope._isArrowFunctionScope &&
+                        !currentScope._isProgramScope
+                    ) ||
+                    (
+                        name === 'super' && currentScope._isClassScope
+                    )
                 ) {
-                    let functionBuiltInVariable = new Variable({
+                    let builtInVariable = new Variable({
                         name, type: types.BuiltIn, scope: currentScope
                     });
-                    functionBuiltInVariable._addReference(reference);
-                    currentScope._addVariable(functionBuiltInVariable);
+                    builtInVariable._addReference(reference);
+                    currentScope._addVariable(builtInVariable);
                     break;
                 }
                 currentScope = currentScope._parentScope;

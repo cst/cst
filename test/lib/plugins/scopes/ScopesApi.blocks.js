@@ -145,6 +145,19 @@ describe('ScopesPlugin', () => {
             expect(variableA2.references[1].isWriteOnly).to.equal(true);
         });
 
+        it('should support global references in for-in block', () => {
+            let program = parse(`
+                for (a in 2);
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('ImplicitGlobal');
+            expect(variableA1.definitions.length).to.equal(0);
+            expect(variableA1.references[0].node.parentElement.type).to.equal('ForInStatement');
+        });
+
         it('should support patterns in for-in block', () => {
             let program = parse(`
                 let a = 1;
@@ -194,6 +207,19 @@ describe('ScopesPlugin', () => {
             expect(variableA2.references[0].isWriteOnly).to.equal(true);
             expect(variableA2.references[1].node.parentElement.init.value).to.equal(3);
             expect(variableA2.references[1].isWriteOnly).to.equal(true);
+        });
+
+        it('should support global references in for-of block', () => {
+            let program = parse(`
+                for (a of 2);
+            `);
+            let globalScope = program.plugins.scopes.acquire(program);
+
+            let variableA1 = globalScope.variables[0];
+            expect(variableA1.name).to.equal('a');
+            expect(variableA1.type).to.equal('ImplicitGlobal');
+            expect(variableA1.definitions.length).to.equal(0);
+            expect(variableA1.references[0].node.parentElement.type).to.equal('ForOfStatement');
         });
 
         it('should support patterns in for-of block', () => {
@@ -370,7 +396,7 @@ describe('ScopesPlugin', () => {
 
             let variableF = globalScope.childScopes[0].variables[0];
             expect(variableF.name).to.equal('f');
-            expect(variableF.type).to.equal('LetVariable');
+            expect(variableF.type).to.equal('SelfReference');
             expect(variableF.definitions[0].node.parentElement.type).to.equal('FunctionExpression');
             expect(variableF.references[0].node.parentElement.type).to.equal('FunctionExpression');
             expect(variableF.references[1].node.parentElement.type).to.equal('CallExpression');

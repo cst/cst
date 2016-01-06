@@ -536,16 +536,14 @@ export default class Element {
     }
 
     /**
-     * Removes element
-     *
-     * @returns {Element}
+     * Removes element.
      */
-    remove(): ?Element {
+    remove() {
         if (!this.parentElement) {
             return;
         }
 
-        return this.parentElement.removeChild(this);
+        this.parentElement.removeChild(this);
     }
 
     /**

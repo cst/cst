@@ -141,7 +141,11 @@ export default class Parser {
         for (let plugin of plugins) {
             let api = plugin.getProgramApi(program);
             if (api) {
-                programPlugins[plugin.getPluginName()] = api;
+                if (plugin.pluginName in programPlugins) {
+                    throw new Error(`Plugin "${plugin.pluginName}" was already registered.`);
+                } else {
+                    programPlugins[plugin.pluginName] = api;
+                }
             }
         }
 

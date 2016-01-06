@@ -1,4 +1,4 @@
-import {parseAndGetStatementInFunctionParams} from '../../../utils';
+import {parseAndGetStatementInFunctionParams, parseAndGetExpression} from '../../../utils';
 import {expect} from 'chai';
 
 describe('RestElement', () => {
@@ -35,5 +35,22 @@ describe('RestElement', () => {
         expect(statements[1].type).to.equal('RestElement');
         expect(statements[1].argument.type).to.equal('Identifier');
         expect(statements[1].argument.name).to.equal('b');
+    });
+
+    it('should support rest element with pattern in assignment', () => {
+        var expression = parseAndGetExpression('[a, ...b] = 1');
+        expect(expression.left.type).to.equal('ArrayPattern');
+        expect(expression.left.elements[1].type).to.equal('RestElement');
+        expect(expression.left.elements[1].argument.type).to.equal('Identifier');
+        expect(expression.left.elements[1].argument.name).to.equal('b');
+    });
+
+    it('should support rest element with expression in assignment', () => {
+        var expression = parseAndGetExpression('[a, ...x.b] = 1');
+        expect(expression.left.type).to.equal('ArrayPattern');
+        expect(expression.left.elements[1].type).to.equal('RestElement');
+        expect(expression.left.elements[1].argument.type).to.equal('MemberExpression');
+        expect(expression.left.elements[1].argument.object.name).to.equal('x');
+        expect(expression.left.elements[1].argument.property.name).to.equal('b');
     });
 });

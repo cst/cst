@@ -29,6 +29,22 @@ describe('ArrayPattern', () => {
         expect(pattern.elements[1].name).to.equal('y');
     });
 
+    it('should accept nested pattern', () => {
+        var assignment = parseAndGetExpression('[ {x , y} ] = [1]');
+        var pattern = assignment.left;
+        expect(pattern.elements.length).to.equal(1);
+        expect(pattern.elements[0].type).to.equal('ObjectPattern');
+    });
+
+    it('should accept nested member expression', () => {
+        var assignment = parseAndGetExpression('[ g.x ] = [1]');
+        var pattern = assignment.left;
+        expect(pattern.elements.length).to.equal(1);
+        expect(pattern.elements[0].type).to.equal('MemberExpression');
+        expect(pattern.elements[0].object.name).to.equal('g');
+        expect(pattern.elements[0].property.name).to.equal('x');
+    });
+
     it('should accept holes', () => {
         var assignment = parseAndGetExpression('[ , x , , y , , ] = [1]');
         var pattern = assignment.left;

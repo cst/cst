@@ -22,6 +22,7 @@ import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier'
 import ImportNamespaceSpecifier from '../../elements/types/ImportNamespaceSpecifier';
 import ImportSpecifier from '../../elements/types/ImportSpecifier';
 import ThisExpression from '../../elements/types/ThisExpression';
+import Super from '../../elements/types/Super';
 import CatchClause from '../../elements/types/CatchClause';
 import LabeledStatement from '../../elements/types/LabeledStatement';
 import BreakStatement from '../../elements/types/BreakStatement';
@@ -94,6 +95,14 @@ export default class ScopesApi {
             return this._addArrowFunctionExpression(node);
         }
 
+        if (node instanceof ClassDeclaration) {
+            return this._addClassDeclaration(node);
+        }
+
+        if (node instanceof ClassExpression) {
+            return this._addClassExpression(node);
+        }
+
         if (node.type in scopedBlocks) {
             return this._addScopedBlock(node);
         }
@@ -104,6 +113,10 @@ export default class ScopesApi {
 
         if (node instanceof ThisExpression) {
             return this._addThisExpression(node);
+        }
+
+        if (node instanceof Super) {
+            return this._addSuper(node);
         }
 
         if (node instanceof Identifier) {
@@ -120,6 +133,22 @@ export default class ScopesApi {
             node,
             parentScope: undefined,
             isFunctionScope: true
+        }));
+    }
+
+    _addClassExpression(node: ClassExpression) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isClassScope: true
+        }));
+    }
+
+    _addClassDeclaration(node: ClassDeclaration) {
+        this._scopesMap.set(node, new Scope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isClassScope: true
         }));
     }
 
@@ -181,212 +210,237 @@ export default class ScopesApi {
         let name = node.name;
         let scope = this._getScopeFor(node);
         let parentElement = node.parentElement;
-        if (scope && parentElement) {
-            if (parentElement instanceof JSXAttribute) {
-                if (node === parentElement.name) {
-                    return;
-                }
-            }
-            if (parentElement instanceof JSXMemberExpression) {
-                if (node === parentElement.property) {
-                    return;
-                }
-            }
-            if (parentElement instanceof JSXNamespacedName) {
-                if (node === parentElement.name) {
-                    return;
-                }
-            }
-            scope._addReference({node, name, read: true, write: false});
+
+        if (!scope || !parentElement) {
+            return;
         }
+
+        if (parentElement instanceof JSXAttribute) {
+            if (node === parentElement.name) {
+                return;
+            }
+        }
+
+        if (parentElement instanceof JSXMemberExpression) {
+            if (node === parentElement.property) {
+                return;
+            }
+        }
+
+        if (parentElement instanceof JSXNamespacedName) {
+            if (node === parentElement.name) {
+                return;
+            }
+        }
+
+        scope._addReference({node, name, read: true, write: false});
     }
 
     _addIdentifier(node: Identifier) {
         let scope = this._getScopeFor(node);
         let parentElement = node.parentElement;
 
-        if (scope && parentElement) {
-            let name = node.name;
-            if (parentElement instanceof Property && parentElement.parentElement) {
-                if (node === parentElement.key && !parentElement.shorthand) {
-                    if (parentElement.computed) {
-                        scope._addReference({node, name, read: true, write: false});
-                    }
-                    return;
+        if (!scope || !parentElement) {
+            return;
+        }
+
+        let name = node.name;
+        if (parentElement instanceof Property && parentElement.parentElement) {
+            if (node === parentElement.key && !parentElement.shorthand) {
+                if (parentElement.computed) {
+                    scope._addReference({node, name, read: true, write: false});
                 }
-            }
-            let topLevelPattern = node;
-            while (topLevelPattern.parentElement) {
-                if (topLevelPattern.parentElement instanceof Property) {
-                    if (topLevelPattern.parentElement.parentElement.isPattern) {
-                        topLevelPattern = topLevelPattern.parentElement.parentElement;
-                        continue;
-                    }
-                }
-                if (topLevelPattern.parentElement instanceof AssignmentPattern) {
-                    if (topLevelPattern === topLevelPattern.parentElement.right) {
-                        break;
-                    }
-                }
-                if (!topLevelPattern.parentElement.isPattern) {
-                    break;
-                }
-                topLevelPattern = topLevelPattern.parentElement;
-            }
-            let container = topLevelPattern.parentElement;
-            if (container) {
-                if (
-                    container instanceof FunctionExpression ||
-                    container instanceof FunctionDeclaration ||
-                    container instanceof ArrowFunctionExpression
-                ) {
-                    if (container.params.indexOf(topLevelPattern) !== -1) {
-                        scope._addDefinition({node, name, type: types.Parameter});
-                        if (topLevelPattern instanceof AssignmentPattern) {
-                            scope._addReference({node, name, read: false, write: true});
-                        }
-                        return;
-                    }
-                }
-                if (container instanceof VariableDeclarator) {
-                    let type = types.Variable;
-                    let variableDeclaration = container.parentElement;
-                    if (variableDeclaration && variableDeclaration instanceof VariableDeclaration) {
-                        if (variableDeclaration.kind === 'let') {
-                            type = types.LetVariable;
-                        }
-                        if (variableDeclaration.kind === 'const') {
-                            type = types.Constant;
-                        }
-                        scope._addDefinition({node, name, type});
-                        let write = container.init ||
-                            variableDeclaration.parentElement instanceof ForOfStatement ||
-                            variableDeclaration.parentElement instanceof ForInStatement;
-                        if (write) {
-                            scope._addReference({node, name, read: false, write: true});
-                        }
-                    }
-                    return;
-                }
-                if (container instanceof CatchClause) {
-                    if (container.param === topLevelPattern) {
-                        scope._addDefinition({node, name, type: types.CatchClauseError});
-                        return;
-                    }
-                }
-                if (container instanceof AssignmentExpression) {
-                    if (container.left === topLevelPattern) {
-                        scope._addReference({node, name, read: container.operator !== '=', write: true});
-                        return;
-                    }
-                }
-                if (container instanceof UpdateExpression) {
-                    if (container.argument === topLevelPattern) {
-                        scope._addReference({node, name, read: true, write: true});
-                        return;
-                    }
-                }
-                if (container instanceof MemberExpression) {
-                    if (node === container.property && !container.computed) {
-                        return;
-                    }
-                }
-                if (container instanceof Property) {
-                    if (node === container.key && !container.computed && !container.shorthand) {
-                        return;
-                    }
-                }
-                if (container instanceof MethodDefinition) {
-                    if (node === container.key && !container.computed) {
-                        return;
-                    }
-                }
-                if (container instanceof ImportDefaultSpecifier) {
-                    scope._addDefinition({node, name, type: types.ImportBinding});
-                    return;
-                }
-                if (container instanceof ImportNamespaceSpecifier) {
-                    scope._addDefinition({node, name, type: types.ImportBinding});
-                    return;
-                }
-                if (container instanceof ImportSpecifier) {
-                    if (container.local === node) {
-                        scope._addDefinition({node, name, type: types.ImportBinding});
-                    }
-                    return;
-                }
-                if (container instanceof ClassExpression) {
-                    if (container.id === node) {
-                        return;
-                    }
-                }
-                if (container instanceof ClassDeclaration) {
-                    if (container.id === node) {
-                        let parentScope = this._getParentScopeFor(container);
-                        if (parentScope) {
-                            parentScope._addDefinition({node, name, type: types.LetVariable});
-                            parentScope._addReference({
-                                node: node,
-                                name: node.name,
-                                read: false,
-                                write: true
-                            });
-                            return;
-                        }
-                    }
-                }
-                if (container instanceof FunctionDeclaration) {
-                    if (node === container.id) {
-                        let parentScope = this._getParentScopeFor(container);
-                        if (parentScope) {
-                            parentScope._addDefinition({
-                                node: node,
-                                name: node.name,
-                                type: types.LetVariable
-                            });
-                            parentScope._addReference({
-                                node: node,
-                                name: node.name,
-                                read: false,
-                                write: true
-                            });
-                        }
-                        return;
-                    }
-                }
-                if (container instanceof FunctionExpression) {
-                    if (node === container.id) {
-                        scope._addDefinition({
-                            node: node,
-                            name: node.name,
-                            type: types.LetVariable
-                        });
-                        scope._addReference({
-                            node: node,
-                            name: node.name,
-                            read: false,
-                            write: true
-                        });
-                        return;
-                    }
-                }
-                if (container instanceof LabeledStatement) {
-                    if (node === container.label) {
-                        return;
-                    }
-                }
-                if (container instanceof BreakStatement || container instanceof ContinueStatement) {
-                    return;
-                }
-                scope._addReference({node, name, read: true, write: false});
+                return;
             }
         }
+        let topLevelPattern = node;
+        while (topLevelPattern.parentElement) {
+            if (topLevelPattern.parentElement instanceof Property) {
+                if (topLevelPattern.parentElement.parentElement.isPattern) {
+                    topLevelPattern = topLevelPattern.parentElement.parentElement;
+                    continue;
+                }
+            }
+            if (topLevelPattern.parentElement instanceof AssignmentPattern) {
+                if (topLevelPattern === topLevelPattern.parentElement.right) {
+                    break;
+                }
+            }
+            if (!topLevelPattern.parentElement.isPattern) {
+                break;
+            }
+            topLevelPattern = topLevelPattern.parentElement;
+        }
+
+        let container = topLevelPattern.parentElement;
+        if (!container) {
+            return;
+        }
+
+        if (
+            container instanceof FunctionExpression ||
+            container instanceof FunctionDeclaration ||
+            container instanceof ArrowFunctionExpression
+        ) {
+            if (container.params.indexOf(topLevelPattern) !== -1) {
+                scope._addDefinition({node, name, type: types.Parameter});
+                if (topLevelPattern instanceof AssignmentPattern) {
+                    scope._addReference({node, name, read: false, write: true});
+                }
+                return;
+            }
+        }
+        if (container instanceof VariableDeclarator) {
+            let type = types.Variable;
+            let variableDeclaration = container.parentElement;
+            if (variableDeclaration && variableDeclaration instanceof VariableDeclaration) {
+                if (variableDeclaration.kind === 'let') {
+                    type = types.LetVariable;
+                }
+                if (variableDeclaration.kind === 'const') {
+                    type = types.Constant;
+                }
+                scope._addDefinition({node, name, type});
+                let write = container.init ||
+                    variableDeclaration.parentElement instanceof ForOfStatement ||
+                    variableDeclaration.parentElement instanceof ForInStatement;
+                if (write) {
+                    scope._addReference({node, name, read: false, write: true});
+                }
+            }
+            return;
+        }
+        if (container instanceof CatchClause) {
+            if (container.param === topLevelPattern) {
+                scope._addDefinition({node, name, type: types.CatchClauseError});
+                return;
+            }
+        }
+        if (container instanceof AssignmentExpression) {
+            if (container.left === topLevelPattern) {
+                scope._addReference({node, name, read: container.operator !== '=', write: true});
+                return;
+            }
+        }
+        if (container instanceof UpdateExpression) {
+            if (container.argument === topLevelPattern) {
+                scope._addReference({node, name, read: true, write: true});
+                return;
+            }
+        }
+        if (container instanceof MemberExpression) {
+            if (node === container.property && !container.computed) {
+                return;
+            }
+        }
+        if (container instanceof Property) {
+            if (node === container.key && !container.computed && !container.shorthand) {
+                return;
+            }
+        }
+        if (container instanceof MethodDefinition) {
+            if (node === container.key && !container.computed) {
+                return;
+            }
+        }
+        if (container instanceof ImportDefaultSpecifier) {
+            scope._addDefinition({node, name, type: types.ImportBinding});
+            return;
+        }
+        if (container instanceof ImportNamespaceSpecifier) {
+            scope._addDefinition({node, name, type: types.ImportBinding});
+            return;
+        }
+        if (container instanceof ImportSpecifier) {
+            if (container.local === node) {
+                scope._addDefinition({node, name, type: types.ImportBinding});
+            }
+            return;
+        }
+        if (container instanceof ClassExpression) {
+            if (container.id === node) {
+                scope._addDefinition({node, name, type: types.SelfReference});
+                scope._addReference({
+                    node: node,
+                    name: node.name,
+                    read: false,
+                    write: true
+                });
+                return;
+            }
+        }
+        if (container instanceof ClassDeclaration) {
+            if (container.id === node) {
+                let parentScope = this._getParentScopeFor(container);
+                if (parentScope) {
+                    parentScope._addDefinition({node, name, type: types.LetVariable});
+                    parentScope._addReference({
+                        node: node,
+                        name: node.name,
+                        read: false,
+                        write: true
+                    });
+                    return;
+                }
+            }
+        }
+        if (container instanceof FunctionDeclaration) {
+            if (node === container.id) {
+                let parentScope = this._getParentScopeFor(container);
+                if (parentScope) {
+                    parentScope._addDefinition({
+                        node: node,
+                        name: node.name,
+                        type: types.LetVariable
+                    });
+                    parentScope._addReference({
+                        node: node,
+                        name: node.name,
+                        read: false,
+                        write: true
+                    });
+                }
+                return;
+            }
+        }
+        if (container instanceof FunctionExpression) {
+            if (node === container.id) {
+                scope._addDefinition({
+                    node: node,
+                    name: node.name,
+                    type: types.SelfReference
+                });
+                scope._addReference({
+                    node: node,
+                    name: node.name,
+                    read: false,
+                    write: true
+                });
+                return;
+            }
+        }
+        if (container instanceof LabeledStatement) {
+            if (node === container.label) {
+                return;
+            }
+        }
+        if (container instanceof BreakStatement || container instanceof ContinueStatement) {
+            return;
+        }
+        scope._addReference({node, name, read: true, write: false});
     }
 
     _addThisExpression(node: ThisExpression) {
         let scope = this._getScopeFor(node);
         if (scope) {
             scope._addReference({node, name: 'this', read: true, write: false});
+        }
+    }
+
+    _addSuper(node: Super) {
+        let scope = this._getScopeFor(node);
+        if (scope) {
+            scope._addReference({node, name: 'super', read: true, write: false});
         }
     }
 

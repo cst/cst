@@ -7,6 +7,10 @@ describe('TryStatement', () => {
         expect(parseAndGetStatement('try{;}finally{;}').type).to.equal('TryStatement');
     });
 
+    it('should support catch', () => {
+        expect(parseAndGetStatement('try{;}catch(e){;}').type).to.equal('TryStatement');
+    });
+
     it('should accept statements', () => {
         var statement = parseAndGetStatement('try { x; } finally { y; }');
         expect(statement.block.body[0].expression.name).to.equal('x');
@@ -26,5 +30,11 @@ describe('TryStatement', () => {
         expect(() => {
             statement.appendChild(new Token('Whitespace', '   '));
         }).to.throw('Expected end of node list but "Whitespace" found');
+    });
+
+    it('should support catch patterns', () => {
+        let statement = parseAndGetStatement('try { ; } catch( {x, y} ) { }');
+        expect(statement.type).to.equal('TryStatement');
+        expect(statement.handler.param.type).to.equal('ObjectPattern');
     });
 });

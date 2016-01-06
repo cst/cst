@@ -53,6 +53,26 @@ describe('Program', () => {
         parseAndGetProgram('promise.catch()');
     });
 
+    it('should trigger elements-add on element addition', (done) => {
+        let program = parseAndGetProgram(';');
+        let newElement = new Token('CommentBlock', 'hello');
+        program.on('elements-add', ([element]) => {
+            expect(element).to.equal(newElement);
+            done();
+        });
+        program.prependChild(newElement);
+    });
+
+    it('should trigger elements-remove on element removal', (done) => {
+        let program = parseAndGetProgram('/* hello */;');
+        let oldElement = program.firstChild;
+        program.on('elements-remove', ([element]) => {
+            expect(element).to.equal(oldElement);
+            done();
+        });
+        program.removeChild(oldElement);
+    });
+
     describe('selectNodesByType()', () => {
         it('should return node list', () => {
             let program = parseAndGetProgram('if (x) { y++; z--; } if (w) { i--; }');

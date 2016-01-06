@@ -33,17 +33,25 @@ export default class Definition {
     }
 }
 
+/**
+ * Possible variable types.
+ */
 export const types = {
     LetVariable: 'LetVariable',
     Constant: 'Constant',
     Variable: 'Variable',
     Parameter: 'Parameter',
+    SelfReference: 'SelfReference',
     CatchClauseError: 'CatchClauseError',
     ImportBinding: 'ImportBinding',
     ImplicitGlobal: 'ImplicitGlobal',
     BuiltIn: 'BuiltIn'
 };
 
+/**
+ * Priorities in variable scopes.
+ * For instance, `var x` hides `x` function argument and `x` argument hides global `x`.
+ */
 export const typeOrder = {
     LetVariable: 0,
     Constant: 0,
@@ -51,6 +59,7 @@ export const typeOrder = {
     ImportBinding: 1,
     Parameter: 1,
     CatchClauseError: 1,
-    BuiltIn: 2,
-    ImplicitGlobal: 2
+    SelfReference: 2,
+    BuiltIn: 3,
+    ImplicitGlobal: 3
 };

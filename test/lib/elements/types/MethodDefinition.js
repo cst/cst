@@ -11,9 +11,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept getters with calculated name', () => {
+    it('should accept getters with computed name', () => {
         let member = parseAndGetClassMember('get [x + 1] ( ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -24,6 +25,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(true);
     });
 
     it('should accept setters', () => {
@@ -35,9 +37,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept setters with calculated name', () => {
+    it('should accept setters with computed name', () => {
         let member = parseAndGetClassMember('set [x + 1] ( v ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -49,6 +52,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(true);
     });
 
     it('should accept methods', () => {
@@ -62,6 +66,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(false);
     });
 
     it('should accept constructor', () => {
@@ -75,9 +80,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('constructor');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept methods with calculated name', () => {
+    it('should accept methods with computed name', () => {
         let member = parseAndGetClassMember('[x + 1] ( v , w ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -91,6 +97,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(true);
     });
 
     it('should accept static getters', () => {
@@ -101,9 +108,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept getters with calculated name', () => {
+    it('should accept getters with computed name', () => {
         let member = parseAndGetClassMember('static get [x + 1] ( ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -114,6 +122,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(true);
     });
 
     it('should accept setters', () => {
@@ -125,9 +134,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept setters with calculated name', () => {
+    it('should accept setters with computed name', () => {
         let member = parseAndGetClassMember('static set [x + 1] ( v ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -139,6 +149,7 @@ describe('MethodDefinition', () => {
         expect(member.value.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(true);
     });
 
     it('should accept methods', () => {
@@ -152,9 +163,10 @@ describe('MethodDefinition', () => {
         expect(member.value.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(false);
     });
 
-    it('should accept methods with calculated name', () => {
+    it('should accept methods with computed name', () => {
         let member = parseAndGetClassMember('static [x + 1] ( v , w ) { ; }');
         expect(member.key.type).to.equal('BinaryExpression');
         expect(member.key.left.type).to.equal('Identifier');
@@ -168,5 +180,6 @@ describe('MethodDefinition', () => {
         expect(member.value.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(true);
+        expect(member.computed).to.equal(true);
     });
 });
