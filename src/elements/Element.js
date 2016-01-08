@@ -377,7 +377,7 @@ export default class Element {
      *
      * @returns {ElementList}
      */
-    get childElements(): Array<Element> {
+    get childElements(): Element[] {
         return this._childElements.concat();
     }
 
@@ -527,7 +527,7 @@ export default class Element {
 
         let ownerProgram = this.ownerProgram;
         if (ownerProgram) {
-            ownerProgram._removeElementsFromSearchIndex([element]);
+            ownerProgram._removeElementsFromProgram([element]);
         }
 
         element._parentElement = null;
@@ -536,16 +536,14 @@ export default class Element {
     }
 
     /**
-     * Removes element
-     *
-     * @returns {Element}
+     * Removes element.
      */
-    remove(): Element {
+    remove() {
         if (!this.parentElement) {
-            return this;
+            return;
         }
 
-        return this.parentElement.removeChild(this);
+        this.parentElement.removeChild(this);
     }
 
     /**
@@ -555,8 +553,8 @@ export default class Element {
      * @param {Element} newElement
      */
     appendChild(newElement: Element) {
-        let children;
-        let newElements;
+        let children: Element[];
+        let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
             newElements = newElement._childElements;
@@ -575,7 +573,7 @@ export default class Element {
         if (newElements) {
             let ownerProgram = this.ownerProgram;
             if (ownerProgram) {
-                ownerProgram._addElementsToSearchIndex(newElements);
+                ownerProgram._addElementsToProgram(newElements);
             }
         }
     }
@@ -587,8 +585,8 @@ export default class Element {
      * @param {Element} newElement
      */
     prependChild(newElement: Element) {
-        let children;
-        let newElements;
+        let children: Element[];
+        let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
             newElements = newElement._childElements;
@@ -607,7 +605,7 @@ export default class Element {
         if (newElements) {
             let ownerProgram = this.ownerProgram;
             if (ownerProgram) {
-                ownerProgram._addElementsToSearchIndex(newElements);
+                ownerProgram._addElementsToProgram(newElements);
             }
         }
     }
@@ -628,8 +626,8 @@ export default class Element {
         let childrenBefore = this._childElements.slice(0, index);
         let childrenAfter = this._childElements.slice(index);
 
-        let children;
-        let newElements;
+        let children: Element[];
+        let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
             newElements = newElement._childElements;
@@ -649,7 +647,7 @@ export default class Element {
         if (newElements) {
             let ownerProgram = this.ownerProgram;
             if (ownerProgram) {
-                ownerProgram._addElementsToSearchIndex(newElements);
+                ownerProgram._addElementsToProgram(newElements);
             }
         }
     }
@@ -682,8 +680,8 @@ export default class Element {
         let childrenAfter = this._childElements.slice(lastIndex + 1);
         let replacedChildren = this._childElements.slice(firstIndex, lastIndex + 1);
 
-        let children;
-        let newElements;
+        let children: Element[];
+        let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
             children = childrenBefore.concat(newElement._childElements, childrenAfter);
@@ -700,6 +698,12 @@ export default class Element {
 
         this._setChildren(children);
 
+        let ownerProgram = this.ownerProgram;
+
+        if (ownerProgram) {
+            ownerProgram._removeElementsFromProgram(replacedChildren);
+        }
+
         for (let i = 0; i < replacedChildren.length; i++) {
             let replacedChild = replacedChildren[i];
             replacedChild._parentElement = null;
@@ -707,12 +711,8 @@ export default class Element {
             replacedChild._nextSibling = null;
         }
 
-        let ownerProgram = this.ownerProgram;
-        if (ownerProgram) {
-            ownerProgram._removeElementsFromSearchIndex(replacedChildren);
-            if (newElements) {
-                ownerProgram._addElementsToSearchIndex(newElements);
-            }
+        if (ownerProgram && newElements) {
+            ownerProgram._addElementsToProgram(newElements);
         }
     }
 
@@ -724,7 +724,7 @@ export default class Element {
      * @param {Element} oldElement
      */
     replaceChild(newElement: Element, oldElement: Element) {
-        return this.replaceChildren(newElement, oldElement, oldElement);
+        this.replaceChildren(newElement, oldElement, oldElement);
     }
 
     /**
@@ -837,12 +837,20 @@ export default class Element {
      * @returns {Element}
      */
     cloneElement(): Element {
-        let clonedChildren = new Array(this._childElements.length);
+        let clonedChildren: Element[] = new Array(this._childElements.length);
         for (let i = 0; i < clonedChildren.length; i++) {
             clonedChildren[i] = this._childElements[i].cloneElement();
         }
+        let objectToClone = ((this: any): ConcreteElement);
+        return new objectToClone.constructor(clonedChildren);
+    }
+}
 
-        // $FlowFixMe: flow doesn't understand if this is an Element or not
-        return new this.constructor(clonedChildren);
+/**
+ * Artificial class for correct flow behaviour.
+ */
+class ConcreteElement extends Element {
+    constructor(children: Element[]) {
+        super('ConcreteElement', children);
     }
 }

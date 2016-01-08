@@ -4,6 +4,7 @@ import type Token from '../Token';
 import type Node from '../Node';
 import type Element from '../Element';
 import type ElementAssert from '../ElementAssert';
+import type BasePlugin from '../../plugins/BasePlugin';
 import Statement from '../Statement';
 import Traverse from '../../Traverse';
 
@@ -14,11 +15,23 @@ export default class Program extends Statement {
         this._isProgram = true;
         this._traverse = new Traverse();
         this._traverse.addElements(childNodes);
+        this._eventListeners = {};
     }
 
+    _eventListeners: {[key: string]: Function[]};
     _traverse: Traverse;
     _body: Array<any>;
     _isProgram: boolean;
+    _plugins: {[key: string]: BasePlugin};
+
+    _acceptPlugins(plugins: {[key: string]: BasePlugin}) {
+        Object.freeze(plugins);
+        this._plugins = plugins;
+    }
+
+    get plugins(): {[key: string]: BasePlugin} {
+        return this._plugins;
+    }
 
     _acceptChildren(children: ElementAssert) {
         if (children.isToken('Hashbang')) {
@@ -59,15 +72,42 @@ export default class Program extends Statement {
         return this._traverse.selectTokensByType(type);
     }
 
-    _addElementsToSearchIndex(elements: Array<Element>) {
+    _addElementsToProgram(elements: Array<Element>) {
         this._traverse.addElements(elements);
+        this._emit('elements-add', elements);
     }
 
-    _removeElementsFromSearchIndex(elements: Array<Element>) {
+    _removeElementsFromProgram(elements: Array<Element>) {
         this._traverse.removeElements(elements);
+        this._emit('elements-remove', elements);
     }
 
     get body(): Array<any> {
         return this._body.concat();
     }
-}
+
+    on(eventName: string, callback: Function) {
+        if (this._eventListeners[eventName]) {
+            this._eventListeners[eventName].push(callback);
+        } else {
+            this._eventListeners[eventName] = [callback];
+        }
+    }
+
+    off(eventName: string, callback: Function) {
+        if (this._eventListeners[eventName]) {
+            this._eventListeners[eventName] = this._eventListeners[eventName].filter((handler) => {
+                return callback !== handler;
+            });
+        }
+    }
+
+    _emit(eventName: string, data: any) {
+        var handlers = this._eventListeners[eventName];
+        if (handlers) {
+            for (let i = 0; i < handlers.length; i++) {
+                handlers[i](data);
+            }
+        }
+    }
+};

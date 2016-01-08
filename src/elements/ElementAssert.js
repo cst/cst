@@ -13,7 +13,6 @@ export default class ElementAssert {
      */
     constructor(elements: Array<Element>) {
         this._elements = elements;
-        this._currentElement = null;
 
         if (elements.length > 0) {
             this._navigate(0);
@@ -30,7 +29,7 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     get isEnd(): boolean {
-        return this._currentElement === null;
+        return this._currentElement === undefined;
     }
 
     /**
@@ -166,7 +165,7 @@ export default class ElementAssert {
      * Asserts that the end of child list was reached.
      */
     assertEnd(): void {
-        if (this._currentElement !== null) {
+        if (this._currentElement !== undefined) {
             let {type} = this._currentElement || {};
             throw new Error(`Expected end of node list but "${type}" found`);
         }
@@ -327,6 +326,10 @@ export default class ElementAssert {
 
         let expression = this._currentElement;
 
+        if (!expression) {
+            throw new Error('Could not match an expression');
+        }
+
         if (!assertCallback(expression)) {
             throw new Error(`Expression expected but "${expression.type}" found`);
         }
@@ -362,6 +365,9 @@ export default class ElementAssert {
         this.assertStatement();
         let result = this._currentElement;
         this.moveNext();
+        if (!result) {
+            throw new Error('Could not match statement');
+        }
         return result;
     }
 
@@ -371,10 +377,13 @@ export default class ElementAssert {
      *
      * @returns {Element|null}
      */
-    passPattern(): ?Element {
+    passPattern(): Element {
         this.assertPattern();
         let result = this._currentElement;
         this.moveNext();
+        if (!result) {
+            throw new Error('Could not match pattern');
+        }
         return result;
     }
 
@@ -446,6 +455,6 @@ export default class ElementAssert {
      */
     _navigate(position: number) {
         this._position = position;
-        this._currentElement = this._elements[position] || null;
+        this._currentElement = this._elements[position];
     }
 }

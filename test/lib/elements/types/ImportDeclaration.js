@@ -40,10 +40,10 @@ describe('ImportDeclaration', () => {
         var statement = parseAndGetStatement('import {$ as jQuery} from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers[0].type).to.equal('ImportSpecifier');
-        expect(statement.specifiers[0].local.type).to.equal('Identifier');
-        expect(statement.specifiers[0].local.name).to.equal('$');
         expect(statement.specifiers[0].imported.type).to.equal('Identifier');
-        expect(statement.specifiers[0].imported.name).to.equal('jQuery');
+        expect(statement.specifiers[0].imported.name).to.equal('$');
+        expect(statement.specifiers[0].local.type).to.equal('Identifier');
+        expect(statement.specifiers[0].local.name).to.equal('jQuery');
         expect(statement.source.type).to.equal('Literal');
         expect(statement.source.value).to.equal('jquery');
     });
@@ -71,6 +71,19 @@ describe('ImportDeclaration', () => {
         expect(statement.specifiers[2].type).to.equal('ImportSpecifier');
         expect(statement.specifiers[2].local.type).to.equal('Identifier');
         expect(statement.specifiers[2].local.name).to.equal('c');
+        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.value).to.equal('jquery');
+    });
+
+    it('should accept default pattern import and name imports', () => {
+        var statement = parseAndGetStatement('import { default as a } from "jquery";');
+        expect(statement.type).to.equal('ImportDeclaration');
+        expect(statement.specifiers.length).to.equal(1);
+        expect(statement.specifiers[0].type).to.equal('ImportSpecifier');
+        expect(statement.specifiers[0].local.type).to.equal('Identifier');
+        expect(statement.specifiers[0].local.name).to.equal('a');
+        expect(statement.specifiers[0].imported.type).to.equal('Identifier');
+        expect(statement.specifiers[0].imported.name).to.equal('default');
         expect(statement.source.type).to.equal('Literal');
         expect(statement.source.value).to.equal('jquery');
     });

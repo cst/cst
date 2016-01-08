@@ -9,3 +9,5 @@ export {default as ModuleDeclaration} from './elements/ModuleDeclaration';
 export {default as ModuleSpecifier} from './elements/ModuleSpecifier';
 
 export {default as types} from './elements/elementIndex';
+
+export {default as plugins} from './plugins/pluginsIndex';

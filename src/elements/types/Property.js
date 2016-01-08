@@ -23,6 +23,7 @@ export default class Property extends Node {
             children.passToken();
             children.skipNonCode();
 
+            computed = children.isToken('Punctuator', '[');
             key = readKey(children);
             children.skipNonCode();
 
@@ -46,10 +47,13 @@ export default class Property extends Node {
                     method = true;
                     value = children.passNode('FunctionExpression');
                 } else {
-
                     children.passToken('Punctuator', ':');
                     children.skipNonCode();
-                    value = children.passExpression();
+                    if (children.currentElement.isPattern) {
+                        value = children.passPattern();
+                    } else {
+                        value = children.passExpression();
+                    }
                 }
             }
         }

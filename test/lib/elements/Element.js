@@ -98,18 +98,12 @@ describe('Element', () => {
             expect(program.sourceCode).to.equal(' var second = 2;');
         });
 
-        it('should return removed element', () => {
-            let program = parseAndGetProgram('var first = 1; var second = 2;');
-            var child = program.firstChild;
-
-            expect(child.remove()).to.equal(child);
-        });
-
         it('should be a noop for parentless element', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
 
             expect(() => {
-                parseAndGetProgram('function foo(){ return\n; }').remove().remove();
+                program.remove();
+                program.remove();
             }).to.not.throw();
         });
 

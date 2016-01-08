@@ -15,7 +15,9 @@ export default class ArrayPattern extends Node {
                 children.moveNext();
                 children.skipNonCode();
             } else {
-                children.assertPattern();
+                if (!children.isNode('MemberExpression')) {
+                    children.assertPattern();
+                }
                 elements.push(children.currentElement);
                 children.moveNext();
                 children.skipNonCode();
