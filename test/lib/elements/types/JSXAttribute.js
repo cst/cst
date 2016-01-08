@@ -71,4 +71,29 @@ describe('JSXAttribute', () => {
         expect(expression.openingElement.attributes[0].argument.type).to.equal('Identifier');
         expect(expression.openingElement.attributes[0].argument.name).to.equal('b');
     });
+
+    it('allow multiple attributes', () => {
+        const expression = parseAndGetExpression('<input type="text" id="input" />');
+        expect(expression.openingElement.attributes.length).to.equal(2);
+        expect(expression.openingElement.attributes[0].type).to.equal('JSXAttribute');
+        expect(expression.openingElement.attributes[0].name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.attributes[0].name.name).to.equal('type');
+        expect(expression.openingElement.attributes[1].type).to.equal('JSXAttribute');
+        expect(expression.openingElement.attributes[1].name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.attributes[1].name.name).to.equal('id');
+    });
+
+    it('allow multiple mixed attributes', () => {
+        const expression = parseAndGetExpression('<input type="text" {...props} id="input" />');
+        expect(expression.openingElement.attributes.length).to.equal(3);
+        expect(expression.openingElement.attributes[0].type).to.equal('JSXAttribute');
+        expect(expression.openingElement.attributes[0].name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.attributes[0].name.name).to.equal('type');
+        expect(expression.openingElement.attributes[1].type).to.equal('JSXSpreadAttribute');
+        expect(expression.openingElement.attributes[1].argument.type).to.equal('Identifier');
+        expect(expression.openingElement.attributes[1].argument.name).to.equal('props');
+        expect(expression.openingElement.attributes[2].type).to.equal('JSXAttribute');
+        expect(expression.openingElement.attributes[2].name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.attributes[2].name.name).to.equal('id');
+    });
 });

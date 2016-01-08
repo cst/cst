@@ -15,14 +15,18 @@ export default class JSXOpeningElement extends Node {
         let name = children.passOneOfNode(['JSXIdentifier', 'JSXMemberExpression', 'JSXNamespacedName']);
         children.skipNonCode();
 
-        if (children.isNode('JSXAttribute')) {
-            children.skipNonCode();
-            attributes.push(children.passNode('JSXAttribute'));
-            children.skipNonCode();
-        } else if (children.isNode('JSXSpreadAttribute')) {
-            children.skipNonCode();
-            attributes.push(children.passNode('JSXSpreadAttribute'));
-            children.skipNonCode();
+        while (true) {
+            if (children.isNode('JSXAttribute')) {
+                children.skipNonCode();
+                attributes.push(children.passNode('JSXAttribute'));
+                children.skipNonCode();
+            } else if (children.isNode('JSXSpreadAttribute')) {
+                children.skipNonCode();
+                attributes.push(children.passNode('JSXSpreadAttribute'));
+                children.skipNonCode();
+            } else {
+                break;
+            }
         }
 
         if (children.isToken('Punctuator', '/')) {
