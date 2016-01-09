@@ -10,7 +10,7 @@ export default class ScopesPlugin extends BasePlugin {
         return 'scopes';
     }
 
-    getProgramApi(program: Program): ?Object {
+    createApiForProgram(program: Program): ?Object {
         return new ScopesApi(program);
     }
 }

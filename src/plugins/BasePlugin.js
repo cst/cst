@@ -20,5 +20,5 @@ export default class BasePlugin {
      * Returns plugin API.
      * Plugin's API will be accessible using `program.plugins.<pluginName>`.
      */
-    getProgramApi(program: Program): ?Object {}
+    createApiForProgram(program: Program): ?Object {}
 }

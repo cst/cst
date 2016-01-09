@@ -78,7 +78,7 @@ export default class ScopesApi {
         }
     }
 
-    _addNode(node: Node) {
+    _addNode(node: Node): void {
         if (node instanceof Program) {
             return this._addProgram(node);
         }
