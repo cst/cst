@@ -185,6 +185,19 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
         });
 
+        it('should include variable declaration inits', () => {
+            let program = parse(`
+                (() => {
+                    var h = a;
+                });
+            `);
+            let scope = program.plugins.scopes.acquire(program);
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
+        });
+
         it('should ignore labels', () => {
             let program = parse(`
                 label: for (;;) {

@@ -291,24 +291,26 @@ export default class ScopesApi {
             }
         }
         if (container instanceof VariableDeclarator) {
-            let type = types.Variable;
-            let variableDeclaration = container.parentElement;
-            if (variableDeclaration && variableDeclaration instanceof VariableDeclaration) {
-                if (variableDeclaration.kind === 'let') {
-                    type = types.LetVariable;
+            if (container.id === topLevelPattern) {
+                let type = types.Variable;
+                let variableDeclaration = container.parentElement;
+                if (variableDeclaration && variableDeclaration instanceof VariableDeclaration) {
+                    if (variableDeclaration.kind === 'let') {
+                        type = types.LetVariable;
+                    }
+                    if (variableDeclaration.kind === 'const') {
+                        type = types.Constant;
+                    }
+                    scope._addDefinition({node, name, type});
+                    let write = container.init ||
+                        variableDeclaration.parentElement instanceof ForOfStatement ||
+                        variableDeclaration.parentElement instanceof ForInStatement;
+                    if (write) {
+                        scope._addReference({node, name, read: false, write: true});
+                    }
                 }
-                if (variableDeclaration.kind === 'const') {
-                    type = types.Constant;
-                }
-                scope._addDefinition({node, name, type});
-                let write = container.init ||
-                    variableDeclaration.parentElement instanceof ForOfStatement ||
-                    variableDeclaration.parentElement instanceof ForInStatement;
-                if (write) {
-                    scope._addReference({node, name, read: false, write: true});
-                }
+                return;
             }
-            return;
         }
         if (container instanceof CatchClause) {
             if (container.param === topLevelPattern) {
