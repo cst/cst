@@ -717,6 +717,47 @@ export default class Element {
     }
 
     /**
+     * Removes children from `firstRefChild` to `lastRefChild` with specified element.
+     *
+     * @param {Element} firstRefChild
+     * @param {Element} lastRefChild
+     */
+    removeChildren(firstRefChild: Element, lastRefChild: Element) {
+        if (!firstRefChild || firstRefChild._parentElement !== this) {
+            throw new Error('Invalid first reference child');
+        }
+
+        if (!lastRefChild || lastRefChild._parentElement !== this) {
+            throw new Error('Invalid last reference child');
+        }
+
+        let firstIndex = this._childElements.indexOf(firstRefChild);
+        let lastIndex = this._childElements.indexOf(lastRefChild);
+
+        if (firstIndex > lastIndex) {
+            throw new Error('Invalid reference children order');
+        }
+
+        let children = this._childElements.slice(0, firstIndex).concat(this._childElements.slice(lastIndex + 1));
+        let removedChildren = this._childElements.slice(firstIndex, lastIndex + 1);
+
+        this._setChildren(children);
+
+        let ownerProgram = this.ownerProgram;
+
+        if (ownerProgram) {
+            ownerProgram._removeElementsFromProgram(removedChildren);
+        }
+
+        for (let i = 0; i < removedChildren.length; i++) {
+            let removedChild = removedChildren[i];
+            removedChild._parentElement = null;
+            removedChild._previousSibling = null;
+            removedChild._nextSibling = null;
+        }
+    }
+
+    /**
      * Replaces child with specified element.
      * Accepts multiple replacement nodes using `Fragment`.
      *
