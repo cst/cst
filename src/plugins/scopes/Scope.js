@@ -4,6 +4,7 @@ import type Node from '../../elements/Node';
 import Reference from './Reference';
 import Variable from './Variable';
 import {default as Definition, types, typeOrder} from './Definition';
+import toArray from '../../utils/toArray';
 
 export default class Scope {
     constructor({node, parentScope, isProgramScope, isFunctionScope, isClassScope, isArrowFunctionScope}: {
@@ -175,11 +176,11 @@ export default class Scope {
     }
 
     get variables(): Variable[] {
-        return [].concat.apply([], Array.from(this._variables.values()));
+        return [].concat.apply([], toArray(this._variables.values()));
     }
 
     get references(): Reference[] {
-        return [].concat.apply([], Array.from(this._references.values()));
+        return [].concat.apply([], toArray(this._references.values()));
     }
 
     destroy() {

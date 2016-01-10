@@ -3,6 +3,7 @@
 import type Definition from './Definition';
 import type Reference from './Reference';
 import type Scope from './Scope';
+import toArray from '../../utils/toArray';
 
 export default class Variable {
     constructor({name, type, scope}: {name: string, type: string, scope: Scope}) {
@@ -54,10 +55,10 @@ export default class Variable {
     }
 
     get definitions(): Definition[] {
-        return Array.from(this._definitions);
+        return toArray(this._definitions);
     }
 
     get references(): Reference[] {
-        return Array.from(this._references);
+        return toArray(this._references);
     }
 }
