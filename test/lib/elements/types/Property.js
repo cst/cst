@@ -1,9 +1,28 @@
 import {parseAndGetObjectProperty} from '../../../utils';
+import Token from '../../../../src/elements/Token';
+import Property from '../../../../src/elements/types/Property';
+import Identifier from '../../../../src/elements/types/Identifier';
+import Parser from '../../../../src/Parser';
+
 import {expect} from 'chai';
 
 describe('Property', () => {
-    it('should return correct type', () => {
-        expect(parseAndGetObjectProperty('x').type).to.equal('Property');
+    it('should append new property to existed object expression', () => {
+        let expression = new Parser().parse(`({a: b})`).body[0].expression;
+        let parentheses = expression.lastChild;
+
+        expression.insertChildBefore(new Token('Punctuator', ','), parentheses);
+        expression.insertChildBefore(new Token('Whitespace', ' '), parentheses);
+
+        let prop = new Property([
+            new Identifier([new Token('Identifier', 'c')]),
+            new Token('Punctuator', ':'),
+            new Token('Whitespace', ' '),
+            new Identifier([new Token('Identifier', 'd')])
+        ]);
+
+        expression.insertChildBefore(prop, parentheses);
+        expect(expression.sourceCode).to.equal('{a: b, c: d}');
     });
 
     it('should accept key and value', () => {
