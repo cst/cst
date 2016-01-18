@@ -30,6 +30,11 @@ export default class Scope {
         this._isFunctionScope = Boolean(isFunctionScope);
         this._isClassScope = Boolean(isClassScope);
         this._isArrowFunctionScope = Boolean(isArrowFunctionScope);
+
+        if (isProgramScope) {
+            this._programReferences = new Map();
+            this._programDefinitions = new Map();
+        }
     }
 
     _isProgramScope: boolean;
@@ -42,6 +47,9 @@ export default class Scope {
     _childScopes: Scope[];
     _variables: Map<string, Variable[]>;
     _references: Map<string, Reference[]>;
+
+    _programReferences: Map<Node, Reference>;
+    _programDefinitions: Map<Node, Definition>;
 
     _addVariable(variable: Variable) {
         let variables = this._variables.get(variable.name);
@@ -87,7 +95,21 @@ export default class Scope {
             this._addVariable(variable);
         }
 
-        variable._addDefinition(new Definition({node, type, scope: this}));
+        let definition = new Definition({node, type, scope: this});
+
+        variable._addDefinition(definition);
+
+        let programScope = this._getProgramScope();
+        if (programScope) {
+            programScope._programDefinitions.set(node, definition);
+        }
+    }
+
+    _removeDefinition(definition: Definition) {
+        let programScope = this._getProgramScope();
+        if (programScope) {
+            programScope._programDefinitions.delete(definition.node);
+        }
     }
 
     _adjustReferencesOnVariableAdd(variable: Variable) {
@@ -116,7 +138,7 @@ export default class Scope {
         }
     }
 
-    _addReference(referenceInfo: {node: Node, name: string, read: boolean, write: boolean}) {
+    _addReference(referenceInfo: {node: Node, name: string, read: boolean, write: boolean, type?: string}) {
         let {name} = referenceInfo;
         let reference = new Reference({scope: this, ...referenceInfo});
         this._assignReference(reference, name);
@@ -126,6 +148,11 @@ export default class Scope {
         } else {
             this._references.set(name, [reference]);
         }
+
+        let programScope = this._getProgramScope();
+        if (programScope) {
+            programScope._programReferences.set(reference.node, reference);
+        }
     }
 
     _assignReference(reference: Reference, name: string) {
@@ -133,8 +160,17 @@ export default class Scope {
         do {
             let variables = currentScope._variables.get(name);
             if (variables) {
-                variables[0]._addReference(reference);
-                break;
+                if (reference._type) {
+                    for (let variable of variables) {
+                        if (variable._type === reference._type) {
+                            variable._addReference(reference);
+                            return;
+                        }
+                    }
+                } else {
+                    variables[0]._addReference(reference);
+                    return;
+                }
             }
             if (!currentScope._parentScope) {
                 let globalVariable = new Variable({
@@ -142,7 +178,7 @@ export default class Scope {
                 });
                 globalVariable._addReference(reference);
                 currentScope._addVariable(globalVariable);
-                break;
+                return;
             } else {
                 if (
                     (
@@ -160,11 +196,37 @@ export default class Scope {
                     });
                     builtInVariable._addReference(reference);
                     currentScope._addVariable(builtInVariable);
-                    break;
+                    return;
                 }
                 currentScope = currentScope._parentScope;
             }
         } while (true);
+    }
+
+    _removeReference(reference: Reference) {
+        let variable = reference._variable;
+        let name = variable.name;
+        let references = this._references.get(name);
+        if (references) {
+            let index = references.indexOf(reference);
+            if (index !== -1) {
+                references.splice(index, 1);
+            }
+        }
+        variable._removeReference(reference);
+
+        let programScope = this._getProgramScope();
+        if (programScope) {
+            programScope._programReferences.delete(reference.node);
+        }
+    }
+
+    _getProgramScope(): ?Scope {
+        let scope = this;
+        while (scope && !scope._isProgramScope) {
+            scope = scope.parentScope;
+        }
+        return scope;
     }
 
     get node(): Node {
@@ -191,6 +253,7 @@ export default class Scope {
                 parentScope._childScopes.splice(scopeIndex, 1);
             }
         }
+        this.references.forEach(this._removeReference);
     }
 
     get childScopes(): Scope[] {

@@ -40,9 +40,11 @@ export default class Variable {
 
     _transferReferences(variable: Variable) {
         for (let reference of this._references) {
-            this._references.delete(reference);
-            variable._references.add(reference);
-            reference._variable = variable;
+            if (!reference._type) {
+                this._references.delete(reference);
+                variable._references.add(reference);
+                reference._variable = variable;
+            }
         }
     }
 

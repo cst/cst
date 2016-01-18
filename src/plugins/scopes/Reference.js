@@ -5,16 +5,18 @@ import type Scope from './Scope';
 import type Variable from './Variable';
 
 export default class Reference {
-    constructor({node, scope, read, write}: {
+    constructor({node, scope, read, write, type}: {
         node: Identifier,
         scope: Scope,
         read: boolean,
-        write: boolean
+        write: boolean,
+        type?: string
     }) {
         this._node = node;
         this._scope = scope;
         this._read = read;
         this._write = write;
+        this._type = type;
     }
 
     _node: Identifier;
@@ -22,6 +24,7 @@ export default class Reference {
     _variable: Variable;
     _read: boolean;
     _write: boolean;
+    _type: ?string;
 
     get node(): Identifier {
         return this._node;

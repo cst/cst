@@ -55,9 +55,14 @@ export default class ScopesApi {
         this._scopesMap = new Map();
         this._program = program;
         this._addElement(program);
+        let programScope = this.acquire(this._program);
+        if (programScope) {
+            this._programScope = programScope;
+        }
     }
 
     _program: Program;
+    _programScope: Scope;
     _scopesMap: Map<Element, Scope>;
 
     _addElement(element: Element) {
@@ -132,7 +137,8 @@ export default class ScopesApi {
         this._scopesMap.set(node, new Scope({
             node,
             parentScope: undefined,
-            isFunctionScope: true
+            isFunctionScope: true,
+            isProgramScope: true
         }));
     }
 
@@ -285,7 +291,7 @@ export default class ScopesApi {
             if (container.params.indexOf(topLevelPattern) !== -1) {
                 scope._addDefinition({node, name, type: types.Parameter});
                 if (topLevelPattern instanceof AssignmentPattern) {
-                    scope._addReference({node, name, read: false, write: true});
+                    scope._addReference({node, name, read: false, write: true, type: types.Parameter});
                 }
                 return;
             }
@@ -306,7 +312,7 @@ export default class ScopesApi {
                         variableDeclaration.parentElement instanceof ForOfStatement ||
                         variableDeclaration.parentElement instanceof ForInStatement;
                     if (write) {
-                        scope._addReference({node, name, read: false, write: true});
+                        scope._addReference({node, name, read: false, write: true, type});
                     }
                 }
                 return;
@@ -366,7 +372,8 @@ export default class ScopesApi {
                     node: node,
                     name: node.name,
                     read: false,
-                    write: true
+                    write: true,
+                    type: types.SelfReference
                 });
                 return;
             }
@@ -380,7 +387,8 @@ export default class ScopesApi {
                         node: node,
                         name: node.name,
                         read: false,
-                        write: true
+                        write: true,
+                        type: types.LetVariable
                     });
                     return;
                 }
@@ -399,7 +407,8 @@ export default class ScopesApi {
                         node: node,
                         name: node.name,
                         read: false,
-                        write: true
+                        write: true,
+                        type: types.LetVariable
                     });
                 }
                 return;
@@ -416,7 +425,8 @@ export default class ScopesApi {
                     node: node,
                     name: node.name,
                     read: false,
-                    write: true
+                    write: true,
+                    type: types.SelfReference
                 });
                 return;
             }
@@ -465,8 +475,27 @@ export default class ScopesApi {
         return null;
     }
 
-    acquire(element: Element): ?Scope {
+    acquire(element: Node): ?Scope {
         return this._scopesMap.get(element);
+    }
+
+    findReference(node: Node): ?Reference {
+        return this._programScope._programReferences.get(node);
+    }
+
+    findDefinition(node: Node): ?Definition {
+        return this._programScope._programDefinitions.get(node);
+    }
+
+    findVariable(node: Node): ?Variable {
+        let reference = this._programScope._programReferences.get(node);
+        if (reference) {
+            return reference._variable;
+        }
+        let definition = this._programScope._programDefinitions.get(node);
+        if (definition) {
+            return definition._variable;
+        }
     }
 }
 

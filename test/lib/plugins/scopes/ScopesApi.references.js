@@ -296,5 +296,71 @@ describe('ScopesPlugin', () => {
             expect(globalScope.variables[1].references.length).to.equal(1);
             expect(globalScope.variables[1].references[0].isWriteOnly).to.equal(true);
         });
+
+        it('should handle default values collision properly', () => {
+            let program = parse(`
+                ((a = 1) => {
+                    let a = 2;
+                });
+            `);
+            let scope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(scope.variables.length).to.equal(2);
+            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.variables[0].type).to.equal('LetVariable');
+            expect(scope.variables[0].references.length).to.equal(1);
+            expect(scope.variables[0].references[0].isWriteOnly).to.equal(true);
+            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(scope.variables[1].name).to.equal('a');
+            expect(scope.variables[1].type).to.equal('Parameter');
+            expect(scope.variables[1].references.length).to.equal(1);
+            expect(scope.variables[1].references[0].isWriteOnly).to.equal(true);
+            expect(scope.variables[1].references[0].node.parentElement.type).to.equal('AssignmentPattern');
+
+            expect(program.plugins.scopes.findVariable(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0]);
+            expect(program.plugins.scopes.findReference(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0].references[0]);
+            expect(program.plugins.scopes.findDefinition(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1].definitions[0]);
+            expect(program.plugins.scopes.findVariable(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1]);
+            expect(program.plugins.scopes.findReference(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1].references[0]);
+            expect(program.plugins.scopes.findDefinition(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0].definitions[0]);
+        });
+
+        it('should handle self-reference collision properly', () => {
+            let program = parse(`
+                (function a() {
+                    let a = 2;
+                });
+            `);
+            let scope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(scope.variables.length).to.equal(2);
+            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.variables[0].type).to.equal('LetVariable');
+            expect(scope.variables[0].references.length).to.equal(1);
+            expect(scope.variables[0].references[0].isWriteOnly).to.equal(true);
+            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(scope.variables[1].name).to.equal('a');
+            expect(scope.variables[1].type).to.equal('SelfReference');
+            expect(scope.variables[1].references.length).to.equal(1);
+            expect(scope.variables[1].references[0].isWriteOnly).to.equal(true);
+            expect(scope.variables[1].references[0].node.parentElement.type).to.equal('FunctionExpression');
+
+            expect(program.plugins.scopes.findVariable(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0]);
+            expect(program.plugins.scopes.findReference(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0].references[0]);
+            expect(program.plugins.scopes.findDefinition(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1].definitions[0]);
+            expect(program.plugins.scopes.findVariable(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1]);
+            expect(program.plugins.scopes.findReference(program.selectNodesByType('Identifier')[0]))
+                .to.equal(scope.variables[1].references[0]);
+            expect(program.plugins.scopes.findDefinition(program.selectNodesByType('Identifier')[1]))
+                .to.equal(scope.variables[0].definitions[0]);
+        });
     });
 });
