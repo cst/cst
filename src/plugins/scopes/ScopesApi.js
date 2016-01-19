@@ -1,5 +1,9 @@
 /* @flow */
+import type Variable from './Variable';
+import type Reference from './Reference';
+import type Definition from './Definition';
 import type Element from '../../elements/Element';
+import Token from '../../elements/Token';
 import Node from '../../elements/Node';
 import Program from '../../elements/types/Program';
 import BlockStatement from '../../elements/types/BlockStatement';
@@ -70,6 +74,17 @@ export default class ScopesApi {
             let nodes = buildNodeList((element: Node));
             for (let i = 0; i < nodes.length; i++) {
                 this._addNode(nodes[i]);
+            }
+        }
+        if (element instanceof Token) {
+            let parentElement = element.parentElement;
+            if (
+                element.type === 'Punctuator' &&
+                element.value === ':' &&
+                parentElement instanceof Property
+            ) {
+                this._removeElement(parentElement);
+                this._addElement(parentElement.key);
             }
         }
     }
@@ -210,6 +225,30 @@ export default class ScopesApi {
             node,
             parentScope: this._getScopeFor(parentElement)
         }));
+    }
+
+    _removeBlockStatement(node: BlockStatement) {
+        let parentElement = node.parentElement;
+        if (
+            parentElement &&
+            (
+                parentElement.type === 'ForStatement' ||
+                parentElement.type === 'ForInStatement' ||
+                parentElement.type === 'ForOfStatement' ||
+                parentElement.type === 'CatchClause' ||
+                parentElement.type === 'ArrowFunctionExpression' ||
+                parentElement.type === 'FunctionExpression' ||
+                parentElement.type === 'FunctionDeclaration'
+            )
+        ) {
+            return;
+        }
+
+        let scope = this._scopesMap.get(node);
+        if (scope) {
+            scope.destroy();
+            this._scopesMap.delete(node);
+        }
     }
 
     _addJSXIdentifier(node: JSXIdentifier) {
@@ -457,7 +496,40 @@ export default class ScopesApi {
     }
 
     _removeNode(node: Node) {
+        if (
+            node instanceof FunctionExpression ||
+            node instanceof FunctionDeclaration ||
+            node instanceof ArrowFunctionExpression ||
+            node instanceof ClassDeclaration ||
+            node instanceof ClassExpression ||
+            node.type in scopedBlocks
+        ) {
+            let scope = this._scopesMap.get(node);
+            if (scope) {
+                scope.destroy();
+                this._scopesMap.delete(node);
+            }
+        }
 
+        if (node instanceof BlockStatement) {
+            return this._removeBlockStatement(node);
+        }
+
+        if (
+            node instanceof ThisExpression ||
+            node instanceof Super ||
+            node instanceof Identifier ||
+            node instanceof JSXIdentifier
+        ) {
+            let reference = this._programScope._programReferences.get(node);
+            if (reference) {
+                reference._scope._removeReference(reference);
+            }
+            let definition = this._programScope._programDefinitions.get(node);
+            if (definition) {
+                definition._scope._removeDefinition(definition);
+            }
+        }
     }
 
     _getParentScopeFor(element: Element): ?Scope {
@@ -505,7 +577,8 @@ function buildNodeList(parentNode: Node): Node[] {
     while (nodesToProcess.length > 0) {
         let node = nodesToProcess.shift();
         let childElements = node.childElements;
-        for (let element of childElements) {
+        for (let i = 0; i < childElements.length; i++) {
+            let element = childElements[i];
             if (element instanceof Node) {
                 result.push(element);
                 nodesToProcess.push(element);

@@ -1,6 +1,9 @@
 import {expect} from 'chai';
+import Fragment from '../../../../src/elements/Fragment';
+import Token from '../../../../src/elements/Token';
+import Identifier from '../../../../src/elements/types/Identifier';
 import ScopesPlugin from '../../../../src/plugins/scopes/ScopesPlugin';
-import {parseAndGetProgram} from '../../../utils';
+import {parseAndGetProgram, parseAndGetStatement, parseAndGetExpression} from '../../../utils';
 
 function parse(codeLines) {
     return parseAndGetProgram([].concat(codeLines).join('\n'), {

@@ -106,6 +106,25 @@ export default class Scope {
     }
 
     _removeDefinition(definition: Definition) {
+        let variable = definition._variable;
+
+        variable._removeDefinition(definition);
+
+        if (
+            variable._definitions.size === 0 &&
+            (
+                variable.type === 'LetVariable' ||
+                variable.type === 'Constant' ||
+                variable.type === 'Variable' ||
+                variable.type === 'Parameter' ||
+                variable.type === 'SelfReference' ||
+                variable.type === 'CatchClauseError' ||
+                variable.type === 'ImportBinding'
+            )
+        ) {
+            removeVariable(variable);
+        }
+
         let programScope = this._getProgramScope();
         if (programScope) {
             programScope._programDefinitions.delete(definition.node);
@@ -214,6 +233,15 @@ export default class Scope {
             }
         }
         variable._removeReference(reference);
+        if (
+            variable._references.size === 0 &&
+            (
+                variable.type === 'ImplicitGlobal' ||
+                variable.type === 'BuiltIn'
+            )
+        ) {
+            removeVariable(variable);
+        }
 
         let programScope = this._getProgramScope();
         if (programScope) {
@@ -253,7 +281,7 @@ export default class Scope {
                 parentScope._childScopes.splice(scopeIndex, 1);
             }
         }
-        this.references.forEach(this._removeReference);
+        this.references.forEach(this._removeReference, this);
     }
 
     get childScopes(): Scope[] {
@@ -268,6 +296,21 @@ function removeVariableIfRequired(variable: Variable) {
             let index = variables.indexOf(variable);
             if (index !== -1) {
                 variables.splice(index, 1);
+            }
+        }
+    }
+}
+
+function removeVariable(variable: Variable) {
+    let scope = variable._scope;
+    let variables = scope._variables.get(variable._name);
+
+    if (variables) {
+        let index = variables.indexOf(variable);
+        if (index !== -1) {
+            variables.splice(index, 1);
+            if (variables.length === 0) {
+                scope._variables.delete(variable._name);
             }
         }
     }
