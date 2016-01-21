@@ -7,14 +7,9 @@ import {default as Definition, types, typeOrder} from './Definition';
 import toArray from '../../utils/toArray';
 
 export default class Scope {
-    constructor({node, parentScope, isProgramScope, isFunctionScope, isClassScope, isArrowFunctionScope}: {
-        node: Node,
-        parentScope: ?Scope,
-        isProgramScope?: boolean,
-        isFunctionScope?: boolean,
-        isClassScope?: boolean,
-        isArrowFunctionScope?: boolean
-    }) {
+    constructor(scopeInfo: ScopeInfo) {
+        let {node, parentScope, isProgramScope, isFunctionScope, isClassScope, isArrowFunctionScope} = scopeInfo;
+
         this._node = node;
         this._parentScope = parentScope;
         if (parentScope) {
@@ -71,7 +66,7 @@ export default class Scope {
         }
     }
 
-    _addDefinition(definitionInfo: {node: Node, name: string, type: string}) {
+    _addDefinition(definitionInfo: DefinitionInfo) {
         let {node, name, type} = definitionInfo;
         if (type === types.Variable) {
             if (!this._isFunctionScope && this._parentScope) {
@@ -157,7 +152,7 @@ export default class Scope {
         }
     }
 
-    _addReference(referenceInfo: {node: Node, name: string, read: boolean, write: boolean, type?: string}) {
+    _addReference(referenceInfo: ReferenceInfo) {
         let {name} = referenceInfo;
         let reference = new Reference({scope: this, ...referenceInfo});
         this._assignReference(reference, name);
@@ -315,3 +310,26 @@ function removeVariable(variable: Variable) {
         }
     }
 }
+
+export type ReferenceInfo = {
+    node: Node,
+    name: string,
+    read: boolean,
+    write: boolean,
+    type?: string
+};
+
+export type DefinitionInfo = {
+    node: Node,
+    name: string,
+    type: string
+};
+
+export type ScopeInfo = {
+    node: Node,
+    parentScope: ?Scope,
+    isProgramScope?: boolean,
+    isFunctionScope?: boolean,
+    isClassScope?: boolean,
+    isArrowFunctionScope?: boolean
+};

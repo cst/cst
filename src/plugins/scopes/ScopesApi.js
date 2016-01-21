@@ -9,6 +9,7 @@ import Program from '../../elements/types/Program';
 import BlockStatement from '../../elements/types/BlockStatement';
 import Identifier from '../../elements/types/Identifier';
 import Scope from './Scope';
+import type {ReferenceInfo, DefinitionInfo, ScopeInfo} from './Scope';
 import AssignmentPattern from '../../elements/types/AssignmentPattern';
 import FunctionExpression from '../../elements/types/FunctionExpression';
 import FunctionDeclaration from '../../elements/types/FunctionDeclaration';
@@ -59,10 +60,7 @@ export default class ScopesApi {
         this._scopesMap = new Map();
         this._program = program;
         this._addElement(program);
-        let programScope = this.acquire(this._program);
-        if (programScope) {
-            this._programScope = programScope;
-        }
+        this.acquire(this._program);
     }
 
     _program: Program;
@@ -76,17 +74,7 @@ export default class ScopesApi {
                 this._addNode(nodes[i]);
             }
         }
-        if (element instanceof Token) {
-            let parentElement = element.parentElement;
-            if (
-                element.type === 'Punctuator' &&
-                element.value === ':' &&
-                parentElement instanceof Property
-            ) {
-                this._removeElement(parentElement);
-                this._addElement(parentElement.key);
-            }
-        }
+        this._updateTokenIfNecessary(element);
     }
 
     _removeElement(element: Element) {
@@ -94,6 +82,29 @@ export default class ScopesApi {
             let nodes = buildNodeList((element: Node));
             for (let i = 0; i < nodes.length; i++) {
                 this._removeNode(nodes[i]);
+            }
+        }
+        this._updateTokenIfNecessary(element);
+    }
+
+    _updateTokenIfNecessary(element: Element) {
+        if (element instanceof Token) {
+            let parentElement = element.parentElement;
+            if (parentElement) {
+                if (element.type === 'Identifier') {
+                    this._removeElement(parentElement);
+                    this._addElement(parentElement);
+                    return;
+                }
+                if (
+                    element.type === 'Punctuator' &&
+                    element.value === ':' &&
+                    parentElement instanceof Property
+                ) {
+                    this._removeElement(parentElement);
+                    this._addElement(parentElement);
+                    return;
+                }
             }
         }
     }
@@ -149,60 +160,60 @@ export default class ScopesApi {
     }
 
     _addProgram(node: Program) {
-        this._scopesMap.set(node, new Scope({
+        this._programScope = this._addScope({
             node,
             parentScope: undefined,
             isFunctionScope: true,
             isProgramScope: true
-        }));
+        });
     }
 
     _addClassExpression(node: ClassExpression) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
             isClassScope: true
-        }));
+        });
     }
 
     _addClassDeclaration(node: ClassDeclaration) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
             isClassScope: true
-        }));
+        });
     }
 
     _addFunctionExpression(node: FunctionExpression) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
             isFunctionScope: true
-        }));
+        });
     }
 
     _addFunctionDeclaration(node: FunctionDeclaration) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
             isFunctionScope: true
-        }));
+        });
     }
 
     _addArrowFunctionExpression(node: ArrowFunctionExpression) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
             isFunctionScope: true,
             isArrowFunctionScope: true
-        }));
+        });
     }
 
     _addScopedBlock(node: Node) {
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getParentScopeFor(node)
-        }));
+        });
     }
 
     _addBlockStatement(node: BlockStatement) {
@@ -221,10 +232,10 @@ export default class ScopesApi {
         ) {
             return;
         }
-        this._scopesMap.set(node, new Scope({
+        this._addScope({
             node,
             parentScope: this._getScopeFor(parentElement)
-        }));
+        });
     }
 
     _removeBlockStatement(node: BlockStatement) {
@@ -278,7 +289,7 @@ export default class ScopesApi {
             }
         }
 
-        scope._addReference({node, name, read: true, write: false});
+        this._addReferenceToScope(scope, {node, name, read: true, write: false});
     }
 
     _addIdentifier(node: Identifier) {
@@ -293,7 +304,7 @@ export default class ScopesApi {
         if (parentElement instanceof Property && parentElement.parentElement) {
             if (node === parentElement.key && !parentElement.shorthand) {
                 if (parentElement.computed) {
-                    scope._addReference({node, name, read: true, write: false});
+                    this._addReferenceToScope(scope, {node, name, read: true, write: false});
                 }
                 return;
             }
@@ -328,9 +339,9 @@ export default class ScopesApi {
             container instanceof ArrowFunctionExpression
         ) {
             if (container.params.indexOf(topLevelPattern) !== -1) {
-                scope._addDefinition({node, name, type: types.Parameter});
+                this._addDefinitionToScope(scope, {node, name, type: types.Parameter});
                 if (topLevelPattern instanceof AssignmentPattern) {
-                    scope._addReference({node, name, read: false, write: true, type: types.Parameter});
+                    this._addReferenceToScope(scope, {node, name, read: false, write: true, type: types.Parameter});
                 }
                 return;
             }
@@ -346,12 +357,12 @@ export default class ScopesApi {
                     if (variableDeclaration.kind === 'const') {
                         type = types.Constant;
                     }
-                    scope._addDefinition({node, name, type});
+                    this._addDefinitionToScope(scope, {node, name, type});
                     let write = container.init ||
                         variableDeclaration.parentElement instanceof ForOfStatement ||
                         variableDeclaration.parentElement instanceof ForInStatement;
                     if (write) {
-                        scope._addReference({node, name, read: false, write: true, type});
+                        this._addReferenceToScope(scope, {node, name, read: false, write: true, type});
                     }
                 }
                 return;
@@ -359,19 +370,19 @@ export default class ScopesApi {
         }
         if (container instanceof CatchClause) {
             if (container.param === topLevelPattern) {
-                scope._addDefinition({node, name, type: types.CatchClauseError});
+                this._addDefinitionToScope(scope, {node, name, type: types.CatchClauseError});
                 return;
             }
         }
         if (container instanceof AssignmentExpression) {
             if (container.left === topLevelPattern) {
-                scope._addReference({node, name, read: container.operator !== '=', write: true});
+                this._addReferenceToScope(scope, {node, name, read: container.operator !== '=', write: true});
                 return;
             }
         }
         if (container instanceof UpdateExpression) {
             if (container.argument === topLevelPattern) {
-                scope._addReference({node, name, read: true, write: true});
+                this._addReferenceToScope(scope, {node, name, read: true, write: true});
                 return;
             }
         }
@@ -391,23 +402,23 @@ export default class ScopesApi {
             }
         }
         if (container instanceof ImportDefaultSpecifier) {
-            scope._addDefinition({node, name, type: types.ImportBinding});
+            this._addDefinitionToScope(scope, {node, name, type: types.ImportBinding});
             return;
         }
         if (container instanceof ImportNamespaceSpecifier) {
-            scope._addDefinition({node, name, type: types.ImportBinding});
+            this._addDefinitionToScope(scope, {node, name, type: types.ImportBinding});
             return;
         }
         if (container instanceof ImportSpecifier) {
             if (container.local === node) {
-                scope._addDefinition({node, name, type: types.ImportBinding});
+                this._addDefinitionToScope(scope, {node, name, type: types.ImportBinding});
             }
             return;
         }
         if (container instanceof ClassExpression) {
             if (container.id === node) {
-                scope._addDefinition({node, name, type: types.SelfReference});
-                scope._addReference({
+                this._addDefinitionToScope(scope, {node, name, type: types.SelfReference});
+                this._addReferenceToScope(scope, {
                     node: node,
                     name: node.name,
                     read: false,
@@ -421,8 +432,8 @@ export default class ScopesApi {
             if (container.id === node) {
                 let parentScope = this._getParentScopeFor(container);
                 if (parentScope) {
-                    parentScope._addDefinition({node, name, type: types.LetVariable});
-                    parentScope._addReference({
+                    this._addDefinitionToScope(parentScope, {node, name, type: types.LetVariable});
+                    this._addReferenceToScope(parentScope, {
                         node: node,
                         name: node.name,
                         read: false,
@@ -437,12 +448,12 @@ export default class ScopesApi {
             if (node === container.id) {
                 let parentScope = this._getParentScopeFor(container);
                 if (parentScope) {
-                    parentScope._addDefinition({
+                    this._addDefinitionToScope(parentScope, {
                         node: node,
                         name: node.name,
                         type: types.LetVariable
                     });
-                    parentScope._addReference({
+                    this._addReferenceToScope(parentScope, {
                         node: node,
                         name: node.name,
                         read: false,
@@ -455,12 +466,12 @@ export default class ScopesApi {
         }
         if (container instanceof FunctionExpression) {
             if (node === container.id) {
-                scope._addDefinition({
+                this._addDefinitionToScope(scope, {
                     node: node,
                     name: node.name,
                     type: types.SelfReference
                 });
-                scope._addReference({
+                this._addReferenceToScope(scope, {
                     node: node,
                     name: node.name,
                     read: false,
@@ -478,20 +489,20 @@ export default class ScopesApi {
         if (container instanceof BreakStatement || container instanceof ContinueStatement) {
             return;
         }
-        scope._addReference({node, name, read: true, write: false});
+        this._addReferenceToScope(scope, {node, name, read: true, write: false});
     }
 
     _addThisExpression(node: ThisExpression) {
         let scope = this._getScopeFor(node);
         if (scope) {
-            scope._addReference({node, name: 'this', read: true, write: false});
+            this._addReferenceToScope(scope, {node, name: 'this', read: true, write: false});
         }
     }
 
     _addSuper(node: Super) {
         let scope = this._getScopeFor(node);
         if (scope) {
-            scope._addReference({node, name: 'super', read: true, write: false});
+            this._addReferenceToScope(scope, {node, name: 'super', read: true, write: false});
         }
     }
 
@@ -530,6 +541,29 @@ export default class ScopesApi {
                 definition._scope._removeDefinition(definition);
             }
         }
+    }
+
+    _addReferenceToScope(scope: Scope, referenceInfo: ReferenceInfo) {
+        let reference = this._programScope._programReferences.get(referenceInfo.node);
+        if (!reference) {
+            scope._addReference(referenceInfo);
+        }
+    }
+
+    _addDefinitionToScope(scope: Scope, definitionInfo: DefinitionInfo) {
+        let definition = this._programScope._programDefinitions.get(definitionInfo.node);
+        if (!definition) {
+            scope._addDefinition(definitionInfo);
+        }
+    }
+
+    _addScope(scopeInfo: ScopeInfo): Scope {
+        let scope = this._scopesMap.get(scopeInfo.node);
+        if (!scope) {
+            scope = new Scope(scopeInfo);
+            this._scopesMap.set(scopeInfo.node, scope);
+        }
+        return scope;
     }
 
     _getParentScopeFor(element: Element): ?Scope {

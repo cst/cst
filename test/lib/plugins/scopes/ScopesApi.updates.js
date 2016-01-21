@@ -11,7 +11,7 @@ function parse(codeLines) {
     });
 }
 
-describe('ScopesPlugin', () => {
+describe.only('ScopesPlugin', () => {
     describe('updates', () => {
         it('should update on new var statements', () => {
             let program = parse(`
@@ -55,6 +55,46 @@ describe('ScopesPlugin', () => {
             expect(scope.variables.length).to.equal(0);
         });
 
+        it('should update on function parameter removal', () => {
+            let program = parse(`
+                ((a) => {})
+            `);
+            let scope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(scope.variables.length).to.equal(1);
+
+            program.selectNodesByType('Identifier')[0].remove();
+            expect(scope.variables.length).to.equal(0);
+        });
+
+        it('should update on function parameter replace', () => {
+            let program = parse(`
+                ((a) => {})
+            `);
+            let scope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('a');
+
+            let func = program.selectNodesByType('ArrowFunctionExpression')[0];
+            let param = program.selectNodesByType('Identifier')[0];
+            func.replaceChild(new Identifier([new Token('Identifier', 'b')]), param);
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('b');
+        });
+
+        it('should update on function parameter rename', () => {
+            let program = parse(`
+                ((a) => {})
+            `);
+            let scope = program.plugins.scopes.acquire(program).childScopes[0];
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('a');
+
+            let param = program.selectNodesByType('Identifier')[0];
+            param.replaceChild(new Token('Identifier', 'b'), param.firstChild);
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('b');
+        });
+
         it('should update on property change from shorthand', () => {
             let program = parse(`
                 ({
@@ -74,6 +114,25 @@ describe('ScopesPlugin', () => {
             );
             expect(scope.variables.length).to.equal(1);
             expect(scope.variables[0].name).to.equal('b');
+            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+        });
+
+        it('should update on property change to shorthand', () => {
+            let program = parse(`
+                ({
+                    a: 1
+                })
+            `);
+            let scope = program.plugins.scopes.acquire(program);
+            expect(scope.variables.length).to.equal(0);
+
+            let property = program.selectNodesByType('Property')[0];
+            property.removeChildren(
+                property.childElements[1],
+                property.lastChild
+            );
+            expect(scope.variables.length).to.equal(1);
+            expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
         });
     });
