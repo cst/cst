@@ -69,6 +69,21 @@ describe('MethodDefinition', () => {
         expect(member.computed).to.equal(false);
     });
 
+    it('should accept generators', () => {
+        let member = parseAndGetClassMember('* x ( v , w ) { ; }');
+        expect(member.key.type).to.equal('Identifier');
+        expect(member.key.name).to.equal('x');
+        expect(member.value.type).to.equal('FunctionExpression');
+        expect(member.value.generator).to.equal(true);
+        expect(member.value.params[0].type).to.deep.equal('Identifier');
+        expect(member.value.params[0].name).to.deep.equal('v');
+        expect(member.value.params[1].type).to.deep.equal('Identifier');
+        expect(member.value.params[1].name).to.deep.equal('w');
+        expect(member.kind).to.equal('method');
+        expect(member.static).to.equal(false);
+        expect(member.computed).to.equal(false);
+    });
+
     it('should accept constructor', () => {
         let member = parseAndGetClassMember('constructor ( v , w ) { ; }');
         expect(member.key.type).to.equal('Identifier');

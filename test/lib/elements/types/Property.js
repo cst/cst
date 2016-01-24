@@ -169,6 +169,6 @@ describe('Property', () => {
         expect(property.computed).to.equal(false);
 
         expect(property.value.type).to.equal('FunctionExpression');
-        // expect(property.value.generator).to.equal(true); See (#86)
+        expect(property.value.generator).to.equal(true);
     });
 });
