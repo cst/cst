@@ -11,7 +11,7 @@ function parse(codeLines) {
     });
 }
 
-describe.only('ScopesPlugin', () => {
+describe('ScopesPlugin', () => {
     describe('updates', () => {
         it('should update on new var statements', () => {
             let program = parse(`
@@ -134,6 +134,71 @@ describe.only('ScopesPlugin', () => {
             expect(scope.variables.length).to.equal(1);
             expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+        });
+
+        it('should update on nested variable remove', () => {
+            let program = parse(`
+                var a;
+                (() => {
+                    let a;
+                    a++;
+                })
+            `);
+            let programScope = program.plugins.scopes.acquire(program);
+            let functionScope = programScope.childScopes[0];
+            expect(programScope.variables.length).to.equal(1);
+            expect(programScope.variables[0].name).to.equal('a');
+            expect(programScope.variables[0].type).to.equal('Variable');
+            expect(programScope.variables[0].references.length).to.equal(0);
+            expect(functionScope.variables.length).to.equal(1);
+            expect(functionScope.variables[0].name).to.equal('a');
+            expect(functionScope.variables[0].type).to.equal('LetVariable');
+            expect(functionScope.variables[0].references.length).to.equal(1);
+            expect(functionScope.variables[0].references[0].node.parentElement.type)
+                .to.equal('UpdateExpression');
+
+            let functionVar = program.selectNodesByType('VariableDeclaration')[1];
+            functionVar.remove();
+
+            expect(programScope.variables.length).to.equal(1);
+            expect(programScope.variables[0].name).to.equal('a');
+            expect(programScope.variables[0].type).to.equal('Variable');
+            expect(programScope.variables[0].references.length).to.equal(1);
+            expect(programScope.variables[0].references[0].node.parentElement.type)
+                .to.equal('UpdateExpression');
+            expect(functionScope.variables.length).to.equal(0);
+        });
+
+        it('should update on nested parameter remove', () => {
+            let program = parse(`
+                var a;
+                ((a) => {
+                    a++;
+                })
+            `);
+            let programScope = program.plugins.scopes.acquire(program);
+            let functionScope = programScope.childScopes[0];
+            expect(programScope.variables.length).to.equal(1);
+            expect(programScope.variables[0].name).to.equal('a');
+            expect(programScope.variables[0].type).to.equal('Variable');
+            expect(programScope.variables[0].references.length).to.equal(0);
+            expect(functionScope.variables.length).to.equal(1);
+            expect(functionScope.variables[0].name).to.equal('a');
+            expect(functionScope.variables[0].type).to.equal('Parameter');
+            expect(functionScope.variables[0].references.length).to.equal(1);
+            expect(functionScope.variables[0].references[0].node.parentElement.type)
+                .to.equal('UpdateExpression');
+
+            let functionVar = program.selectNodesByType('Identifier')[1];
+            functionVar.remove();
+
+            expect(programScope.variables.length).to.equal(1);
+            expect(programScope.variables[0].name).to.equal('a');
+            expect(programScope.variables[0].type).to.equal('Variable');
+            expect(programScope.variables[0].references.length).to.equal(1);
+            expect(programScope.variables[0].references[0].node.parentElement.type)
+                .to.equal('UpdateExpression');
+            expect(functionScope.variables.length).to.equal(0);
         });
     });
 });

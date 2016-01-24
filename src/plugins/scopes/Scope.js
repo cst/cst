@@ -307,6 +307,9 @@ function removeVariable(variable: Variable) {
             if (variables.length === 0) {
                 scope._variables.delete(variable._name);
             }
+            for (var reference of variable._references) {
+                reference._scope._assignReference(reference, variable._name);
+            }
         }
     }
 }
