@@ -7,6 +7,8 @@ export default class FunctionExpression extends Expression {
 
     constructor(childNodes) {
         super('FunctionExpression', childNodes);
+        this._short = false;
+        this._generatorFromProperty = false;
     }
 
     _acceptChildren(children) {
@@ -14,6 +16,7 @@ export default class FunctionExpression extends Expression {
         let id = null;
         let generator = false;
         let async = false;
+        let short = false;
 
         if (children.isToken('Punctuator', '(')) {
             params = getFunctionParams(children);
@@ -52,6 +55,17 @@ export default class FunctionExpression extends Expression {
         this._params = params;
         this._body = body;
         this._generator = generator;
+        this._short = short;
+    }
+
+    _onSetParentElement(parentElement) {
+        if (parentElement && (parentElement.type === 'Property' || parentElement.type === 'MethodDefinition')) {
+            this._short = true;
+            this._generatorFromProperty = parentElement._generator;
+        } else {
+            this._short = false;
+            this._generatorFromProperty = false;
+        }
     }
 
     get async() {
@@ -75,6 +89,6 @@ export default class FunctionExpression extends Expression {
     }
 
     get generator() {
-        return this._generator;
+        return this._short ? this._generatorFromProperty : this._generator;
     }
 }

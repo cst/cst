@@ -16,6 +16,7 @@ export default class MethodDefinition extends Node {
         let value;
         let kind;
         let staticMember = false;
+        let generator = false;
 
         if (children.isToken('Identifier', 'static')) {
             staticMember = true;
@@ -29,6 +30,11 @@ export default class MethodDefinition extends Node {
             children.skipNonCode();
         } else {
             kind = 'method';
+            if (children.isToken('Punctuator', '*')) {
+                generator = true;
+                children.passToken();
+                children.skipNonCode();
+            }
         }
 
         if (children.isNode('Identifier')) {
@@ -57,6 +63,7 @@ export default class MethodDefinition extends Node {
         this._value = value;
         this._computed = computed;
         this._static = staticMember;
+        this._generator = generator;
     }
 
     get key() {

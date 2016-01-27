@@ -13,6 +13,7 @@ export default class Property extends Node {
     _acceptChildren(children) {
         let key;
         let value;
+        let generator = false;
         let shorthand = false;
         let method = false;
         let computed = false;
@@ -32,6 +33,7 @@ export default class Property extends Node {
             if (children.isToken('Punctuator', '*')) {
                 children.passToken();
                 children.skipNonCode();
+                generator = true;
             }
 
             kind = 'init';
@@ -60,6 +62,7 @@ export default class Property extends Node {
 
         children.assertEnd();
 
+        this._generator = generator;
         this._kind = kind;
         this._key = key;
         this._value = value;

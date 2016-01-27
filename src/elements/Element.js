@@ -58,6 +58,7 @@ export default class Element {
     _nextSibling: ?Element;
     _previousSibling: ?Element;
     _childElements: Array<Element>;
+    _onSetParentElement: ?((parentElement: ?Element) => void);
 
     value: ?string;
     isModuleSpecifier: boolean;
@@ -530,7 +531,7 @@ export default class Element {
             ownerProgram._removeElementsFromProgram([element]);
         }
 
-        element._parentElement = null;
+        setParentElement(element, null);
 
         return element;
     }
@@ -706,9 +707,9 @@ export default class Element {
 
         for (let i = 0; i < replacedChildren.length; i++) {
             let replacedChild = replacedChildren[i];
-            replacedChild._parentElement = null;
             replacedChild._previousSibling = null;
             replacedChild._nextSibling = null;
+            setParentElement(replacedChild, null);
         }
 
         if (ownerProgram && newElements) {
@@ -751,9 +752,9 @@ export default class Element {
 
         for (let i = 0; i < removedChildren.length; i++) {
             let removedChild = removedChildren[i];
-            removedChild._parentElement = null;
             removedChild._previousSibling = null;
             removedChild._nextSibling = null;
+            setParentElement(removedChild, null);
         }
     }
 
@@ -837,15 +838,15 @@ export default class Element {
         if (newChildren.length > 0) {
             let previousChild = newChildren[0];
             this._firstChild = previousChild;
-            previousChild._parentElement = this;
             previousChild._previousSibling = null;
+            setParentElement(previousChild, this);
             if (newChildren.length > 1) {
                 // TODO(flow): error with only `let child;`
                 let child = newChildren[1];
                 for (let i = 1; i < newChildren.length; i++) {
                     child = newChildren[i];
-                    child._parentElement = this;
                     child._previousSibling = previousChild;
+                    setParentElement(child, this);
                     previousChild._nextSibling = child;
                     previousChild = child;
                 }
@@ -893,5 +894,12 @@ export default class Element {
 class ConcreteElement extends Element {
     constructor(children: Element[]) {
         super('ConcreteElement', children);
+    }
+}
+
+function setParentElement(element: Element, parentElement: ?Element) {
+    element._parentElement = parentElement;
+    if (element._onSetParentElement) {
+        element._onSetParentElement(parentElement);
     }
 }
