@@ -1,3 +1,5 @@
+import RestProperty from './types/RestProperty';
+
 import AssignmentExpression from './types/AssignmentExpression';
 import AssignmentPattern from './types/AssignmentPattern';
 import ArrayExpression from './types/ArrayExpression';
@@ -79,6 +81,8 @@ import WhileStatement from './types/WhileStatement';
 import YieldExpression from './types/YieldExpression';
 
 export default {
+    RestProperty,
+
     AssignmentExpression,
     AssignmentPattern,
     ArrayExpression,
