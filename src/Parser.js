@@ -73,8 +73,6 @@ export default class Parser {
         this._options = {
             sourceType: 'module',
             strictMode: true,
-            allowHashBang: true,
-            ecmaVersion: Infinity,
             experimentalFeatures: {
                 'es7.asyncFunctions': true,
                 'es7.classProperties': true,
@@ -182,13 +180,13 @@ export default class Parser {
         let ast = parse(code, {
             sourceType: options.sourceType,
             strictMode: options.strictMode,
-            ecmaVersion: options.ecmaVersion,
-            allowHashBang: options.allowHashBang,
-            features: options.experimentalFeatures,
-            plugins: {
-                jsx: languageExtensions.jsx,
-                flow: languageExtensions.flow
-            }
+            allowImportExportEverywhere: options.allowImportExportEverywhere,
+            allowReturnOutsideFunction: options.allowReturnOutsideFunction,
+            allowSuperOutsideMethod: options.allowSuperOutsideMethod,
+            plugins: [
+                ...Object.keys(options.experimentalFeatures),
+                ...Object.keys(options.languageExtensions)
+            ]
         });
 
         let program = ast.program;
