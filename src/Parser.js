@@ -11,9 +11,9 @@ import type BasePlugin from './plugins/BasePlugin';
 /**
  * @typedef {Object} CSTParserOptions
  * @property {String} sourceType Type of parsed code: "module" or "script".
- * @property {Boolean} strictMode
- * @property {Boolean} allowHashBang
- * @property {Number} ecmaVersion
+ * @property {Boolean} allowReturnOutsideFunction
+ * @property {Boolean} allowImportExportEverywhere
+ * @property {Boolean} allowSuperOutsideMethod
  * @property {CSTParserExperimentalFeatureOptions} experimentalFeatures
  * @property {CSTParserLanguageExtensionsOptions} languageExtensions
  */
@@ -26,16 +26,19 @@ import type BasePlugin from './plugins/BasePlugin';
 
 /**
  * @typedef {Object} CSTParserExperimentalFeatureOptions
- * @property {Boolean} 'es7.asyncFunctions'
- * @property {Boolean} 'es7.classProperties'
- * @property {Boolean} 'es7.comprehensions'
- * @property {Boolean} 'es7.decorators'
- * @property {Boolean} 'es7.doExpressions'
- * @property {Boolean} 'es7.exponentiationOperator'
- * @property {Boolean} 'es7.exportExtensions'
- * @property {Boolean} 'es7.functionBind'
- * @property {Boolean} 'es7.objectRestSpread'
- * @property {Boolean} 'es7.trailingFunctionCommas'
+ * @property {Boolean} 'flow'
+ * @property {Boolean} 'jsx'
+ * @property {Boolean} 'asyncFunctions'
+ * @property {Boolean} 'asyncGenerators'
+ * @property {Boolean} 'classConstructorCall'
+ * @property {Boolean} 'classProperties'
+ * @property {Boolean} 'decorators'
+ * @property {Boolean} 'doExpressions'
+ * @property {Boolean} 'exponentiationOperator'
+ * @property {Boolean} 'exportExtensions'
+ * @property {Boolean} 'functionBind'
+ * @property {Boolean} 'objectRestSpread'
+ * @property {Boolean} 'trailingFunctionCommas
  */
 
 // https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
@@ -53,13 +56,12 @@ const DIRECTIVE_GRIT = {
 // checking for the options passed to the babel parse method
 export type CSTParserOptions = {
     sourceType: 'script' | 'module',
-    // allowReturnOutsideFunction: boolean,
-    // allowImportExportEverywhere: boolean,
+    allowReturnOutsideFunction: boolean,
+    allowImportExportEverywhere: boolean,
+    allowSuperOutsideMethod: boolean,
     languageExtensions: Object,
     experimentalFeatures: Object,
     strictMode: ?boolean,
-    allowHashBang: boolean,
-    ecmaVersion: number,
     plugins: BasePlugin[]
 };
 
@@ -75,16 +77,19 @@ export default class Parser {
             sourceType: 'module',
             strictMode: true,
             experimentalFeatures: {
-                'es7.asyncFunctions': true,
-                'es7.classProperties': true,
-                'es7.comprehensions': true,
-                'es7.decorators': true,
-                'es7.doExpressions': true,
-                'es7.exponentiationOperator': true,
-                'es7.exportExtensions': true,
-                'es7.functionBind': true,
-                'es7.objectRestSpread': true,
-                'es7.trailingFunctionCommas': true
+                'flow': true,
+                'jsx': true,
+                'asyncFunctions': true,
+                'asyncGenerators': true,
+                'classConstructorCall': true,
+                'classProperties': true,
+                'decorators': true,
+                'doExpressions': true,
+                'exponentiationOperator': true,
+                'exportExtensions': true,
+                'functionBind': true,
+                'objectRestSpread': true,
+                'trailingFunctionCommas': true
             },
             languageExtensions: {
                 jsx: true,
