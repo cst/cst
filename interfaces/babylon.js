@@ -1,10 +1,9 @@
 // checking for the options passed to the babel parse method
 type babylonOptions = {
   sourceType: 'script' | 'module',
-  // allowReturnOutsideFunction: boolean,
-  // allowImportExportEverywhere: boolean,
-  plugins: Object,
-  features: Object,
+  allowReturnOutsideFunction: boolean,
+  allowImportExportEverywhere: boolean,
+  plugins: Array<string>,
   strictMode: ?boolean,
 
   allowHashBang: boolean,
