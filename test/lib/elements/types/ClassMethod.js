@@ -1,7 +1,7 @@
 import {parseAndGetClassMember} from '../../../utils';
 import {expect} from 'chai';
 
-describe('MethodDefinition', () => {
+describe('ClassMethod', () => {
 
     it('should accept getters', () => {
         let member = parseAndGetClassMember('get x ( ) { ; }');

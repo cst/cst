@@ -43,7 +43,7 @@ describe('ClassExpression', () => {
         expect(statement.superClass).to.equal(null);
         expect(statement.body.type).to.equal('ClassBody');
         expect(statement.body.body.length).to.equal(1);
-        expect(statement.body.body[0].type).to.equal('MethodDefinition');
+        expect(statement.body.body[0].type).to.equal('ClassMethod');
         expect(statement.body.body[0].key.name).to.equal('method');
     });
 
@@ -54,7 +54,7 @@ describe('ClassExpression', () => {
         expect(statement.superClass).to.equal(null);
         expect(statement.body.type).to.equal('ClassBody');
         expect(statement.body.body.length).to.equal(1);
-        expect(statement.body.body[0].type).to.equal('MethodDefinition');
+        expect(statement.body.body[0].type).to.equal('ClassMethod');
         expect(statement.body.body[0].key.name).to.equal('method');
     });
 });

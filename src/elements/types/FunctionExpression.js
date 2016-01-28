@@ -59,7 +59,7 @@ export default class FunctionExpression extends Expression {
     }
 
     _onSetParentElement(parentElement) {
-        if (parentElement && (parentElement.type === 'Property' || parentElement.type === 'MethodDefinition')) {
+        if (parentElement && (parentElement.type === 'Property' || parentElement.type === 'ClassMethod')) {
             this._short = true;
             this._generatorFromProperty = parentElement._generator;
         } else {

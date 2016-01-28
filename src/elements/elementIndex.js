@@ -14,6 +14,7 @@ import CatchClause from './types/CatchClause';
 import ClassBody from './types/ClassBody';
 import ClassDeclaration from './types/ClassDeclaration';
 import ClassExpression from './types/ClassExpression';
+import ClassMethod from './types/ClassMethod';
 import ConditionalExpression from './types/ConditionalExpression';
 import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
@@ -52,7 +53,6 @@ import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
 import MetaProperty from './types/MetaProperty';
-import MethodDefinition from './types/MethodDefinition';
 import NewExpression from './types/NewExpression';
 import ObjectExpression from './types/ObjectExpression';
 import ObjectPattern from './types/ObjectPattern';
@@ -97,6 +97,7 @@ export default {
     ClassBody,
     ClassDeclaration,
     ClassExpression,
+    ClassMethod,
     ConditionalExpression,
     ContinueStatement,
     DebuggerStatement,
@@ -135,7 +136,6 @@ export default {
     LogicalExpression,
     MemberExpression,
     MetaProperty,
-    MethodDefinition,
     NewExpression,
     ObjectExpression,
     ObjectPattern,
