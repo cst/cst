@@ -66,6 +66,7 @@ export default {
     SequenceExpression: ['expressions'],
     SpreadElement: ['argument'],
     SpreadProperty: ['argument'],
+    StringLiteral: [],
     Super: [],
     SwitchCase: ['test', 'consequent'],
     SwitchStatement: ['discriminant', 'cases'],
