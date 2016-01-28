@@ -49,7 +49,7 @@ export default {
     /*IT*/ LogicalExpression: ['left', 'right'],
     /*IT*/ MemberExpression: ['object', 'property'],
     /*IT*/ MetaProperty: ['meta', 'property'],
-    /*IT*/ MethodDefinition: ['key', 'value'],
+    /*IT*/ ClassMethod: ['key', 'value'],
     /*IT*/ ModuleDeclaration: [],
     /*IT*/ ModuleSpecifier: ['local'],
     /*IT*/ NewExpression: ['callee', 'arguments'],

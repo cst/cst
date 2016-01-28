@@ -21,14 +21,14 @@ describe('ClassBody', () => {
     it('should accept single member', () => {
         var statement = parseAndGetStatement('class X { x(){} }').body;
         expect(statement.body.length).to.equal(1);
-        expect(statement.body[0].type).to.equal('MethodDefinition');
+        expect(statement.body[0].type).to.equal('ClassMethod');
     });
 
     it('should accept multiple member', () => {
         var statement = parseAndGetStatement('class X { x(){} get y() {} set y(v) {} }').body;
         expect(statement.body.length).to.equal(3);
-        expect(statement.body[0].type).to.equal('MethodDefinition');
-        expect(statement.body[1].type).to.equal('MethodDefinition');
-        expect(statement.body[2].type).to.equal('MethodDefinition');
+        expect(statement.body[0].type).to.equal('ClassMethod');
+        expect(statement.body[1].type).to.equal('ClassMethod');
+        expect(statement.body[2].type).to.equal('ClassMethod');
     });
 });
