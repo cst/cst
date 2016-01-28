@@ -54,6 +54,7 @@ import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
 import MetaProperty from './types/MetaProperty';
 import NewExpression from './types/NewExpression';
+import NumericLiteral from './types/NumericLiteral';
 import ObjectExpression from './types/ObjectExpression';
 import ObjectPattern from './types/ObjectPattern';
 import Program from './types/Program';
@@ -137,6 +138,7 @@ export default {
     MemberExpression,
     MetaProperty,
     NewExpression,
+    NumericLiteral,
     ObjectExpression,
     ObjectPattern,
     Program,
