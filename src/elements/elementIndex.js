@@ -64,6 +64,7 @@ import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
 import SpreadElement from './types/SpreadElement';
 import SpreadProperty from './types/SpreadProperty';
+import StringLiteral from './types/StringLiteral';
 import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
 import SwitchStatement from './types/SwitchStatement';
@@ -148,6 +149,7 @@ export default {
     SequenceExpression,
     SpreadElement,
     SpreadProperty,
+    StringLiteral,
     Super,
     SwitchCase,
     SwitchStatement,
