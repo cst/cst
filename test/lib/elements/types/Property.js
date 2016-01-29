@@ -42,7 +42,7 @@ describe('Property', () => {
         expect(property.key.type).to.equal('BinaryExpression');
         expect(property.key.left.type).to.equal('Identifier');
         expect(property.key.left.name).to.equal('x');
-        expect(property.key.right.type).to.equal('Literal');
+        expect(property.key.right.type).to.equal('NumericLiteral');
         expect(property.key.right.value).to.equal(1);
         expect(property.value.type).to.equal('Identifier');
         expect(property.value.name).to.equal('y');
@@ -80,7 +80,7 @@ describe('Property', () => {
         expect(property.key.type).to.equal('BinaryExpression');
         expect(property.key.left.type).to.equal('Identifier');
         expect(property.key.left.name).to.equal('x');
-        expect(property.key.right.type).to.equal('Literal');
+        expect(property.key.right.type).to.equal('NumericLiteral');
         expect(property.key.right.value).to.equal(1);
         expect(property.value.type).to.equal('FunctionExpression');
         expect(property.value.params).to.deep.equal([]);
@@ -108,7 +108,7 @@ describe('Property', () => {
         expect(property.key.type).to.equal('BinaryExpression');
         expect(property.key.left.type).to.equal('Identifier');
         expect(property.key.left.name).to.equal('x');
-        expect(property.key.right.type).to.equal('Literal');
+        expect(property.key.right.type).to.equal('NumericLiteral');
         expect(property.key.right.value).to.equal(1);
         expect(property.value.type).to.equal('FunctionExpression');
         expect(property.value.params[0].type).to.deep.equal('Identifier');
@@ -139,7 +139,7 @@ describe('Property', () => {
         expect(property.key.type).to.equal('BinaryExpression');
         expect(property.key.left.type).to.equal('Identifier');
         expect(property.key.left.name).to.equal('x');
-        expect(property.key.right.type).to.equal('Literal');
+        expect(property.key.right.type).to.equal('NumericLiteral');
         expect(property.key.right.value).to.equal(1);
         expect(property.value.type).to.equal('FunctionExpression');
         expect(property.value.params[0].type).to.deep.equal('Identifier');

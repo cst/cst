@@ -10,7 +10,7 @@ describe('AwaitExpression', () => {
     it('should accept argument', () => {
         var statement = parseAndGetExpressionInAsyncFunction('await 1');
         expect(statement.type).to.equal('AwaitExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
@@ -25,14 +25,14 @@ describe('AwaitExpression', () => {
     it('should accept argument in parentheses', () => {
         var statement = parseAndGetExpressionInAsyncFunction('await ( 1 )');
         expect(statement.type).to.equal('AwaitExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
     it('should work without semicolon', () => {
         var statement = parseAndGetExpressionInAsyncFunction('await 1');
         expect(statement.type).to.equal('AwaitExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 });

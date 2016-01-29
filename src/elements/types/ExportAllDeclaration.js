@@ -12,7 +12,7 @@ export default class ExportAllDeclaration extends ModuleDeclaration {
         children.skipNonCode();
         children.passToken('Identifier', 'from');
         children.skipNonCode();
-        let source = children.passNode('Literal');
+        let source = children.passNode('StringLiteral');
         if (!children.isEnd) {
             children.skipNonCode();
             children.passToken('Punctuator', ';');

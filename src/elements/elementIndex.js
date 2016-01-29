@@ -49,8 +49,8 @@ import JSXMemberExpression from './types/JSXMemberExpression';
 import JSXNamespacedName from './types/JSXNamespacedName';
 import JSXOpeningElement from './types/JSXOpeningElement';
 import JSXSpreadAttribute from './types/JSXSpreadAttribute';
+import JSXText from './types/JSXText';
 import LabeledStatement from './types/LabeledStatement';
-import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
 import MetaProperty from './types/MetaProperty';
@@ -58,7 +58,9 @@ import NewExpression from './types/NewExpression';
 import NullLiteral from './types/NullLiteral';
 import NumericLiteral from './types/NumericLiteral';
 import ObjectExpression from './types/ObjectExpression';
+import ObjectMethod from './types/ObjectMethod';
 import ObjectPattern from './types/ObjectPattern';
+import ObjectProperty from './types/ObjectProperty';
 import Program from './types/Program';
 import Property from './types/Property';
 import RestElement from './types/RestElement';
@@ -136,8 +138,8 @@ export default {
     JSXNamespacedName,
     JSXOpeningElement,
     JSXSpreadAttribute,
+    JSXText,
     LabeledStatement,
-    Literal,
     LogicalExpression,
     MemberExpression,
     MetaProperty,
@@ -145,7 +147,9 @@ export default {
     NullLiteral,
     NumericLiteral,
     ObjectExpression,
+    ObjectMethod,
     ObjectPattern,
+    ObjectProperty,
     Program,
     Property,
     RestElement,

@@ -8,7 +8,7 @@ describe('IfStatement', () => {
 
     it('should accept single statement', () => {
         var statement = parseAndGetStatement('if (true) x;');
-        expect(statement.test.type).to.equal('Literal');
+        expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.consequent.type).to.equal('ExpressionStatement');
         expect(statement.consequent.expression.type).to.equal('Identifier');
@@ -17,7 +17,7 @@ describe('IfStatement', () => {
 
     it('should accept expression in parentheses', () => {
         var statement = parseAndGetStatement('if ((true)) x;');
-        expect(statement.test.type).to.equal('Literal');
+        expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.consequent.type).to.equal('ExpressionStatement');
         expect(statement.consequent.expression.type).to.equal('Identifier');
@@ -26,7 +26,7 @@ describe('IfStatement', () => {
 
     it('should accept single else statement', () => {
         var statement = parseAndGetStatement('if ( true ) x ; else y ;');
-        expect(statement.test.type).to.equal('Literal');
+        expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.consequent.type).to.equal('ExpressionStatement');
         expect(statement.consequent.expression.type).to.equal('Identifier');
@@ -38,7 +38,7 @@ describe('IfStatement', () => {
 
     it('should accept blocks', () => {
         var statement = parseAndGetStatement('if ( true ) { x; } else { y; }');
-        expect(statement.test.type).to.equal('Literal');
+        expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.consequent.type).to.equal('BlockStatement');
         expect(statement.alternate.type).to.equal('BlockStatement');

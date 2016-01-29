@@ -27,7 +27,7 @@ describe('ArrowFunctionExpression', () => {
     it('should accept expression', () => {
         var expression = parseAndGetExpression('(() => 1)');
         expect(expression.params.length).to.equal(0);
-        expect(expression.body.type).to.equal('Literal');
+        expect(expression.body.type).to.equal('NumericLiteral');
         expect(expression.body.value).to.equal(1);
         expect(expression.generator).to.equal(false);
         expect(expression.expression).to.equal(true);
@@ -36,7 +36,7 @@ describe('ArrowFunctionExpression', () => {
     it('should accept expression with parentheses', () => {
         var expression = parseAndGetExpression('(() => (1))');
         expect(expression.params.length).to.equal(0);
-        expect(expression.body.type).to.equal('Literal');
+        expect(expression.body.type).to.equal('NumericLiteral');
         expect(expression.body.value).to.equal(1);
         expect(expression.generator).to.equal(false);
         expect(expression.expression).to.equal(true);

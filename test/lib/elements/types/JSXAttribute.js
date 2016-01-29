@@ -18,7 +18,7 @@ describe('JSXAttribute', () => {
         expect(expression.openingElement.attributes[0].type).to.equal('JSXAttribute');
         expect(expression.openingElement.attributes[0].name.type).to.equal('JSXIdentifier');
         expect(expression.openingElement.attributes[0].name.name).to.equal('b');
-        expect(expression.openingElement.attributes[0].value.type).to.equal('Literal');
+        expect(expression.openingElement.attributes[0].value.type).to.equal('StringLiteral');
         expect(expression.openingElement.attributes[0].value.value).to.equal('3');
         expect(expression.openingElement.attributes[0].value.raw).to.equal('"3"');
     });
@@ -32,7 +32,7 @@ describe('JSXAttribute', () => {
         expect(expression.openingElement.attributes[0].name.namespace.name).to.equal('b');
         expect(expression.openingElement.attributes[0].name.name.type).to.equal('JSXIdentifier');
         expect(expression.openingElement.attributes[0].name.name.name).to.equal('c');
-        expect(expression.openingElement.attributes[0].value.type).to.equal('Literal');
+        expect(expression.openingElement.attributes[0].value.type).to.equal('StringLiteral');
         expect(expression.openingElement.attributes[0].value.value).to.equal('3');
         expect(expression.openingElement.attributes[0].value.raw).to.equal('"3"');
     });
