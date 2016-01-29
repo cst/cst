@@ -55,6 +55,7 @@ export default {
     ModuleDeclaration: [],
     ModuleSpecifier: ['local'],
     NewExpression: ['callee', 'arguments'],
+    NullLiteral: [],
     NumericLiteral: [],
     ObjectExpression: ['properties'],
     ObjectPattern: ['properties'],
