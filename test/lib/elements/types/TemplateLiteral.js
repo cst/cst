@@ -105,9 +105,9 @@ describe('TemplateLiteral', () => {
         expect(expression.expressions[0].expressions.length).to.equal(1);
         expect(expression.expressions[0].expressions[0].type).to.equal('BinaryExpression');
         expect(expression.expressions[0].expressions[0].operator).to.equal('+');
-        expect(expression.expressions[0].expressions[0].left.type).to.equal('Literal');
+        expect(expression.expressions[0].expressions[0].left.type).to.equal('NumericLiteral');
         expect(expression.expressions[0].expressions[0].left.value).to.equal(1);
-        expect(expression.expressions[0].expressions[0].right.type).to.equal('Literal');
+        expect(expression.expressions[0].expressions[0].right.type).to.equal('NumericLiteral');
         expect(expression.expressions[0].expressions[0].left.value).to.equal(1);
     });
 });

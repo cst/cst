@@ -13,7 +13,7 @@ export default class JSXElement extends Expression {
         if (!openingElement.selfClosing) {
             children.skipNonCode();
             while (!children.isNode('JSXClosingElement')) {
-                childrenProperty.push(children.passOneOfNode(['Literal', 'JSXExpressionContainer', 'JSXElement']));
+                childrenProperty.push(children.passOneOfNode(['JSXText', 'JSXExpressionContainer', 'JSXElement']));
             }
             children.skipNonCode();
             if (children.isNode('JSXClosingElement')) {

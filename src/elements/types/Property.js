@@ -97,7 +97,7 @@ export default class Property extends Node {
 }
 
 function readKey(children) {
-    if (children.isNode('Literal') || children.isNode('Identifier')) {
+    if (children.isNode('StringLiteral') || children.isNode('Identifier')) {
         return children.passNode();
     } else {
         children.passToken('Punctuator', '[');

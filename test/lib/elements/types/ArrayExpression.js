@@ -20,14 +20,14 @@ describe('ArrayExpression', () => {
         var array = parseAndGetExpression('[x, 1]');
         expect(array.elements.length).to.equal(2);
         expect(array.elements[0].type).to.equal('Identifier');
-        expect(array.elements[1].type).to.equal('Literal');
+        expect(array.elements[1].type).to.equal('NumericLiteral');
     });
 
     it('should accept expressions', () => {
         var array = parseAndGetExpression('[(x = 1), (1)]');
         expect(array.elements.length).to.equal(2);
         expect(array.elements[0].type).to.equal('AssignmentExpression');
-        expect(array.elements[1].type).to.equal('Literal');
+        expect(array.elements[1].type).to.equal('NumericLiteral');
     });
 
     it('should accept holes', () => {
@@ -36,7 +36,7 @@ describe('ArrayExpression', () => {
         expect(array.elements[0]).to.equal(null);
         expect(array.elements[1].type).to.equal('Identifier');
         expect(array.elements[2]).to.equal(null);
-        expect(array.elements[3].type).to.equal('Literal');
+        expect(array.elements[3].type).to.equal('NumericLiteral');
         expect(array.elements[4]).to.equal(null);
     });
 

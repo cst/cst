@@ -10,7 +10,7 @@ describe('YieldExpression', () => {
     it('should accept argument', () => {
         var statement = parseAndGetExpressionInGenerator('yield 1');
         expect(statement.type).to.equal('YieldExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
@@ -34,14 +34,14 @@ describe('YieldExpression', () => {
     it('should accept argument in parentheses', () => {
         var statement = parseAndGetExpressionInGenerator('yield ( 1 )');
         expect(statement.type).to.equal('YieldExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
     it('should work without semicolon', () => {
         var statement = parseAndGetExpressionInGenerator('yield 1');
         expect(statement.type).to.equal('YieldExpression');
-        expect(statement.argument.type).to.equal('Literal');
+        expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 

@@ -9,13 +9,13 @@ describe('ExportAllDeclaration', () => {
 
     it('should accept export', () => {
         var statement = parseAndGetStatement('export * from "a";');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('a');
     });
 
     it('should accept export with relative path', () => {
         var statement = parseAndGetStatement('export * from "./a";');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('./a');
     });
 
