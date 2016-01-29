@@ -8,6 +8,7 @@ import ArrowFunctionExpression from './types/ArrowFunctionExpression';
 import AwaitExpression from './types/AwaitExpression';
 import BinaryExpression from './types/BinaryExpression';
 import BlockStatement from './types/BlockStatement';
+import BooleanLiteral from './types/BooleanLiteral';
 import BreakStatement from './types/BreakStatement';
 import CallExpression from './types/CallExpression';
 import CatchClause from './types/CatchClause';
@@ -94,6 +95,7 @@ export default {
     AwaitExpression,
     BinaryExpression,
     BlockStatement,
+    BooleanLiteral,
     BreakStatement,
     CallExpression,
     CatchClause,

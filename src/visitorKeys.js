@@ -7,6 +7,7 @@ export default {
     AwaitExpression: ['argument'],
     BinaryExpression: ['left', 'right'],
     BlockStatement: ['body'],
+    BooleanLiteral: [],
     BreakStatement: ['label'],
     CallExpression: ['callee', 'arguments'],
     CatchClause: ['param', 'body'],
