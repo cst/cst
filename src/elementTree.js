@@ -228,7 +228,6 @@ function processToken(token: Object, source: string): BabylonToken {
         token.type = 'String';
     } else if (type === tt.regexp) {
         token.type = 'RegularExpression';
-        token.value = token.value.value;
     } else if (type === 'CommentLine') {
         token.sourceCode = '//' + token.value;
     } else if (type === 'CommentBlock') {

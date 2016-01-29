@@ -64,6 +64,7 @@ export default {
     ObjectProperty: ['key', 'value'],
     Program: ['body'],
     Property: ['key', 'value'],
+    RegExpLiteral: [],
     RestElement: ['argument'],
     RestProperty: ['argument'],
     ReturnStatement: ['argument'],
