@@ -8,9 +8,15 @@ export default class ClassDeclaration extends Statement {
     _acceptChildren(children) {
         children.passToken('Keyword', 'class');
         children.skipNonCode();
-        let id = children.passNode('Identifier');
-        children.skipNonCode();
+
         let superClass = null;
+        let id = null;
+
+        if (children.isNode('Identifier')) {
+            id = children.passNode('Identifier');
+            children.skipNonCode();
+        }
+
         if (children.isToken('Keyword', 'extends')) {
             children.passToken('Keyword', 'extends');
             children.skipNonCode();

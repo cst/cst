@@ -63,7 +63,6 @@ export default {
     ObjectPattern: [],
     ObjectProperty: ['key', 'value'],
     Program: ['body'],
-    Property: ['key', 'value'],
     RegExpLiteral: [],
     RestElement: ['argument'],
     RestProperty: ['argument'],

@@ -106,7 +106,7 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
 
-            program.selectNodesByType('Property')[0].appendChild(
+            program.selectNodesByType('ObjectProperty')[0].appendChild(
                 new Fragment([
                     new Token('Punctuator', ':'),
                     new Identifier([new Token('Identifier', 'b')])
@@ -126,7 +126,7 @@ describe('ScopesPlugin', () => {
             let scope = program.plugins.scopes.acquire(program);
             expect(scope.variables.length).to.equal(0);
 
-            let property = program.selectNodesByType('Property')[0];
+            let property = program.selectNodesByType('ObjectProperty')[0];
             property.removeChildren(
                 property.childElements[1],
                 property.lastChild

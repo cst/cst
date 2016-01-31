@@ -82,14 +82,14 @@ describe('AssignmentPattern', () => {
         let param = parseAndGetStatementInFunctionParams(' {x, y} = {x: 1, y: 2} ')[0];
         expect(param.left.type).to.equal('ObjectPattern');
         expect(param.left.properties.length).to.equal(2);
-        expect(param.left.properties[0].type).to.equal('Property');
+        expect(param.left.properties[0].type).to.equal('ObjectProperty');
         expect(param.left.properties[0].shorthand).to.equal(true);
         expect(param.left.properties[0].key.type).to.equal('Identifier');
         expect(param.left.properties[0].key.name).to.equal('x');
         expect(param.left.properties[0].value.type).to.equal('Identifier');
         expect(param.left.properties[0].value.name).to.equal('x');
 
-        expect(param.left.properties[1].type).to.equal('Property');
+        expect(param.left.properties[1].type).to.equal('ObjectProperty');
         expect(param.left.properties[1].shorthand).to.equal(true);
         expect(param.left.properties[1].key.type).to.equal('Identifier');
         expect(param.left.properties[1].key.name).to.equal('y');
@@ -98,14 +98,14 @@ describe('AssignmentPattern', () => {
 
         expect(param.right.type).to.equal('ObjectExpression');
         expect(param.right.properties.length).to.equal(2);
-        expect(param.right.properties[0].type).to.equal('Property');
+        expect(param.right.properties[0].type).to.equal('ObjectProperty');
         expect(param.right.properties[0].shorthand).to.equal(false);
         expect(param.right.properties[0].key.type).to.equal('Identifier');
         expect(param.right.properties[0].key.name).to.equal('x');
         expect(param.right.properties[0].value.type).to.equal('NumericLiteral');
         expect(param.right.properties[0].value.value).to.equal(1);
 
-        expect(param.right.properties[1].type).to.equal('Property');
+        expect(param.right.properties[1].type).to.equal('ObjectProperty');
         expect(param.right.properties[1].shorthand).to.equal(false);
         expect(param.right.properties[1].key.type).to.equal('Identifier');
         expect(param.right.properties[1].key.name).to.equal('y');
