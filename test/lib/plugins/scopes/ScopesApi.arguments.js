@@ -67,7 +67,7 @@ describe('ScopesPlugin', () => {
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
             expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
             expect(paramA.references[0].isReadWrite).to.equal(true);
 
@@ -95,7 +95,7 @@ describe('ScopesPlugin', () => {
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
             expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
             expect(paramA.references[0].isReadWrite).to.equal(true);
 
@@ -123,7 +123,7 @@ describe('ScopesPlugin', () => {
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
             expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
             expect(paramA.references[0].isReadWrite).to.equal(true);
 

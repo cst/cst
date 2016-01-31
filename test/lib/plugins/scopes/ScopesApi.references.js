@@ -46,7 +46,7 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
             expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('Property');
+            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('ObjectProperty');
         });
 
         it('should not ignore computed object keys', () => {
@@ -61,7 +61,7 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
             expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('Property');
+            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('ObjectProperty');
         });
 
         it('should not ignore object property values', () => {
@@ -76,7 +76,7 @@ describe('ScopesPlugin', () => {
             expect(scope.variables[0].name).to.equal('a');
             expect(scope.variables[0].type).to.equal('ImplicitGlobal');
             expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('Property');
+            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('ObjectProperty');
         });
 
         it('should ignore getter/setter identifiers', () => {

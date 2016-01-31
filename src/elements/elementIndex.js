@@ -62,7 +62,6 @@ import ObjectMethod from './types/ObjectMethod';
 import ObjectPattern from './types/ObjectPattern';
 import ObjectProperty from './types/ObjectProperty';
 import Program from './types/Program';
-import Property from './types/Property';
 import RegExpLiteral from './types/RegExpLiteral';
 import RestElement from './types/RestElement';
 import ReturnStatement from './types/ReturnStatement';
@@ -152,7 +151,6 @@ export default {
     ObjectPattern,
     ObjectProperty,
     Program,
-    Property,
     RegExpLiteral,
     RestElement,
     ReturnStatement,

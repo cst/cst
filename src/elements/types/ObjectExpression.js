@@ -20,7 +20,7 @@ export default class ObjectExpression extends Expression {
                 if (children.isNode('SpreadProperty')) {
                     properties.push(children.passNode('SpreadProperty'));
                 } else {
-                    properties.push(children.passNode('Property'));
+                    properties.push(children.passNode('ObjectProperty'));
                 }
                 children.skipNonCode();
                 if (children.isToken('Punctuator', ',')) {

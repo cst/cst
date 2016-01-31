@@ -26,7 +26,7 @@ describe('RestProperty', () => {
 
     it('should allow other params', () => {
         let properties = parseAndGetStatement('let { a, ... b } = c ;').declarations[0].id.properties;
-        expect(properties[0].type).to.equal('Property');
+        expect(properties[0].type).to.equal('ObjectProperty');
         expect(properties[0].key.type).to.equal('Identifier');
         expect(properties[0].key.name).to.equal('a');
         expect(properties[0].value.type).to.equal('Identifier');

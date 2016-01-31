@@ -126,7 +126,7 @@ describe('Element', () => {
             expect(program.sourceCode).to.equal('; var second = 2;');
         });
 
-        it('should replace property', () => {
+        it('should replace ObjectProperty', () => {
             let program = parseAndGetProgram('({ test: 1 })');
             let iden = program.selectTokensByType('Identifier')[0];
 

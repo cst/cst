@@ -60,7 +60,7 @@ describe('JSXElement', () => {
         expect(expression.children[0].expression.type).to.equal('JSXEmptyExpression');
     });
 
-    it('allow opening and closing tag with literal', () => {
+    it('allow opening and closing tag with JSXText', () => {
         const expression = parseAndGetExpression('< a >asdf< / a >');
         expect(expression.type).to.equal('JSXElement');
         expect(expression.openingElement.type).to.equal('JSXOpeningElement');
@@ -82,7 +82,7 @@ describe('JSXElement', () => {
         expect(expression.children[0].childElements[0].type).to.equal('JSXText');
     });
 
-    it('allow opening and closing tag with children', () => {
+    it('allow opening and closing tag with StringLiteral', () => {
         const expression = parseAndGetExpression('< a >{"a"}< / a >');
         expect(expression.type).to.equal('JSXElement');
         expect(expression.openingElement.type).to.equal('JSXOpeningElement');
