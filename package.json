@@ -29,7 +29,8 @@
     "flow": "flow check",
     "build": "babel src -d lib",
     "precommit": "npm test",
-    "release": "npm run build && npm publish",
+    "release": "npm publish",
+    "prepublish": "npm run build",
     "postpublish": "rm -Rf lib"
   },
   "devDependencies": {
