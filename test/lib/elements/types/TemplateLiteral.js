@@ -38,11 +38,11 @@ describe('TemplateLiteral', () => {
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(2);
         expect(expression.quasis[0].tail).to.equal(false);
-        expect(expression.quasis[0].value.cooked).to.equal('template');
-        expect(expression.quasis[0].value.raw).to.equal('template');
+        expect(expression.quasis[0].value.cooked).to.equal('');
+        expect(expression.quasis[0].value.raw).to.equal('');
         expect(expression.quasis[1].tail).to.equal(true);
-        expect(expression.quasis[1].value.cooked).to.equal('template');
-        expect(expression.quasis[1].value.raw).to.equal('template');
+        expect(expression.quasis[1].value.cooked).to.equal('');
+        expect(expression.quasis[1].value.raw).to.equal('');
         expect(expression.expressions.length).to.equal(1);
         expect(expression.expressions[0].type).to.equal('Identifier');
         expect(expression.expressions[0].name).to.equal('a');
@@ -97,8 +97,8 @@ describe('TemplateLiteral', () => {
         expect(expression.expressions[0].type).to.equal('TemplateLiteral');
         expect(expression.expressions[0].quasis.length).to.equal(2);
         expect(expression.expressions[0].quasis[0].tail).to.equal(false);
-        expect(expression.expressions[0].quasis[0].value.cooked).to.equal('template');
-        expect(expression.expressions[0].quasis[0].value.raw).to.equal('template');
+        expect(expression.expressions[0].quasis[0].value.cooked).to.equal('');
+        expect(expression.expressions[0].quasis[0].value.raw).to.equal('');
         expect(expression.expressions[0].quasis[1].tail).to.equal(true);
         expect(expression.expressions[0].quasis[1].value.cooked).to.equal('c');
         expect(expression.expressions[0].quasis[1].value.raw).to.equal('c');
