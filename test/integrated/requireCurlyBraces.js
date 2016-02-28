@@ -34,10 +34,10 @@ switch (x) {
     case 1:
     case 2:{
         x++;
-        break;
-    }default:{
-        x--;
-}}
+        break;}
+    default:{
+        x--;}
+}
 `;
 
 let types = {

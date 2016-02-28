@@ -55,20 +55,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
         throw new Error(`Cannot iterate using ${elementType}`);
     }
 
-    // Babel uses AST-related ranges for cases, but actually they also include all the whitespaces till
-    // the next case or till the end of the switch statement.
-    if (elementType === 'SwitchStatement') {
-        for (let i = 0; i < ast.cases.length; i++) {
-            let switchCase = ast.cases[i];
-            let nextCase = ast.cases[i + 1];
-            if (nextCase) {
-                switchCase.end = nextCase.start;
-            } else {
-                switchCase.end = ast.end - 1;
-            }
-        }
-    }
-
     let childElements = [];
     for (let i = 0; i < childProps.length; i++) {
         let childAst = ast[childProps[i]];
