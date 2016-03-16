@@ -1,4 +1,5 @@
 import Node from '../Node';
+import getFunctionParams from './utils/getFunctionParams';
 
 const getterAndSetter = {
     get: true,
@@ -17,6 +18,8 @@ export default class ObjectMethod extends Node {
         let method = false;
         let computed = false;
         let kind;
+        let params = [];
+        let body;
 
         if (children.isToken('Punctuator', '*')) {
             children.passToken();
@@ -26,23 +29,34 @@ export default class ObjectMethod extends Node {
 
         if (children.isToken('Identifier', getterAndSetter)) {
             kind = children.currentElement.value;
-            children.passToken();
+
+            children.passToken('Identifier');
             children.skipNonCode();
 
             computed = children.isToken('Punctuator', '[');
             key = readKey(children);
+
             children.skipNonCode();
 
-            value = children.passNode('FunctionExpression');
+            params = getFunctionParams(children);
+            children.skipNonCode();
+
+            body = children.passNode('BlockStatement');
         } else {
             kind = 'method';
             computed = children.isToken('Punctuator', '[');
             key = readKey(children);
 
             children.skipNonCode();
-            if (children.isNode('FunctionExpression')) {
+
+            if (children.isToken('Punctuator')) {
                 method = true;
-                value = children.passNode('FunctionExpression');
+
+                params = getFunctionParams(children);
+                children.skipNonCode();
+
+                body = children.passNode('BlockStatement');
+
             } else {
                 children.passToken('Punctuator', ':');
                 children.skipNonCode();
@@ -62,10 +76,20 @@ export default class ObjectMethod extends Node {
         this._value = value;
         this._computed = computed;
         this._method = method;
+        this._params = params;
+        this._body = body;
     }
 
     get key() {
         return this._key;
+    }
+
+    get body() {
+        return this._body;
+    }
+
+    get params() {
+        return this._params;
     }
 
     get value() {
