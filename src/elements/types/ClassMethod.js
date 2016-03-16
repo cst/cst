@@ -1,4 +1,5 @@
 import Node from '../Node';
+import getFunctionParams from './utils/getFunctionParams';
 
 const getterAndSetter = {
     get: true,
@@ -17,6 +18,7 @@ export default class ClassMethod extends Node {
         let kind;
         let staticMember = false;
         let generator = false;
+        let params;
 
         if (children.isToken('Identifier', 'static')) {
             staticMember = true;
@@ -54,24 +56,43 @@ export default class ClassMethod extends Node {
             children.skipNonCode();
         }
 
-        value = children.passNode('FunctionExpression');
+        if (children.isToken('Punctuator', '*')) {
+            generator = true;
+            children.moveNext();
+            children.skipNonCode();
+        }
+
+        if (children.isNode('Identifier')) {
+            id = children.passNode();
+            children.skipNonCode();
+        }
+
+        params = getFunctionParams(children);
+        children.skipNonCode();
+
+        let body = children.passStatement();
 
         children.assertEnd();
 
+        this._params = params;
+        this._body = body;
+        this._generator = generator;
         this._kind = kind;
         this._key = key;
-        this._value = value;
         this._computed = computed;
         this._static = staticMember;
-        this._generator = generator;
     }
 
     get key() {
         return this._key;
     }
 
-    get value() {
-        return this._value;
+    get params() {
+        return this._params.concat();
+    }
+
+    get body() {
+        return this._body;
     }
 
     get kind() {
@@ -80,6 +101,10 @@ export default class ClassMethod extends Node {
 
     get static() {
         return this._static;
+    }
+
+    get generator() {
+        return this._generator;
     }
 
     get computed() {
