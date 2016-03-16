@@ -25,7 +25,8 @@ describe('ExportDefaultDeclaration', () => {
 
     it('should accept a function expression', () => {
         var statement = parseAndGetStatement('export default function() {};');
-        expect(statement.declaration.type).to.equal('FunctionExpression');
+        expect(statement.declaration.type).to.equal('FunctionDeclaration');
+        expect(statement.declaration.id).to.equal(null);
     });
 
     it('should accept an arrow function', () => {
@@ -35,12 +36,13 @@ describe('ExportDefaultDeclaration', () => {
 
     it('should accept a class', () => {
         var statement = parseAndGetStatement('export default class {};');
-        expect(statement.declaration.type).to.equal('ClassExpression');
+        expect(statement.declaration.type).to.equal('ClassDeclaration');
     });
 
     it('should accept a function declaration', () => {
         var statement = parseAndGetStatement('export default function f() {};');
         expect(statement.declaration.type).to.equal('FunctionDeclaration');
+        expect(statement.declaration.id.name).to.equal('f');
     });
 
     it('should accept a named class', () => {

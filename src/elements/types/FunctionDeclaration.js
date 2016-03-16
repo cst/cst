@@ -9,6 +9,7 @@ export default class FunctionDeclaration extends Statement {
     _acceptChildren(children) {
         let params = [];
         let async = false;
+        let id = null;
 
         if (children.isToken('Identifier', 'async')) {
             async = true;
@@ -26,8 +27,10 @@ export default class FunctionDeclaration extends Statement {
             children.skipNonCode();
         }
 
-        let id = children.passNode('Identifier');
-        children.skipNonCode();
+        if (children.isNode('Identifier')) {
+            id = children.passNode('Identifier');
+            children.skipNonCode();
+        }
 
         params = getFunctionParams(children);
         children.skipNonCode();
