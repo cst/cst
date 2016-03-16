@@ -209,10 +209,8 @@ export default class Parser {
             }
         }
 
-        if (options.allowHashBang) {
-            if (code.substr(0, 2) === '#!') {
-                program.tokens[0].type = 'Hashbang';
-            }
+        if (code.substr(0, 2) === '#!') {
+            program.tokens[0].type = 'Hashbang';
         }
 
         return program;
