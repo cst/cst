@@ -2,7 +2,9 @@
 
 # JavaScript CST implementation
 
-### CST
+## CST
+
+Check out [code-example](https://github.com/cst/cst/wiki/How-to-add-a-property-to-an-object) and rest of the wiki for more.
 
 `CST` means Concrete Syntax Tree. Unlike an `AST` (Abstract Syntax Tree), a `CST` contains all the information
 from the JavaScript source file: whitespace, punctuators, comments. This information is extremely useful for
@@ -81,7 +83,7 @@ declare class Element {
   // Location properties
   range(): Range;
   loc(): Location;
-} 
+}
 
 declare class Token extends Element {
   // traversing next/previous token
@@ -89,7 +91,7 @@ declare class Token extends Element {
   previousToken: ?Token;
   // traversing to first/last tokens (not only direct tokens)
   firstToken: ?Token;
-  lastToken: ?Token; 
+  lastToken: ?Token;
   // traversing to first/last direct child
   firstChild: ?Token;
   lastChild: ?Token;
