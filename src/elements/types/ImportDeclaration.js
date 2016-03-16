@@ -44,7 +44,7 @@ export default class ImportDeclaration extends ModuleDeclaration {
             children.skipNonCode();
         }
 
-        source = children.passNode('Literal');
+        source = children.passNode('StringLiteral');
         if (!children.isEnd) {
             children.skipNonCode();
             children.passToken('Punctuator', ';');

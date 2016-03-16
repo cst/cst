@@ -60,7 +60,7 @@ describe('JSXElement', () => {
         expect(expression.children[0].expression.type).to.equal('JSXEmptyExpression');
     });
 
-    it('allow opening and closing tag with literal', () => {
+    it('allow opening and closing tag with JSXText', () => {
         const expression = parseAndGetExpression('< a >asdf< / a >');
         expect(expression.type).to.equal('JSXElement');
         expect(expression.openingElement.type).to.equal('JSXOpeningElement');
@@ -73,9 +73,8 @@ describe('JSXElement', () => {
         expect(expression.openingElement.name.name).to.equal('a');
         expect(expression.openingElement.attributes.length).to.equal(0);
         expect(expression.children.length).to.equal(1);
-        expect(expression.children[0].type).to.equal('Literal');
+        expect(expression.children[0].type).to.equal('JSXText');
         expect(expression.children[0].value).to.equal('asdf');
-        expect(expression.children[0].raw).to.equal('asdf');
 
         // check the token is JSXIdentifier
         expect(expression.openingElement.childElements[2].type).to.equal('JSXIdentifier');
@@ -83,8 +82,8 @@ describe('JSXElement', () => {
         expect(expression.children[0].childElements[0].type).to.equal('JSXText');
     });
 
-    it('allow opening and closing tag with children', () => {
-        const expression = parseAndGetExpression('< a >{\'a\'}< / a >');
+    it('allow opening and closing tag with StringLiteral', () => {
+        const expression = parseAndGetExpression('< a >{"a"}< / a >');
         expect(expression.type).to.equal('JSXElement');
         expect(expression.openingElement.type).to.equal('JSXOpeningElement');
         expect(expression.openingElement.name.type).to.equal('JSXIdentifier');
@@ -97,8 +96,8 @@ describe('JSXElement', () => {
         expect(expression.openingElement.attributes.length).to.equal(0);
         expect(expression.children.length).to.equal(1);
         expect(expression.children[0].type).to.equal('JSXExpressionContainer');
-        expect(expression.children[0].expression.type).to.equal('Literal');
+        expect(expression.children[0].expression.type).to.equal('StringLiteral');
         expect(expression.children[0].expression.value).to.equal('a');
-        expect(expression.children[0].expression.raw).to.equal('\'a\'');
+        expect(expression.children[0].expression.raw).to.equal('"a"');
     });
 });

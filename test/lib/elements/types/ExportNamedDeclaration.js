@@ -62,7 +62,7 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.specifiers[0].local.name).to.equal('x');
         expect(statement.specifiers[0].exported.type).to.equal('Identifier');
         expect(statement.specifiers[0].exported.name).to.equal('x');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('m');
     });
 
@@ -80,7 +80,7 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.specifiers[1].local.name).to.equal('a');
         expect(statement.specifiers[1].exported.type).to.equal('Identifier');
         expect(statement.specifiers[1].exported.name).to.equal('b');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('m');
     });
 
@@ -93,7 +93,7 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.specifiers[0].local.name).to.equal('default');
         expect(statement.specifiers[0].exported.type).to.equal('Identifier');
         expect(statement.specifiers[0].exported.name).to.equal('y');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('m');
     });
 
@@ -104,7 +104,7 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.specifiers[0].type).to.equal('ExportDefaultSpecifier');
         expect(statement.specifiers[0].exported.type).to.equal('Identifier');
         expect(statement.specifiers[0].exported.name).to.equal('x');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('m');
     });
 
@@ -115,7 +115,7 @@ describe('ExportNamedDeclaration', () => {
         expect(statement.specifiers[0].type).to.equal('ExportNamespaceSpecifier');
         expect(statement.specifiers[0].exported.type).to.equal('Identifier');
         expect(statement.specifiers[0].exported.name).to.equal('x');
-        expect(statement.source.type).to.equal('Literal');
+        expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('m');
     });
 

@@ -5,19 +5,24 @@ const getterAndSetter = {
     set: true
 };
 
-export default class Property extends Node {
+export default class ObjectMethod extends Node {
     constructor(childNodes) {
-        super('Property', childNodes);
+        super('ObjectMethod', childNodes);
     }
 
     _acceptChildren(children) {
         let key;
         let value;
         let generator = false;
-        let shorthand = false;
         let method = false;
         let computed = false;
         let kind;
+
+        if (children.isToken('Punctuator', '*')) {
+            children.passToken();
+            children.skipNonCode();
+            generator = true;
+        }
 
         if (children.isToken('Identifier', getterAndSetter)) {
             kind = children.currentElement.value;
@@ -30,32 +35,21 @@ export default class Property extends Node {
 
             value = children.passNode('FunctionExpression');
         } else {
-            if (children.isToken('Punctuator', '*')) {
-                children.passToken();
-                children.skipNonCode();
-                generator = true;
-            }
-
-            kind = 'init';
+            kind = 'method';
             computed = children.isToken('Punctuator', '[');
             key = readKey(children);
 
-            if (children.isEnd && key.type === 'Identifier') {
-                shorthand = true;
-                value = key;
+            children.skipNonCode();
+            if (children.isNode('FunctionExpression')) {
+                method = true;
+                value = children.passNode('FunctionExpression');
             } else {
+                children.passToken('Punctuator', ':');
                 children.skipNonCode();
-                if (children.isNode('FunctionExpression')) {
-                    method = true;
-                    value = children.passNode('FunctionExpression');
+                if (children.currentElement.isPattern) {
+                    value = children.passPattern();
                 } else {
-                    children.passToken('Punctuator', ':');
-                    children.skipNonCode();
-                    if (children.currentElement.isPattern) {
-                        value = children.passPattern();
-                    } else {
-                        value = children.passExpression();
-                    }
+                    value = children.passExpression();
                 }
             }
         }
@@ -66,7 +60,6 @@ export default class Property extends Node {
         this._kind = kind;
         this._key = key;
         this._value = value;
-        this._shorthand = shorthand;
         this._computed = computed;
         this._method = method;
     }
@@ -83,10 +76,6 @@ export default class Property extends Node {
         return this._kind;
     }
 
-    get shorthand() {
-        return this._shorthand;
-    }
-
     get method() {
         return this._method;
     }
@@ -97,7 +86,7 @@ export default class Property extends Node {
 }
 
 function readKey(children) {
-    if (children.isNode('Literal') || children.isNode('Identifier')) {
+    if (children.isNode('StringLiteral') || children.isNode('Identifier')) {
         return children.passNode();
     } else {
         children.passToken('Punctuator', '[');

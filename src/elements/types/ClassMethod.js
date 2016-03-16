@@ -5,9 +5,9 @@ const getterAndSetter = {
     set: true
 };
 
-export default class MethodDefinition extends Node {
+export default class ClassMethod extends Node {
     constructor(childNodes) {
-        super('MethodDefinition', childNodes);
+        super('ClassMethod', childNodes);
     }
 
     _acceptChildren(children) {

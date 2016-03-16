@@ -9,7 +9,7 @@ describe('ExportDefaultDeclaration', () => {
 
     it('should accept a number', () => {
         var statement = parseAndGetStatement('export default 1;');
-        expect(statement.declaration.type).to.equal('Literal');
+        expect(statement.declaration.type).to.equal('NumericLiteral');
         expect(statement.declaration.value).to.equal(1);
     });
 
@@ -44,7 +44,7 @@ describe('ExportDefaultDeclaration', () => {
     });
 
     it('should accept a named class', () => {
-        var statement = parseAndGetStatement('export default class C{};');
+        var statement = parseAndGetStatement('export default class C {};');
         expect(statement.declaration.type).to.equal('ClassDeclaration');
     });
 

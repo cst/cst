@@ -1,6 +1,9 @@
 {
-  "optional": [
-    "es7.classProperties",
-    "runtime"
+  presets: ["es2015"],
+  plugins: [
+    "transform-runtime",
+    "transform-class-properties",
+    "transform-flow-strip-types",
+    "transform-object-rest-spread"
   ]
 }

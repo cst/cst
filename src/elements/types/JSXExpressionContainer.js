@@ -1,4 +1,5 @@
 import Expression from '../Expression';
+import JSXEmptyExpression from './JSXEmptyExpression';
 
 export default class JSXExpressionContainer extends Expression {
     constructor(childNodes) {
@@ -8,9 +9,18 @@ export default class JSXExpressionContainer extends Expression {
     _acceptChildren(children) {
         children.passToken('Punctuator', '{');
         children.skipNonCode();
-        // Expression | JSXEmptyExpression
-        let expression = children.passExpression();
-        children.skipNonCode();
+
+        let expression;
+
+        // JSXEmptyExpression
+        if (children.isToken('Punctuator', '}')) {
+            expression = new JSXEmptyExpression();
+        } else {
+            // Expression
+            expression = children.passExpression();
+            children.skipNonCode();
+        }
+
         children.passToken('Punctuator', '}');
         children.assertEnd();
 

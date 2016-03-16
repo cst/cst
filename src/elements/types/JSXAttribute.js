@@ -13,7 +13,7 @@ export default class JSXAttribute extends Node {
             children.skipNonCode();
             children.passToken('Punctuator', '=');
             children.skipNonCode();
-            value = children.passOneOfNode(['Literal', 'JSXExpressionContainer', 'JSXElement']);
+            value = children.passOneOfNode(['StringLiteral', 'JSXExpressionContainer', 'JSXElement']);
         }
         children.assertEnd();
 

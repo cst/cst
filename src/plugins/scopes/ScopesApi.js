@@ -21,8 +21,8 @@ import UpdateExpression from '../../elements/types/UpdateExpression';
 import ForOfStatement from '../../elements/types/ForOfStatement';
 import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
-import Property from '../../elements/types/Property';
-import MethodDefinition from '../../elements/types/MethodDefinition';
+// TODO: fix to be both ObjectProperty and ObjectMethod
+import Property from '../../elements/types/ObjectProperty';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
 import ImportNamespaceSpecifier from '../../elements/types/ImportNamespaceSpecifier';
 import ImportSpecifier from '../../elements/types/ImportSpecifier';
@@ -34,6 +34,7 @@ import BreakStatement from '../../elements/types/BreakStatement';
 import ContinueStatement from '../../elements/types/ContinueStatement';
 import ClassExpression from '../../elements/types/ClassExpression';
 import ClassDeclaration from '../../elements/types/ClassDeclaration';
+import ClassMethod from '../../elements/types/ClassMethod';
 import JSXIdentifier from '../../elements/types/JSXIdentifier';
 import JSXAttribute from '../../elements/types/JSXAttribute';
 import JSXElement from '../../elements/types/JSXElement';
@@ -396,7 +397,7 @@ export default class ScopesApi {
                 return;
             }
         }
-        if (container instanceof MethodDefinition) {
+        if (container instanceof ClassMethod) {
             if (node === container.key && !container.computed) {
                 return;
             }

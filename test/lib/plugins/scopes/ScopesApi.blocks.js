@@ -298,13 +298,13 @@ describe('ScopesPlugin', () => {
             let variableA = globalScope.childScopes[1].variables[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('CatchClauseError');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(variableA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(variableA.references[0].node.parentElement.type).to.equal('ExpressionStatement');
 
             let variableB = globalScope.childScopes[1].variables[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('CatchClauseError');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(variableB.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(variableB.references[0].node.parentElement.type).to.equal('ExpressionStatement');
 
             let variableC1 = globalScope.childScopes[1].variables[2];
@@ -316,12 +316,12 @@ describe('ScopesPlugin', () => {
             let variableC2 = globalScope.childScopes[1].variables[3];
             expect(variableC2.name).to.equal('c');
             expect(variableC2.type).to.equal('CatchClauseError');
-            expect(variableC2.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(variableC2.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
 
             let variableD = globalScope.childScopes[1].variables[4];
             expect(variableD.name).to.equal('d');
             expect(variableD.type).to.equal('CatchClauseError');
-            expect(variableD.definitions[0].node.parentElement.type).to.equal('Property');
+            expect(variableD.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
             expect(variableD.references[0].node.parentElement.type).to.equal('ExpressionStatement');
 
             let variableE = globalScope.childScopes[1].variables[5];

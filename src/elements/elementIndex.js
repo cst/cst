@@ -1,3 +1,5 @@
+import RestProperty from './types/RestProperty';
+
 import AssignmentExpression from './types/AssignmentExpression';
 import AssignmentPattern from './types/AssignmentPattern';
 import ArrayExpression from './types/ArrayExpression';
@@ -6,12 +8,14 @@ import ArrowFunctionExpression from './types/ArrowFunctionExpression';
 import AwaitExpression from './types/AwaitExpression';
 import BinaryExpression from './types/BinaryExpression';
 import BlockStatement from './types/BlockStatement';
+import BooleanLiteral from './types/BooleanLiteral';
 import BreakStatement from './types/BreakStatement';
 import CallExpression from './types/CallExpression';
 import CatchClause from './types/CatchClause';
 import ClassBody from './types/ClassBody';
 import ClassDeclaration from './types/ClassDeclaration';
 import ClassExpression from './types/ClassExpression';
+import ClassMethod from './types/ClassMethod';
 import ConditionalExpression from './types/ConditionalExpression';
 import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
@@ -45,22 +49,26 @@ import JSXMemberExpression from './types/JSXMemberExpression';
 import JSXNamespacedName from './types/JSXNamespacedName';
 import JSXOpeningElement from './types/JSXOpeningElement';
 import JSXSpreadAttribute from './types/JSXSpreadAttribute';
+import JSXText from './types/JSXText';
 import LabeledStatement from './types/LabeledStatement';
-import Literal from './types/Literal';
 import LogicalExpression from './types/LogicalExpression';
 import MemberExpression from './types/MemberExpression';
 import MetaProperty from './types/MetaProperty';
-import MethodDefinition from './types/MethodDefinition';
 import NewExpression from './types/NewExpression';
+import NullLiteral from './types/NullLiteral';
+import NumericLiteral from './types/NumericLiteral';
 import ObjectExpression from './types/ObjectExpression';
+import ObjectMethod from './types/ObjectMethod';
 import ObjectPattern from './types/ObjectPattern';
+import ObjectProperty from './types/ObjectProperty';
 import Program from './types/Program';
-import Property from './types/Property';
+import RegExpLiteral from './types/RegExpLiteral';
 import RestElement from './types/RestElement';
 import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
 import SpreadElement from './types/SpreadElement';
 import SpreadProperty from './types/SpreadProperty';
+import StringLiteral from './types/StringLiteral';
 import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
 import SwitchStatement from './types/SwitchStatement';
@@ -79,6 +87,8 @@ import WhileStatement from './types/WhileStatement';
 import YieldExpression from './types/YieldExpression';
 
 export default {
+    RestProperty,
+
     AssignmentExpression,
     AssignmentPattern,
     ArrayExpression,
@@ -87,12 +97,14 @@ export default {
     AwaitExpression,
     BinaryExpression,
     BlockStatement,
+    BooleanLiteral,
     BreakStatement,
     CallExpression,
     CatchClause,
     ClassBody,
     ClassDeclaration,
     ClassExpression,
+    ClassMethod,
     ConditionalExpression,
     ContinueStatement,
     DebuggerStatement,
@@ -126,22 +138,26 @@ export default {
     JSXNamespacedName,
     JSXOpeningElement,
     JSXSpreadAttribute,
+    JSXText,
     LabeledStatement,
-    Literal,
     LogicalExpression,
     MemberExpression,
     MetaProperty,
-    MethodDefinition,
     NewExpression,
+    NullLiteral,
+    NumericLiteral,
     ObjectExpression,
+    ObjectMethod,
     ObjectPattern,
+    ObjectProperty,
     Program,
-    Property,
+    RegExpLiteral,
     RestElement,
     ReturnStatement,
     SequenceExpression,
     SpreadElement,
     SpreadProperty,
+    StringLiteral,
     Super,
     SwitchCase,
     SwitchStatement,

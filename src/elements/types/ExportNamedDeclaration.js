@@ -40,7 +40,7 @@ export default class ExportNamedDeclaration extends ModuleDeclaration {
             if (children.isToken('Identifier', 'from')) {
                 children.passToken('Identifier', 'from');
                 children.skipNonCode();
-                source = children.passNode('Literal');
+                source = children.passNode('StringLiteral');
                 if (!children.isEnd) {
                     children.skipNonCode();
                     children.passToken('Punctuator', ';');
