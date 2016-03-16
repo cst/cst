@@ -28,7 +28,6 @@ import type BasePlugin from './plugins/BasePlugin';
  * @typedef {Object} CSTParserExperimentalFeatureOptions
  * @property {Boolean} 'es7.asyncFunctions'
  * @property {Boolean} 'es7.classProperties'
- * @property {Boolean} 'es7.comprehensions'
  * @property {Boolean} 'es7.decorators'
  * @property {Boolean} 'es7.doExpressions'
  * @property {Boolean} 'es7.exponentiationOperator'
@@ -79,7 +78,6 @@ export default class Parser {
             experimentalFeatures: {
                 'es7.asyncFunctions': true,
                 'es7.classProperties': true,
-                'es7.comprehensions': true,
                 'es7.decorators': true,
                 'es7.doExpressions': true,
                 'es7.exponentiationOperator': true,
