@@ -24,7 +24,7 @@ export function parseAndGetExpression(code: string, options: CSTParserOptions): 
 
 export function parseAndGetExpressionInFunction(code: string, options: CSTParserOptions): Object {
     var parser = new Parser(options);
-    var program = parser.parse('(function(){(' + code + ')})');
+    var program = parser.parse(`(function(){( ${code} )})`);
     return program.body[0].expression.body.body[0].expression;
 }
 
@@ -44,6 +44,12 @@ export function parseAndGetClassMember(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`(class{${code}})`);
     return program.body[0].expression.body.body[0];
+}
+
+export function parseAndGetSuper(code: string): Object {
+    var parser = new Parser();
+    var program = parser.parse(`(class{ constructor() { ${code} }})`);
+    return program.body[0].expression.body.body[0].body.body[0].expression;
 }
 
 export function parseAndGetStatementInLoop(code: string, loopLabel: string): Object {
