@@ -40,6 +40,12 @@ export default class Program extends Statement {
 
         children.skipNonCode();
 
+        let directives = [];
+        while (children.isNode('Directive')) {
+            directives.push(children.passNode());
+            children.skipNonCode();
+        }
+
         let body = [];
         while (children.isStatement()) {
             body.push(children.passStatement());
@@ -50,6 +56,7 @@ export default class Program extends Statement {
         children.assertEnd();
 
         this._body = body;
+        this._directives = directives;
     }
 
     /**
@@ -84,6 +91,10 @@ export default class Program extends Statement {
 
     get body(): Array<any> {
         return this._body.concat();
+    }
+
+    get directives(): Array<any> {
+        return this._directives;
     }
 
     on(eventName: string, callback: Function) {

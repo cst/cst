@@ -69,6 +69,12 @@ export function parseAndGetStatementInFunction(code: string): Object {
     return program.body[0].body.body[0];
 }
 
+export function parseAndGetBlockStatementInFunction(code: string): Object {
+    var parser = new Parser();
+    var program = parser.parse(`function _name(){${code}}`);
+    return program.body[0].body;
+}
+
 export function parseAndGetStatementInFunctionParams(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`function _name(${code}){}`);

@@ -58,7 +58,11 @@ export default class ObjectProperty extends Node {
 }
 
 function readKey(children) {
-    if (children.isNode('StringLiteral') || children.isNode('Identifier')) {
+    if (
+        children.isNode('StringLiteral') ||
+        children.isNode('NumericLiteral') ||
+        children.isNode('Identifier')
+    ) {
         return children.passNode();
     } else {
         children.passToken('Punctuator', '[');

@@ -19,6 +19,8 @@ import ClassMethod from './types/ClassMethod';
 import ConditionalExpression from './types/ConditionalExpression';
 import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
+import Directive from './types/Directive';
+import DirectiveLiteral from './types/DirectiveLiteral';
 import DoWhileStatement from './types/DoWhileStatement';
 import EmptyStatement from './types/EmptyStatement';
 import ExportAllDeclaration from './types/ExportAllDeclaration';
@@ -108,6 +110,8 @@ export default {
     ConditionalExpression,
     ContinueStatement,
     DebuggerStatement,
+    Directive,
+    DirectiveLiteral,
     DoWhileStatement,
     EmptyStatement,
     ExportAllDeclaration,

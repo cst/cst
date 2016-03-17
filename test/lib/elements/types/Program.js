@@ -20,6 +20,12 @@ describe('Program', () => {
         expect(program.body.length).to.equal(0);
     });
 
+    it('should get directive', () => {
+        var program = parseAndGetProgram('"use strict"');
+        expect(program.directives).to.be.an('array');
+        expect(program.directives[0].type).to.equal('Directive');
+    });
+
     it('should accept single statement', () => {
         var program = parseAndGetProgram(';');
         expect(program.body[0].type).to.equal('EmptyStatement');

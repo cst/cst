@@ -1,9 +1,13 @@
-import {parseAndGetExpression} from '../../../utils';
+import {parseAndGetExpression, parseAndGetObjectProperty} from '../../../utils';
 import {expect} from 'chai';
 
 describe('NumericLiteral', () => {
     it('should return correct type', () => {
         expect(parseAndGetExpression('1').type).to.equal('NumericLiteral');
+    });
+
+    it('should get numeric from object expression', () => {
+        expect(parseAndGetObjectProperty('0: 1').type).to.equal('ObjectProperty');
     });
 
     it('should accept integer', () => {

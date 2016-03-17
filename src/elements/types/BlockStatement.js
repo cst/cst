@@ -6,11 +6,17 @@ export default class BlockStatement extends Statement {
     }
 
     _acceptChildren(children) {
-        var body = [];
+        let body = [];
+        let directives = [];
 
         children.assertToken('Punctuator', '{');
         children.moveNext();
         children.skipNonCode();
+
+        while (children.isNode('Directive')) {
+            directives.push(children.passNode());
+            children.skipNonCode();
+        }
 
         while (!children.isToken('Punctuator', '}')) {
             body.push(children.passStatement());
@@ -21,9 +27,14 @@ export default class BlockStatement extends Statement {
         children.assertEnd();
 
         this._body = body;
+        this._directives = directives;
     }
 
     get body() {
         return this._body.concat();
+    }
+
+    get directives() {
+        return this._directives;
     }
 }
