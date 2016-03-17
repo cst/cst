@@ -21,7 +21,6 @@ import UpdateExpression from '../../elements/types/UpdateExpression';
 import ForOfStatement from '../../elements/types/ForOfStatement';
 import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
-// TODO: fix to be both ObjectProperty and ObjectMethod
 import ObjectProperty from '../../elements/types/ObjectProperty';
 import ObjectMethod from '../../elements/types/ObjectMethod';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';

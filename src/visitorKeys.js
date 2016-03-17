@@ -62,7 +62,7 @@ export default {
     NumericLiteral: [],
     ObjectExpression: ['properties'],
     ObjectMethod: ['key', 'params', 'body'],
-    ObjectPattern: [ 'properties' ],
+    ObjectPattern: ['properties'],
     ObjectProperty: ['key', 'value'],
     Program: ['body', 'directives'],
     RegExpLiteral: [],
