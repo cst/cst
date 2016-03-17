@@ -135,6 +135,10 @@ export default class ScopesApi {
             return this._addClassExpression(node);
         }
 
+        if (node instanceof ClassMethod) {
+            return this._addClassMethod(node);
+        }
+
         if (node.type in scopedBlocks) {
             return this._addScopedBlock(node);
         }
@@ -182,6 +186,14 @@ export default class ScopesApi {
             node,
             parentScope: this._getParentScopeFor(node),
             isClassScope: true
+        });
+    }
+
+    _addClassMethod(node: ClassMethod) {
+        this._addScope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isFunctionScope: true
         });
     }
 
@@ -335,6 +347,7 @@ export default class ScopesApi {
         }
 
         if (
+            container instanceof ClassMethod ||
             container instanceof FunctionExpression ||
             container instanceof FunctionDeclaration ||
             container instanceof ArrowFunctionExpression
