@@ -22,7 +22,8 @@ import ForOfStatement from '../../elements/types/ForOfStatement';
 import ForInStatement from '../../elements/types/ForInStatement';
 import MemberExpression from '../../elements/types/MemberExpression';
 // TODO: fix to be both ObjectProperty and ObjectMethod
-import Property from '../../elements/types/ObjectProperty';
+import ObjectProperty from '../../elements/types/ObjectProperty';
+import ObjectMethod from '../../elements/types/ObjectMethod';
 import ImportDefaultSpecifier from '../../elements/types/ImportDefaultSpecifier';
 import ImportNamespaceSpecifier from '../../elements/types/ImportNamespaceSpecifier';
 import ImportSpecifier from '../../elements/types/ImportSpecifier';
@@ -100,7 +101,7 @@ export default class ScopesApi {
                 if (
                     element.type === 'Punctuator' &&
                     element.value === ':' &&
-                    parentElement instanceof Property
+                    parentElement instanceof ObjectProperty
                 ) {
                     this._removeElement(parentElement);
                     this._addElement(parentElement);
@@ -125,6 +126,10 @@ export default class ScopesApi {
 
         if (node instanceof ArrowFunctionExpression) {
             return this._addArrowFunctionExpression(node);
+        }
+
+        if (node instanceof ObjectMethod) {
+            return this._addObjectMethod(node);
         }
 
         if (node instanceof ClassDeclaration) {
@@ -198,6 +203,14 @@ export default class ScopesApi {
     }
 
     _addFunctionExpression(node: FunctionExpression) {
+        this._addScope({
+            node,
+            parentScope: this._getParentScopeFor(node),
+            isFunctionScope: true
+        });
+    }
+
+    _addObjectMethod(node: ObjectMethod) {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
@@ -314,7 +327,7 @@ export default class ScopesApi {
         }
 
         let name = node.name;
-        if (parentElement instanceof Property && parentElement.parentElement) {
+        if (parentElement instanceof ObjectProperty && parentElement.parentElement) {
             if (node === parentElement.key && !parentElement.shorthand) {
                 if (parentElement.computed) {
                     this._addReferenceToScope(scope, {node, name, read: true, write: false});
@@ -324,7 +337,7 @@ export default class ScopesApi {
         }
         let topLevelPattern = node;
         while (topLevelPattern.parentElement) {
-            if (topLevelPattern.parentElement instanceof Property) {
+            if (topLevelPattern.parentElement instanceof ObjectProperty) {
                 if (topLevelPattern.parentElement.parentElement.isPattern) {
                     topLevelPattern = topLevelPattern.parentElement.parentElement;
                     continue;
@@ -348,6 +361,7 @@ export default class ScopesApi {
 
         if (
             container instanceof ClassMethod ||
+            container instanceof ObjectMethod ||
             container instanceof FunctionExpression ||
             container instanceof FunctionDeclaration ||
             container instanceof ArrowFunctionExpression
@@ -405,7 +419,7 @@ export default class ScopesApi {
                 return;
             }
         }
-        if (container instanceof Property) {
+        if (container instanceof ObjectMethod) {
             if (node === container.key && !container.computed && !container.shorthand) {
                 return;
             }
