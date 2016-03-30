@@ -173,7 +173,7 @@ export default class Scope {
         let currentScope = this;
         do {
             let variables = currentScope._variables.get(name);
-            if (variables) {
+            if (variables && variables.length) {
                 if (reference._type) {
                     for (let variable of variables) {
                         if (variable._type === reference._type) {
