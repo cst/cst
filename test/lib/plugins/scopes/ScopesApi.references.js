@@ -13,6 +13,27 @@ function parse(codeLines) {
 
 describe('ScopesPlugin', () => {
     describe('references', () => {
+        it('should not throw for non-existant variable', () => {
+            // Minimally reproducable test-case
+            let program = parse(`
+                function _disableRulesAt(rules, line) {
+                    for (var i = 0; i < rules.length; i++) {
+                        continue;
+                    }
+                };
+
+                function iterateTokensByType(type, cb) {
+                    while (Array.isArray(type)) {
+                        items = this._program.selectTokensByType(type[i]);
+                    }
+                };
+            `);
+
+            expect(
+                () => program.plugins.scopes.acquire(program)
+            ).to.not.throw();
+        });
+
         it('should include single reference', () => {
             let program = parse(`
                 a;
