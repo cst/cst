@@ -13,7 +13,7 @@ function parse(codeLines) {
 
 describe('ScopesPlugin', () => {
     describe('references', () => {
-        it('should not throw for non-existant variable', () => {
+        it('should not throw for non-existent variable', () => {
             // Minimally reproducable test-case
             let program = parse(`
                 function _disableRulesAt(rules, line) {

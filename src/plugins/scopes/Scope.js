@@ -173,7 +173,7 @@ export default class Scope {
         let currentScope = this;
         do {
             let variables = currentScope._variables.get(name);
-            if (variables && variables.length) {
+            if (variables) {
                 if (reference._type) {
                     for (let variable of variables) {
                         if (variable._type === reference._type) {
@@ -289,8 +289,13 @@ function removeVariableIfRequired(variable: Variable) {
         let variables = variable._scope._variables.get(variable._name);
         if (variables) {
             let index = variables.indexOf(variable);
+
             if (index !== -1) {
                 variables.splice(index, 1);
+            }
+
+            if (variables.length === 0) {
+                variable._scope._variables.delete(variable._name);
             }
         }
     }
