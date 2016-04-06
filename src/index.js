@@ -1,3 +1,9 @@
+import {install} from 'source-map-support';
+import ScopesApi from './plugins/scopes/ScopesApi';
+
+// Install sourcemaps
+install();
+
 export {default as Parser} from './Parser';
 export {default as visitorKeys} from './visitorKeys';
 
@@ -11,8 +17,6 @@ export {default as ModuleSpecifier} from './elements/ModuleSpecifier';
 export {default as types} from './elements/elementIndex';
 
 export {default as plugins} from './plugins/pluginsIndex';
-
-import ScopesApi from './plugins/scopes/ScopesApi';
 
 export const api = {
     ScopesApi
