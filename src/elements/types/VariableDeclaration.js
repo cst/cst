@@ -33,15 +33,7 @@ export default class VariableDeclaration extends Statement {
         children.skipSemicolon();
         children.assertEnd();
 
-        this._kind = kind;
-        this._declarations = declarations;
-    }
-
-    get kind() {
-        return this._kind;
-    }
-
-    get declarations() {
-        return this._declarations.concat();
+        this.kind = kind;
+        this.declarations = declarations;
     }
 }

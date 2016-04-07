@@ -15,7 +15,7 @@ describe('ScopesPlugin', () => {
                 import 'module';
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should support named star import', () => {
@@ -24,12 +24,12 @@ describe('ScopesPlugin', () => {
                 ns++;
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('ns');
-            expect(scope.variables[0].type).to.equal('ImportBinding');
-            expect(scope.variables[0].definitions.length).to.equal(1);
-            expect(scope.variables[0].references.length).to.equal(1);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('ns');
+            expect(scope.getVariables()[0].type).to.equal('ImportBinding');
+            expect(scope.getVariables()[0].getDefinitions().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
         });
 
         it('should support named import', () => {
@@ -38,12 +38,12 @@ describe('ScopesPlugin', () => {
                 ns++;
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('ns');
-            expect(scope.variables[0].type).to.equal('ImportBinding');
-            expect(scope.variables[0].definitions.length).to.equal(1);
-            expect(scope.variables[0].references.length).to.equal(1);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('ns');
+            expect(scope.getVariables()[0].type).to.equal('ImportBinding');
+            expect(scope.getVariables()[0].getDefinitions().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
         });
 
         it('should support pattern import', () => {
@@ -53,17 +53,17 @@ describe('ScopesPlugin', () => {
                 y++;
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(2);
-            expect(scope.variables[0].name).to.equal('a');
-            expect(scope.variables[0].type).to.equal('ImportBinding');
-            expect(scope.variables[0].definitions.length).to.equal(1);
-            expect(scope.variables[0].references.length).to.equal(1);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(scope.variables[1].name).to.equal('y');
-            expect(scope.variables[1].type).to.equal('ImportBinding');
-            expect(scope.variables[1].definitions.length).to.equal(1);
-            expect(scope.variables[1].references.length).to.equal(1);
-            expect(scope.variables[1].references[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(scope.getVariables().length).to.equal(2);
+            expect(scope.getVariables()[0].name).to.equal('a');
+            expect(scope.getVariables()[0].type).to.equal('ImportBinding');
+            expect(scope.getVariables()[0].getDefinitions().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(scope.getVariables()[1].name).to.equal('y');
+            expect(scope.getVariables()[1].type).to.equal('ImportBinding');
+            expect(scope.getVariables()[1].getDefinitions().length).to.equal(1);
+            expect(scope.getVariables()[1].getReferences().length).to.equal(1);
+            expect(scope.getVariables()[1].getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
         });
     });
 });

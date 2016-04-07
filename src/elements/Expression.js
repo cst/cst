@@ -10,7 +10,8 @@ import Node from './Node';
  * @abstract
  */
 export default class Expression extends Node {
-    get isExpression(): boolean {
-        return true;
+    constructor(type, children) {
+        super(type, children);
+        this.isExpression = true;
     }
 }

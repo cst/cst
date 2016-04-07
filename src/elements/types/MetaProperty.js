@@ -13,15 +13,7 @@ export default class MetaProperty extends Expression {
         let property = children.passNode('Identifier');
         children.assertEnd();
 
-        this._meta = meta;
-        this._property = property;
-    }
-
-    get meta() {
-        return this._meta;
-    }
-
-    get property() {
-        return this._property;
+        this.meta = meta;
+        this.property = property;
     }
 }

@@ -20,10 +20,6 @@ export default class AwaitExpression extends Expression {
 
         children.assertEnd();
 
-        this._argument = argument;
-    }
-
-    get argument() {
-        return this._argument;
+        this.argument = argument;
     }
 }

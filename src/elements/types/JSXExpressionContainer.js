@@ -24,10 +24,6 @@ export default class JSXExpressionContainer extends Expression {
         children.passToken('Punctuator', '}');
         children.assertEnd();
 
-        this._expression = expression;
-    }
-
-    get expression() {
-        return this._expression;
+        this.expression = expression;
     }
 }

@@ -28,10 +28,6 @@ export default class ArrayExpression extends Expression {
         }
         children.passToken('Punctuator', ']');
         children.assertEnd();
-        this._elements = elements;
-    }
-
-    get elements() {
-        return this._elements.concat();
+        this.elements = elements;
     }
 }

@@ -27,20 +27,8 @@ export default class TryStatement extends Statement {
 
         children.assertEnd();
 
-        this._block = block;
-        this._finalizer = finalizer;
-        this._handler = handler;
-    }
-
-    get block() {
-        return this._block;
-    }
-
-    get handler() {
-        return this._handler;
-    }
-
-    get finalizer() {
-        return this._finalizer;
+        this.block = block;
+        this.finalizer = finalizer;
+        this.handler = handler;
     }
 }

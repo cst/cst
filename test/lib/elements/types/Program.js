@@ -11,7 +11,7 @@ describe('Program', () => {
         var program = parseAndGetProgram('   ');
         expect(program.type).to.equal('Program');
         expect(program.body.length).to.equal(0);
-        expect(program.range[1]).to.equal(3);
+        expect(program.getRange()[1]).to.equal(3);
     });
 
     it('should accept no statements', () => {
@@ -37,7 +37,7 @@ describe('Program', () => {
         expect(program.body[1].type).to.equal('EmptyStatement');
         expect(program.body[2].type).to.equal('EmptyStatement');
         //expect(program.childElements.length).to.equal(11);
-        expect(program.childElements.map(el => el.sourceCode)).to.deep.equal([
+        expect(program.childElements.map(el => el.getSourceCode())).to.deep.equal([
             ' ', ';', ' ', ';', ' ', ';', ' ', '/* */', ' ', '// cmt', ''
         ]);
         expect(program.childElements.map(el => el.type)).to.deep.equal([
@@ -93,13 +93,13 @@ describe('Program', () => {
 
             let firstExpressionStatement = program.selectNodesByType('ExpressionStatement')[0];
             firstExpressionStatement.parentElement.removeChild(firstExpressionStatement);
-            expect(program.sourceCode).to.equal('if (x) {  z--; } if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal('if (x) {  z--; } if (w) { i--; }');
             expect(program.selectNodesByType('Identifier').map(n => n.name))
                 .to.have.members(['x', 'z', 'w', 'i']);
 
             let firstIfStatement = program.selectNodesByType('IfStatement')[0];
             firstIfStatement.parentElement.removeChild(firstIfStatement);
-            expect(program.sourceCode).to.equal(' if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal(' if (w) { i--; }');
             expect(program.selectNodesByType('Identifier').map(n => n.name))
                 .to.have.members(['w', 'i']);
         });
@@ -117,7 +117,7 @@ describe('Program', () => {
                 firstExpressionStatement
             );
 
-            expect(program.sourceCode).to.equal('if (x) { j++; y++; z--; } if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal('if (x) { j++; y++; z--; } if (w) { i--; }');
 
             expect(program.selectNodesByType('Identifier').map(n => n.name))
                 .to.have.members(['x', 'y', 'z', 'w', 'i', 'j']);
@@ -138,13 +138,13 @@ describe('Program', () => {
 
             let firstExpressionStatement = program.selectNodesByType('ExpressionStatement')[0];
             firstExpressionStatement.parentElement.removeChild(firstExpressionStatement);
-            expect(program.sourceCode).to.equal('if (x) {  z--; } if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal('if (x) {  z--; } if (w) { i--; }');
             expect(program.selectTokensByType('Identifier').map(n => n.value))
                 .to.have.members(['x', 'z', 'w', 'i']);
 
             let firstIfStatement = program.selectNodesByType('IfStatement')[0];
             firstIfStatement.parentElement.removeChild(firstIfStatement);
-            expect(program.sourceCode).to.equal(' if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal(' if (w) { i--; }');
             expect(program.selectTokensByType('Identifier').map(n => n.value))
                 .to.have.members(['w', 'i']);
         });
@@ -162,7 +162,7 @@ describe('Program', () => {
                 firstExpressionStatement
             );
 
-            expect(program.sourceCode).to.equal('if (x) { j++; y++; z--; } if (w) { i--; }');
+            expect(program.getSourceCode()).to.equal('if (x) { j++; y++; z--; } if (w) { i--; }');
 
             expect(program.selectTokensByType('Identifier').map(n => n.value))
                 .to.have.members(['x', 'y', 'z', 'w', 'i', 'j']);

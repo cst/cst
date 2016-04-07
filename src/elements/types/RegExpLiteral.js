@@ -11,26 +11,14 @@ export default class RegExpLiteral extends Expression {
         let flags = children.currentElement.value.flags;
         let extra = {
             rawValue: undefined,
-            raw: children.currentElement.sourceCode
+            raw: children.currentElement.getSourceCode()
         };
 
         children.moveNext();
         children.assertEnd();
 
-        this._extra = extra;
-        this._pattern = pattern;
-        this._flags = flags;
-    }
-
-    get extra() {
-        return this._extra;
-    }
-
-    get pattern() {
-        return this._pattern;
-    }
-
-    get flags() {
-        return this._flags;
+        this.extra = extra;
+        this.pattern = pattern;
+        this.flags = flags;
     }
 }

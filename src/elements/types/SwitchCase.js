@@ -31,15 +31,7 @@ export default class SwitchCase extends Node {
 
         children.assertEnd();
 
-        this._test = test;
-        this._consequent = consequent;
-    }
-
-    get test() {
-        return this._test;
-    }
-
-    get consequent() {
-        return this._consequent.concat();
+        this.test = test;
+        this.consequent = consequent;
     }
 }

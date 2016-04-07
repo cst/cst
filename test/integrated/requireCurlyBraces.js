@@ -106,6 +106,6 @@ describe('integrated/requireCurlyBraces', () => {
                 }
             }
         }
-        expect(program.sourceCode).to.equal(resultCode);
+        expect(program.getSourceCode()).to.equal(resultCode);
     });
 });

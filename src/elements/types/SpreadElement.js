@@ -11,10 +11,6 @@ export default class SpreadElement extends Node {
         let argument = children.passExpression();
         children.assertEnd();
 
-        this._argument = argument;
-    }
-
-    get argument() {
-        return this._argument;
+        this.argument = argument;
     }
 }

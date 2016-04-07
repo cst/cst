@@ -6,6 +6,7 @@ export default class RestElement extends Node {
 
     constructor(childNodes) {
         super('RestElement', childNodes);
+        this.isPattern = true;
     }
 
     _acceptChildren(children) {
@@ -22,14 +23,6 @@ export default class RestElement extends Node {
 
         children.assertEnd();
 
-        this._argument = argument;
-    }
-
-    get argument() {
-        return this._argument;
-    }
-
-    isPattern() {
-        return true;
+        this.argument = argument;
     }
 }

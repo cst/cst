@@ -18,17 +18,17 @@ describe('ScopesPlugin', () => {
                 var a;
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('a');
 
             let anotherVariable = parseAndGetStatement('var b;');
             anotherVariable.remove();
             program.insertChildBefore(anotherVariable, program.lastChild);
 
-            expect(scope.variables.length).to.equal(2);
-            expect(scope.variables[0].name).to.equal('a');
-            expect(scope.variables[1].name).to.equal('b');
-            expect(scope.variables[1].type).to.equal('Variable');
+            expect(scope.getVariables().length).to.equal(2);
+            expect(scope.getVariables()[0].name).to.equal('a');
+            expect(scope.getVariables()[1].name).to.equal('b');
+            expect(scope.getVariables()[1].type).to.equal('Variable');
         });
 
         it('should update on scope removal', () => {
@@ -38,10 +38,10 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
+            expect(scope.getVariables().length).to.equal(1);
 
             program.selectNodesByType('ExpressionStatement')[0].remove();
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should update on var statement removal', () => {
@@ -49,10 +49,10 @@ describe('ScopesPlugin', () => {
                 var a;
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
+            expect(scope.getVariables().length).to.equal(1);
 
             program.selectNodesByType('VariableDeclaration')[0].remove();
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should update on function parameter removal', () => {
@@ -60,10 +60,10 @@ describe('ScopesPlugin', () => {
                 ((a) => {})
             `);
             let scope = program.plugins.scopes.acquire(program).childScopes[0];
-            expect(scope.variables.length).to.equal(1);
+            expect(scope.getVariables().length).to.equal(1);
 
             program.selectNodesByType('Identifier')[0].remove();
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should update on function parameter replace', () => {
@@ -71,14 +71,14 @@ describe('ScopesPlugin', () => {
                 ((a) => {})
             `);
             let scope = program.plugins.scopes.acquire(program).childScopes[0];
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('a');
 
             let func = program.selectNodesByType('ArrowFunctionExpression')[0];
             let param = program.selectNodesByType('Identifier')[0];
             func.replaceChild(new Identifier([new Token('Identifier', 'b')]), param);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('b');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('b');
         });
 
         it('should update on function parameter rename', () => {
@@ -86,13 +86,13 @@ describe('ScopesPlugin', () => {
                 ((a) => {})
             `);
             let scope = program.plugins.scopes.acquire(program).childScopes[0];
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('a');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('a');
 
             let param = program.selectNodesByType('Identifier')[0];
             param.replaceChild(new Token('Identifier', 'b'), param.firstChild);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('b');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('b');
         });
 
         it('should update on property change from shorthand', () => {
@@ -102,9 +102,9 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('a');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('a');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
 
             program.selectNodesByType('ObjectProperty')[0].appendChild(
                 new Fragment([
@@ -112,9 +112,9 @@ describe('ScopesPlugin', () => {
                     new Identifier([new Token('Identifier', 'b')])
                 ])
             );
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('b');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('b');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
         });
 
         it('should update on property change to shorthand', () => {
@@ -124,16 +124,16 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
 
             let property = program.selectNodesByType('ObjectProperty')[0];
             property.removeChildren(
                 property.childElements[1],
                 property.lastChild
             );
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('a');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('a');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
         });
 
         it('should update on nested variable remove', () => {
@@ -146,27 +146,27 @@ describe('ScopesPlugin', () => {
             `);
             let programScope = program.plugins.scopes.acquire(program);
             let functionScope = programScope.childScopes[0];
-            expect(programScope.variables.length).to.equal(1);
-            expect(programScope.variables[0].name).to.equal('a');
-            expect(programScope.variables[0].type).to.equal('Variable');
-            expect(programScope.variables[0].references.length).to.equal(0);
-            expect(functionScope.variables.length).to.equal(1);
-            expect(functionScope.variables[0].name).to.equal('a');
-            expect(functionScope.variables[0].type).to.equal('LetVariable');
-            expect(functionScope.variables[0].references.length).to.equal(1);
-            expect(functionScope.variables[0].references[0].node.parentElement.type)
+            expect(programScope.getVariables().length).to.equal(1);
+            expect(programScope.getVariables()[0].name).to.equal('a');
+            expect(programScope.getVariables()[0].type).to.equal('Variable');
+            expect(programScope.getVariables()[0].getReferences().length).to.equal(0);
+            expect(functionScope.getVariables().length).to.equal(1);
+            expect(functionScope.getVariables()[0].name).to.equal('a');
+            expect(functionScope.getVariables()[0].type).to.equal('LetVariable');
+            expect(functionScope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(functionScope.getVariables()[0].getReferences()[0].node.parentElement.type)
                 .to.equal('UpdateExpression');
 
             let functionVar = program.selectNodesByType('VariableDeclaration')[1];
             functionVar.remove();
 
-            expect(programScope.variables.length).to.equal(1);
-            expect(programScope.variables[0].name).to.equal('a');
-            expect(programScope.variables[0].type).to.equal('Variable');
-            expect(programScope.variables[0].references.length).to.equal(1);
-            expect(programScope.variables[0].references[0].node.parentElement.type)
+            expect(programScope.getVariables().length).to.equal(1);
+            expect(programScope.getVariables()[0].name).to.equal('a');
+            expect(programScope.getVariables()[0].type).to.equal('Variable');
+            expect(programScope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(programScope.getVariables()[0].getReferences()[0].node.parentElement.type)
                 .to.equal('UpdateExpression');
-            expect(functionScope.variables.length).to.equal(0);
+            expect(functionScope.getVariables().length).to.equal(0);
         });
 
         it('should update on nested parameter remove', () => {
@@ -178,27 +178,27 @@ describe('ScopesPlugin', () => {
             `);
             let programScope = program.plugins.scopes.acquire(program);
             let functionScope = programScope.childScopes[0];
-            expect(programScope.variables.length).to.equal(1);
-            expect(programScope.variables[0].name).to.equal('a');
-            expect(programScope.variables[0].type).to.equal('Variable');
-            expect(programScope.variables[0].references.length).to.equal(0);
-            expect(functionScope.variables.length).to.equal(1);
-            expect(functionScope.variables[0].name).to.equal('a');
-            expect(functionScope.variables[0].type).to.equal('Parameter');
-            expect(functionScope.variables[0].references.length).to.equal(1);
-            expect(functionScope.variables[0].references[0].node.parentElement.type)
+            expect(programScope.getVariables().length).to.equal(1);
+            expect(programScope.getVariables()[0].name).to.equal('a');
+            expect(programScope.getVariables()[0].type).to.equal('Variable');
+            expect(programScope.getVariables()[0].getReferences().length).to.equal(0);
+            expect(functionScope.getVariables().length).to.equal(1);
+            expect(functionScope.getVariables()[0].name).to.equal('a');
+            expect(functionScope.getVariables()[0].type).to.equal('Parameter');
+            expect(functionScope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(functionScope.getVariables()[0].getReferences()[0].node.parentElement.type)
                 .to.equal('UpdateExpression');
 
             let functionVar = program.selectNodesByType('Identifier')[1];
             functionVar.remove();
 
-            expect(programScope.variables.length).to.equal(1);
-            expect(programScope.variables[0].name).to.equal('a');
-            expect(programScope.variables[0].type).to.equal('Variable');
-            expect(programScope.variables[0].references.length).to.equal(1);
-            expect(programScope.variables[0].references[0].node.parentElement.type)
+            expect(programScope.getVariables().length).to.equal(1);
+            expect(programScope.getVariables()[0].name).to.equal('a');
+            expect(programScope.getVariables()[0].type).to.equal('Variable');
+            expect(programScope.getVariables()[0].getReferences().length).to.equal(1);
+            expect(programScope.getVariables()[0].getReferences()[0].node.parentElement.type)
                 .to.equal('UpdateExpression');
-            expect(functionScope.variables.length).to.equal(0);
+            expect(functionScope.getVariables().length).to.equal(0);
         });
     });
 });

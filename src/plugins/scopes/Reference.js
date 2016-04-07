@@ -12,49 +12,37 @@ export default class Reference {
         write: boolean,
         type?: string
     }) {
-        this._node = node;
-        this._scope = scope;
-        this._read = read;
-        this._write = write;
-        this._type = type;
+        this.node = node;
+        this.scope = scope;
+        this.read = read;
+        this.write = write;
+        this.type = type;
     }
 
-    _node: Identifier;
-    _scope: Scope;
-    _variable: Variable;
-    _read: boolean;
-    _write: boolean;
-    _type: ?string;
+    node: Identifier;
+    scope: Scope;
+    variable: Variable;
+    read: boolean;
+    write: boolean;
+    type: ?string;
 
-    get node(): Identifier {
-        return this._node;
+    isRead(): boolean {
+        return this.read;
     }
 
-    get scope(): Scope {
-        return this._scope;
+    isWrite(): boolean {
+        return this.write;
     }
 
-    get variable(): Variable {
-        return this._variable;
+    isReadOnly(): boolean {
+        return this.read && !this.write;
     }
 
-    get isRead(): boolean {
-        return this._read;
+    isWriteOnly(): boolean {
+        return !this.read && this.write;
     }
 
-    get isWrite(): boolean {
-        return this._write;
-    }
-
-    get isReadOnly(): boolean {
-        return this._read && !this._write;
-    }
-
-    get isWriteOnly(): boolean {
-        return !this._read && this._write;
-    }
-
-    get isReadWrite(): boolean {
-        return this._read && this._write;
+    isReadWrite(): boolean {
+        return this.read && this.write;
     }
 }

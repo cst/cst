@@ -10,7 +10,8 @@ import Node from './Node';
  * @abstract
  */
 export default class Statement extends Node {
-    get isStatement(): boolean {
-        return true;
+    constructor(type, children) {
+        super(type, children);
+        this.isStatement = true;
     }
 }

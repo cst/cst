@@ -6,31 +6,15 @@ import type Variable from './Variable';
 
 export default class Definition {
     constructor({node, type, scope}: {node: Identifier, type: string, scope: Scope}) {
-        this._node = node;
-        this._type = type;
-        this._scope = scope;
+        this.node = node;
+        this.type = type;
+        this.scope = scope;
     }
 
-    _node: Identifier;
-    _variable: Variable;
-    _type: string;
-    _scope: Scope;
-
-    get node(): Identifier {
-        return this._node;
-    }
-
-    get type(): string {
-        return this._type;
-    }
-
-    get scope(): Scope {
-        return this._scope;
-    }
-
-    get variable(): Variable {
-        return this._variable;
-    }
+    node: Identifier;
+    variable: Variable;
+    type: string;
+    scope: Scope;
 }
 
 /**

@@ -15,11 +15,12 @@ describe('ScopesPlugin', () => {
                 '(tag`hello`)' +
             '');
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('tag');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
-            expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('TaggedTemplateExpression');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('tag');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type)
+                .to.equal('TaggedTemplateExpression');
         });
 
         it('should resolve tag', () => {
@@ -28,12 +29,13 @@ describe('ScopesPlugin', () => {
                 '(tag`hello`)' +
             '');
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('tag');
-            expect(scope.variables[0].type).to.equal('LetVariable');
-            expect(scope.variables[0].definitions.length).to.equal(1);
-            expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('TaggedTemplateExpression');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('tag');
+            expect(scope.getVariables()[0].type).to.equal('LetVariable');
+            expect(scope.getVariables()[0].getDefinitions().length).to.equal(1);
+            expect(scope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type)
+                .to.equal('TaggedTemplateExpression');
         });
 
         it('should handle nested references', () => {
@@ -41,11 +43,11 @@ describe('ScopesPlugin', () => {
                 '(`hello${ref}world`)' +
             '');
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('ref');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
-            expect(scope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(scope.variables[0].references[0].node.parentElement.type).to.equal('TemplateLiteral');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('ref');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
+            expect(scope.getVariables()[0].getReferences()[0].node.parentElement.type).to.equal('TemplateLiteral');
         });
     });
 });

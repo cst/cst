@@ -3,6 +3,8 @@ import Node from '../Node';
 export default class ArrayPattern extends Node {
     constructor(childNodes) {
         super('ArrayPattern', childNodes);
+        this.isPattern = true;
+        this.isAssignable = true;
     }
 
     _acceptChildren(children) {
@@ -29,18 +31,6 @@ export default class ArrayPattern extends Node {
         }
         children.passToken('Punctuator', ']');
         children.assertEnd();
-        this._elements = elements;
-    }
-
-    get elements() {
-        return this._elements.concat();
-    }
-
-    get isPattern() {
-        return true;
-    }
-
-    get isAssignable() {
-        return true;
+        this.elements = elements;
     }
 }

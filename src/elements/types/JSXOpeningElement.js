@@ -39,20 +39,8 @@ export default class JSXOpeningElement extends Node {
         children.passToken('Punctuator', '>');
         children.assertEnd();
 
-        this._name = name;
-        this._attributes = attributes;
-        this._selfClosing = selfClosing;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    get attributes() {
-        return this._attributes;
-    }
-
-    get selfClosing() {
-        return this._selfClosing;
+        this.name = name;
+        this.attributes = attributes;
+        this.selfClosing = selfClosing;
     }
 }

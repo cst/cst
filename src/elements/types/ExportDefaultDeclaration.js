@@ -25,10 +25,6 @@ export default class ExportDefaultDeclaration extends ModuleDeclaration {
         }
         children.assertEnd();
 
-        this._declaration = declaration;
-    }
-
-    get declaration() {
-        return this._declaration;
+        this.declaration = declaration;
     }
 }

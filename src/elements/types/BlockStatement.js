@@ -26,15 +26,7 @@ export default class BlockStatement extends Statement {
         children.passToken('Punctuator', '}');
         children.assertEnd();
 
-        this._body = body;
-        this._directives = directives;
-    }
-
-    get body() {
-        return this._body.concat();
-    }
-
-    get directives() {
-        return this._directives;
+        this.body = body;
+        this.directives = directives;
     }
 }

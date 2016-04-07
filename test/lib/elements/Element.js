@@ -15,16 +15,7 @@ describe('Element', () => {
         });
 
         it('should get previous token', () => {
-            expect(secondVar.previousToken.previousToken.sourceCode).to.equal(';');
-        });
-
-        it('should get next whitespace token', () => {
-            expect(firstVar.nextWhitespaceToken.sourceCode).to.equal('\n');
-        });
-
-        it('should get previous whitespace token', () => {
-            let identifier = firstVar.nextNonWhitespaceToken;
-            expect(identifier.previousWhitespaceToken.sourceCode).to.equal('\n');
+            expect(secondVar.getPreviousToken().getPreviousToken().getSourceCode()).to.equal(';');
         });
     });
 
@@ -34,7 +25,7 @@ describe('Element', () => {
 
             program.removeChild(program.firstChild);
 
-            expect(program.sourceCode).to.equal(' var second = 2;');
+            expect(program.getSourceCode()).to.equal(' var second = 2;');
         });
 
         it('should return removed child', () => {
@@ -49,7 +40,7 @@ describe('Element', () => {
 
             program.firstChild.parentElement.removeChild(program.firstChild);
 
-            expect(program.sourceCode).to.equal(' var second = 2;');
+            expect(program.getSourceCode()).to.equal(' var second = 2;');
         });
 
         it('should remove whitespace child', () => {
@@ -57,7 +48,7 @@ describe('Element', () => {
 
             program.removeChild(program.firstChild);
 
-            expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
+            expect(program.getSourceCode()).to.equal('var first = 1; var second = 2;');
         });
 
         it('should remove child through sibling', () => {
@@ -65,7 +56,7 @@ describe('Element', () => {
 
             program.removeChild(program.firstChild.nextSibling);
 
-            expect(program.sourceCode).to.equal('\n\n\n var second = 2;');
+            expect(program.getSourceCode()).to.equal('\n\n\n var second = 2;');
         });
 
         it('should remove whitespace child through parent element', () => {
@@ -73,7 +64,7 @@ describe('Element', () => {
 
             program.firstChild.parentElement.removeChild(program.firstChild);
 
-            expect(program.sourceCode).to.equal('var first = 1; var second = 2;');
+            expect(program.getSourceCode()).to.equal('var first = 1; var second = 2;');
         });
 
         it('should remove element references', () => {
@@ -95,7 +86,7 @@ describe('Element', () => {
 
             program.firstChild.remove();
 
-            expect(program.sourceCode).to.equal(' var second = 2;');
+            expect(program.getSourceCode()).to.equal(' var second = 2;');
         });
 
         it('should be a noop for parentless element', () => {
@@ -110,9 +101,9 @@ describe('Element', () => {
         it('should remove semi-colon', () => {
             let program = parseAndGetProgram('d();');
 
-            program.lastToken.previousToken.remove();
+            program.getLastToken().getPreviousToken().remove();
 
-            expect(program.sourceCode).to.equal('d()');
+            expect(program.getSourceCode()).to.equal('d()');
         });
     });
 
@@ -123,7 +114,7 @@ describe('Element', () => {
 
             program.replaceChild(new Token('Whitespace', ';'), firstVar);
 
-            expect(program.sourceCode).to.equal('; var second = 2;');
+            expect(program.getSourceCode()).to.equal('; var second = 2;');
         });
 
         it('should replace ObjectProperty', () => {
@@ -132,7 +123,7 @@ describe('Element', () => {
 
             iden.parentElement.replaceChild(new Token('Identifier', '"t"'), iden);
 
-            expect(program.sourceCode).to.equal('({ "t": 1 })');
+            expect(program.getSourceCode()).to.equal('({ "t": 1 })');
         });
 
         it('should replace child with existing one', () => {
@@ -143,7 +134,7 @@ describe('Element', () => {
             program.removeChild(firstVar);
             program.replaceChild(firstVar, secondVar);
 
-            expect(program.sourceCode).to.equal(' var first = 1;');
+            expect(program.getSourceCode()).to.equal(' var first = 1;');
         });
     });
 
@@ -152,21 +143,21 @@ describe('Element', () => {
             var program = parseAndGetProgram('var answer = 1;');
             var node = program.selectNodesByType('VariableDeclarator')[0];
 
-            expect(node.range).to.include(4, 10);
+            expect(node.getRange()).to.include(4, 10);
         });
 
         it('should return range property for VariableDeclaration', () => {
             var program = parseAndGetProgram('var answer = 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.range).to.include(0, 15);
+            expect(node.getRange()).to.include(0, 15);
         });
 
         it('should return range property for second VariableDeclarators', () => {
             var program = parseAndGetProgram('var first = 1; var second = 2;');
             var node = program.selectNodesByType('VariableDeclarator')[1];
 
-            expect(node.range).to.include(19, 29);
+            expect(node.getRange()).to.include(19, 29);
         });
     });
 
@@ -175,7 +166,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('var answer = 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
                     'column': 0
@@ -191,7 +182,7 @@ describe('Element', () => {
             var program = parseAndGetProgram(' var answer = 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
                     'column': 1
@@ -207,7 +198,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('\n var answer = 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 2,
                     'column': 1
@@ -223,7 +214,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('\n\n\nvar answer = 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
                     'column': 0
@@ -239,7 +230,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('\n\n\n var answer = \n1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
                     'column': 1
@@ -255,7 +246,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('\n\n\n var answer = \n 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
                     'column': 1
@@ -271,7 +262,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('var answer = \n\n\n  1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
                     'column': 0
@@ -287,7 +278,7 @@ describe('Element', () => {
             var program = parseAndGetProgram('var answer = \n\n2\n 1;');
             var node = program.selectNodesByType('VariableDeclaration')[0];
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
                     'column': 0
@@ -305,9 +296,9 @@ describe('Element', () => {
                     appleInstrumentationDirectives: true
                 }
             });
-            var node = program.firstToken;
+            var node = program.getFirstToken();
 
-            expect(node.loc).to.deep.equal({
+            expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
                     'column': 0

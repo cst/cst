@@ -3,6 +3,7 @@ import Statement from '../Statement';
 export default class ForOfStatement extends Statement {
     constructor(childNodes) {
         super('ForOfStatement', childNodes);
+        this.each = false;
     }
 
     _acceptChildren(children) {
@@ -34,24 +35,8 @@ export default class ForOfStatement extends Statement {
 
         children.assertEnd();
 
-        this._left = left;
-        this._right = right;
-        this._body = body;
-    }
-
-    get left() {
-        return this._left;
-    }
-
-    get right() {
-        return this._right;
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get each() {
-        return false;
+        this.left = left;
+        this.right = right;
+        this.body = body;
     }
 }

@@ -17,13 +17,13 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            let param = globalScope.childScopes[0].variables[0];
+            let param = globalScope.childScopes[0].getVariables()[0];
             expect(param.name).to.equal('a');
             expect(param.type).to.equal('Parameter');
-            expect(param.definitions[0].type).to.equal('Parameter');
-            expect(param.definitions[0].node.parentElement.type).to.equal('FunctionExpression');
-            expect(param.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(param.references[0].isReadWrite).to.equal(true);
+            expect(param.getDefinitions()[0].type).to.equal('Parameter');
+            expect(param.getDefinitions()[0].node.parentElement.type).to.equal('FunctionExpression');
+            expect(param.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(param.getReferences()[0].isReadWrite()).to.equal(true);
         });
 
         it('should process rest arguments', () => {
@@ -35,22 +35,22 @@ describe('ScopesPlugin', () => {
             `);
             let globalScope = program.plugins.scopes.acquire(program);
 
-            let paramA = globalScope.childScopes[0].variables[0];
+            let paramA = globalScope.childScopes[0].getVariables()[0];
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
-            expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('FunctionExpression');
-            expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(paramA.references[0].isReadWrite).to.equal(true);
+            expect(paramA.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramA.getDefinitions()[0].node.parentElement.type).to.equal('FunctionExpression');
+            expect(paramA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(paramA.getReferences()[0].isReadWrite()).to.equal(true);
 
-            let paramB = globalScope.childScopes[0].variables[1];
+            let paramB = globalScope.childScopes[0].getVariables()[1];
 
             expect(paramB.name).to.equal('b');
             expect(paramB.type).to.equal('Parameter');
-            expect(paramB.definitions[0].type).to.equal('Parameter');
-            expect(paramB.definitions[0].node.parentElement.type).to.equal('RestElement');
-            expect(paramB.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(paramB.references[0].isReadOnly).to.equal(true);
+            expect(paramB.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramB.getDefinitions()[0].node.parentElement.type).to.equal('RestElement');
+            expect(paramB.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(paramB.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should process patterns', () => {
@@ -62,23 +62,23 @@ describe('ScopesPlugin', () => {
             `);
             let globalScope = program.plugins.scopes.acquire(program);
 
-            let paramA = globalScope.childScopes[0].variables[1];
+            let paramA = globalScope.childScopes[0].getVariables()[1];
 
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
-            expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
-            expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(paramA.references[0].isReadWrite).to.equal(true);
+            expect(paramA.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramA.getDefinitions()[0].node.parentElement.type).to.equal('ObjectProperty');
+            expect(paramA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(paramA.getReferences()[0].isReadWrite()).to.equal(true);
 
-            let paramB = globalScope.childScopes[0].variables[0];
+            let paramB = globalScope.childScopes[0].getVariables()[0];
 
             expect(paramB.name).to.equal('b');
             expect(paramB.type).to.equal('Parameter');
-            expect(paramB.definitions[0].type).to.equal('Parameter');
-            expect(paramB.definitions[0].node.parentElement.type).to.equal('ArrayPattern');
-            expect(paramB.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(paramB.references[0].isReadOnly).to.equal(true);
+            expect(paramB.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramB.getDefinitions()[0].node.parentElement.type).to.equal('ArrayPattern');
+            expect(paramB.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(paramB.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should process non-shortcut patterns', () => {
@@ -90,23 +90,23 @@ describe('ScopesPlugin', () => {
             `);
             let globalScope = program.plugins.scopes.acquire(program);
 
-            let paramA = globalScope.childScopes[0].variables[0];
+            let paramA = globalScope.childScopes[0].getVariables()[0];
 
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
-            expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
-            expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(paramA.references[0].isReadWrite).to.equal(true);
+            expect(paramA.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramA.getDefinitions()[0].node.parentElement.type).to.equal('ObjectProperty');
+            expect(paramA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(paramA.getReferences()[0].isReadWrite()).to.equal(true);
 
-            let paramB = globalScope.childScopes[0].variables[1];
+            let paramB = globalScope.childScopes[0].getVariables()[1];
 
             expect(paramB.name).to.equal('b');
             expect(paramB.type).to.equal('Parameter');
-            expect(paramB.definitions[0].type).to.equal('Parameter');
-            expect(paramB.definitions[0].node.parentElement.type).to.equal('ArrayPattern');
-            expect(paramB.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(paramB.references[0].isReadOnly).to.equal(true);
+            expect(paramB.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramB.getDefinitions()[0].node.parentElement.type).to.equal('ArrayPattern');
+            expect(paramB.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(paramB.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should process nested patterns', () => {
@@ -118,23 +118,23 @@ describe('ScopesPlugin', () => {
             `);
             let globalScope = program.plugins.scopes.acquire(program);
 
-            let paramA = globalScope.childScopes[0].variables[1];
+            let paramA = globalScope.childScopes[0].getVariables()[1];
 
             expect(paramA.name).to.equal('a');
             expect(paramA.type).to.equal('Parameter');
-            expect(paramA.definitions[0].type).to.equal('Parameter');
-            expect(paramA.definitions[0].node.parentElement.type).to.equal('ObjectProperty');
-            expect(paramA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(paramA.references[0].isReadWrite).to.equal(true);
+            expect(paramA.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramA.getDefinitions()[0].node.parentElement.type).to.equal('ObjectProperty');
+            expect(paramA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(paramA.getReferences()[0].isReadWrite()).to.equal(true);
 
-            let paramB = globalScope.childScopes[0].variables[0];
+            let paramB = globalScope.childScopes[0].getVariables()[0];
 
             expect(paramB.name).to.equal('b');
             expect(paramB.type).to.equal('Parameter');
-            expect(paramB.definitions[0].type).to.equal('Parameter');
-            expect(paramB.definitions[0].node.parentElement.type).to.equal('ArrayPattern');
-            expect(paramB.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(paramB.references[0].isReadOnly).to.equal(true);
+            expect(paramB.getDefinitions()[0].type).to.equal('Parameter');
+            expect(paramB.getDefinitions()[0].node.parentElement.type).to.equal('ArrayPattern');
+            expect(paramB.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(paramB.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should process arguments built-in', () => {
@@ -144,12 +144,12 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            let param = globalScope.childScopes[0].variables[0];
+            let param = globalScope.childScopes[0].getVariables()[0];
             expect(param.name).to.equal('arguments');
             expect(param.type).to.equal('BuiltIn');
-            expect(param.definitions.length).to.equal(0);
-            expect(param.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(param.references[0].isReadOnly).to.equal(true);
+            expect(param.getDefinitions().length).to.equal(0);
+            expect(param.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(param.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should process this built-in', () => {
@@ -159,12 +159,12 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            let param = globalScope.childScopes[0].variables[0];
+            let param = globalScope.childScopes[0].getVariables()[0];
             expect(param.name).to.equal('this');
             expect(param.type).to.equal('BuiltIn');
-            expect(param.definitions.length).to.equal(0);
-            expect(param.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(param.references[0].isReadOnly).to.equal(true);
+            expect(param.getDefinitions().length).to.equal(0);
+            expect(param.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(param.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should treat arguments in program as global', () => {
@@ -172,11 +172,12 @@ describe('ScopesPlugin', () => {
                 arguments;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            expect(globalScope.variables[0].name).to.equal('arguments');
-            expect(globalScope.variables[0].type).to.equal('ImplicitGlobal');
-            expect(globalScope.variables[0].references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(globalScope.variables[0].references[0].isReadOnly).to.equal(true);
+            expect(globalScope.getVariables().length).to.equal(1);
+            expect(globalScope.getVariables()[0].name).to.equal('arguments');
+            expect(globalScope.getVariables()[0].type).to.equal('ImplicitGlobal');
+            expect(globalScope.getVariables()[0].getReferences()[0].node.parentElement.type)
+                .to.equal('ExpressionStatement');
+            expect(globalScope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should treat this in program as global', () => {
@@ -184,11 +185,12 @@ describe('ScopesPlugin', () => {
                 this;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            expect(globalScope.variables[0].name).to.equal('this');
-            expect(globalScope.variables[0].type).to.equal('ImplicitGlobal');
-            expect(globalScope.variables[0].references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(globalScope.variables[0].references[0].isReadOnly).to.equal(true);
+            expect(globalScope.getVariables().length).to.equal(1);
+            expect(globalScope.getVariables()[0].name).to.equal('this');
+            expect(globalScope.getVariables()[0].type).to.equal('ImplicitGlobal');
+            expect(globalScope.getVariables()[0].getReferences()[0].node.parentElement.type)
+                .to.equal('ExpressionStatement');
+            expect(globalScope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
         });
     });
 });

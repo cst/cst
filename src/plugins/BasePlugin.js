@@ -12,7 +12,7 @@ export default class BasePlugin {
      * Returns plugin name.
      * Plugin's API will be accessible using `program.plugins.<pluginName>`.
      */
-    get pluginName(): string {
+    getPluginName(): string {
         return 'basePlugin';
     }
 

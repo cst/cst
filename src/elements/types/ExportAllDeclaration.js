@@ -19,10 +19,6 @@ export default class ExportAllDeclaration extends ModuleDeclaration {
         }
         children.assertEnd();
 
-        this._source = source;
-    }
-
-    get source() {
-        return this._source;
+        this.source = source;
     }
 }

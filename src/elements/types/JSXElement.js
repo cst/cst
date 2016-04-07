@@ -22,20 +22,8 @@ export default class JSXElement extends Expression {
         }
         children.assertEnd();
 
-        this._children = childrenProperty;
-        this._closingElement = closingElement;
-        this._openingElement = openingElement;
-    }
-
-    get children() {
-        return this._children;
-    }
-
-    get closingElement() {
-        return this._closingElement;
-    }
-
-    get openingElement() {
-        return this._openingElement;
+        this.children = childrenProperty;
+        this.closingElement = closingElement;
+        this.openingElement = openingElement;
     }
 }

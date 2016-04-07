@@ -32,15 +32,7 @@ export default class CallExpression extends Expression {
         children.passToken('Punctuator', ')');
         children.assertEnd();
 
-        this._callee = callee;
-        this._arguments = args;
-    }
-
-    get arguments() {
-        return this._arguments.concat();
-    }
-
-    get callee() {
-        return this._callee;
+        this.callee = callee;
+        this.arguments = args;
     }
 }

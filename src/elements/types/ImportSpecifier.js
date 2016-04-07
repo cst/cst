@@ -22,11 +22,7 @@ export default class ImportSpecifier extends ModuleSpecifier {
 
         children.assertEnd();
 
-        this._local = local;
-        this._imported = imported;
-    }
-
-    get imported() {
-        return this._imported;
+        this.local = local;
+        this.imported = imported;
     }
 }

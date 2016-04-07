@@ -10,15 +10,7 @@ export default class TaggedTemplateExpression extends Expression {
         children.skipNonCode();
         let quasi = children.passNode('TemplateLiteral');
 
-        this._tag = tag;
-        this._quasi = quasi;
-    }
-
-    get tag() {
-        return this._tag;
-    }
-
-    get quasi() {
-        return this._quasi;
+        this.tag = tag;
+        this.quasi = quasi;
     }
 }

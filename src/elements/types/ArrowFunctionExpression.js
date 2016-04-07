@@ -4,6 +4,9 @@ import getFunctionParams from './utils/getFunctionParams';
 export default class ArrowFunctionExpression extends Expression {
     constructor(childNodes) {
         super('ArrowFunctionExpression', childNodes);
+        this.id = null;
+        this.generator = false;
+        this.isFunction = true;
     }
 
     _acceptChildren(children) {
@@ -39,34 +42,9 @@ export default class ArrowFunctionExpression extends Expression {
 
         children.assertEnd();
 
-        this._async = async;
-        this._params = params;
-        this._body = body;
-        this._expression = expression;
+        this.async = async;
+        this.params = params;
+        this.body = body;
+        this.expression = expression;
     }
-
-    get async() {
-        return this._async;
-    }
-
-    get params() {
-        return this._params.concat();
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get expression() {
-        return this._expression;
-    }
-
-    get id() {
-        return null;
-    }
-
-    get generator() {
-        return false;
-    }
-
 }

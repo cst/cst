@@ -27,20 +27,8 @@ export default class ClassDeclaration extends Statement {
         let body = children.passNode('ClassBody');
         children.assertEnd();
 
-        this._id = id;
-        this._superClass = superClass;
-        this._body = body;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get superClass() {
-        return this._superClass;
-    }
-
-    get body() {
-        return this._body;
+        this.id = id;
+        this.superClass = superClass;
+        this.body = body;
     }
 }

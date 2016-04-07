@@ -13,15 +13,7 @@ export default class JSXNamespacedName extends Expression {
         let name = children.passNode('JSXIdentifier');
         children.assertEnd();
 
-        this._namespace = namespace;
-        this._name = name;
-    }
-
-    get namespace() {
-        return this._namespace;
-    }
-
-    get name() {
-        return this._name;
+        this.namespace = namespace;
+        this.name = name;
     }
 }

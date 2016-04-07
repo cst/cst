@@ -6,13 +6,10 @@ export default class ExpressionStatement extends Statement {
     }
 
     _acceptChildren(children) {
-        this._expression = children.passExpression();
+        var expression = children.passExpression();
         children.skipNonCode();
         children.skipSemicolon();
         children.assertEnd();
-    }
-
-    get expression() {
-        return this._expression;
+        this.expression = expression;
     }
 }

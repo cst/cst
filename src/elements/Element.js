@@ -32,219 +32,84 @@ export default class Element {
      * @param {Element[]} children
      */
     constructor(type: string, children: Array<Element>) {
-        this._type = type;
+        this.type = type;
 
-        this._firstChild = null;
-        this._lastChild = null;
-        this._parentElement = null;
-        this._nextSibling = null;
-        this._previousSibling = null;
-        this._childElements = [];
+        this.firstChild = null;
+        this.lastChild = null;
+        this.parentElement = null;
+        this.nextSibling = null;
+        this.previousSibling = null;
+        this.childElements = [];
 
         if (children) {
             for (let i = 0; i < children.length; i++) {
-                if (children[i]._parentElement) {
+                if (children[i].parentElement) {
                     throw new Error('Cannot add element to several parents');
                 }
             }
             this._setChildren(children);
         }
+
+        this.isToken = false;
+        this.isWhitespace = false;
+        this.isCode = true;
+        this.isComment = false;
+        this.isNonCodeToken = this.isComment || this.isWhitespace;
+        this.isNode = false;
+        this.isStatement = false;
+        this.isPattern = false;
+        this.isAssignable = false;
+        this.isFragment = false;
+
     }
 
-    _type: string;
-    _firstChild: ?Element;
-    _lastChild: ?Element;
-    _parentElement: ?Element;
-    _nextSibling: ?Element;
-    _previousSibling: ?Element;
-    _childElements: Array<Element>;
+    type: string;
+    firstChild: ?Element;
+    lastChild: ?Element;
+    parentElement: ?Element;
+    nextSibling: ?Element;
+    previousSibling: ?Element;
+    childElements: Array<Element>;
     _onSetParentElement: ?((parentElement: ?Element) => void);
 
-    value: ?string;
     isModuleSpecifier: boolean;
 
-    /**
-     * Element type.
-     * Important: some Node types also exist in Tokens. Do not rely on type only, use isToken, isNode.
-     *
-     * @returns {String}
-     */
-    get type(): string {
-        return this._type;
-    }
-
-    /**
-     * True if Element is a Token.
-     *
-     * @returns {Boolean}
-     */
-    get isToken(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a whitespace Token.
-     *
-     * @returns {Boolean}
-     */
-    get isWhitespace(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a code Token.
-     *
-     * @returns {Boolean}
-     */
-    get isCode(): boolean {
-        return true;
-    }
-
-    /**
-     * True if Element is a comment Token.
-     *
-     * @returns {Boolean}
-     */
-    get isComment(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is Comment or Whitespace.
-     *
-     * @returns {Boolean}
-     */
-    get isNonCodeToken(): boolean {
-        return this.isComment || this.isWhitespace;
-    }
-
-    /**
-     * True if Element is a Node.
-     *
-     * @returns {Boolean}
-     */
-    get isNode(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a Node which can be used as Expression.
-     *
-     * @returns {Boolean}
-     */
-    get isExpression(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a Node which can be used as Statement.
-     *
-     * @returns {Boolean}
-     */
-    get isStatement(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a Node which can be used as Pattern.
-     *
-     * @returns {Boolean}
-     */
-    get isPattern(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a Node which can be used as left part of Assignment.
-     *
-     * @returns {Boolean}
-     */
-    get isAssignable(): boolean {
-        return false;
-    }
-
-    /**
-     * True if Element is a Fragment.
-     *
-     * @returns {Boolean}
-     */
-    get isFragment(): boolean {
-        return false;
-    }
-
     // ==== Traversing =================================================================================================
-
-    /**
-     * Parent element or null if parent element does not exist.
-     *
-     * @returns {Element|null}
-     */
-    get parentElement(): ?Element {
-        return this._parentElement;
-    }
 
     /**
      * Owner Program for this element or null if element does not have Program in its parent hierarchy.
      *
      * @returns {Program}
      */
-    get ownerProgram(): Program {
+    getOwnerProgram(): Program {
         let element = this;
         while (element && !element._isProgram) {
-            element = element._parentElement;
+            element = element.parentElement;
         }
         return ((element: any): Program);
     }
 
-    /**
-     * Next sibling within parent.
-     * Null if element is the last child in parent or if element does not have parent.
-     *
-     * @returns {Element|null}
-     */
-    get nextSibling(): ?Element {
-        return this._nextSibling;
-    }
+    getNextToken() {
+        var element = this;
+        while (element) {
+            if (element.nextSibling) {
+                return element.nextSibling.getFirstToken();
+            }
 
-    /**
-     * Previous sibling within parent.
-     * Null if element is the first child in parent or if element does not have parent.
-     *
-     * @returns {Element|null}
-     */
-    get previousSibling(): ?Element {
-        return this._previousSibling;
-    }
-
-    /**
-     * Next token. Null if token was not found.
-     *
-     * @returns {Element|null}
-     */
-    get nextToken(): ?Element {
-        if (this._nextSibling) {
-            return this._nextSibling.firstToken;
-        }
-
-        if (this._parentElement) {
-            return this._parentElement.nextToken;
+            element = element.parentElement;
         }
 
         return null;
     }
 
-    /**
-     * Previous token. Null if token was not found.
-     *
-     * @returns {Element|null}
-     */
-    get previousToken(): ?Element {
-        if (this._previousSibling) {
-            return this._previousSibling.lastToken;
-        }
+    getPreviousToken() {
+        var element = this;
+        while (element) {
+            if (element.previousSibling) {
+                return element.previousSibling.getLastToken();
+            }
 
-        if (this._parentElement) {
-            return this._parentElement.previousToken;
+            element = element.parentElement;
         }
 
         return null;
@@ -255,10 +120,10 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextCodeToken(): ?Element {
-        let token = this.nextToken;
+    getNextCodeToken(): ?Element {
+        let token = this.getNextToken();
         while (token && !token.isCode) {
-            token = token.nextToken;
+            token = token.getNextToken();
         }
         return token;
     }
@@ -268,10 +133,10 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousCodeToken(): ?Element {
-        let token = this.previousToken;
+    getPreviousCodeToken(): ?Element {
+        let token = this.getPreviousToken();
         while (token && !token.isCode) {
-            token = token.previousToken;
+            token = token.getPreviousToken();
         }
         return token;
     }
@@ -281,10 +146,10 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get nextNonWhitespaceToken(): ?Element {
-        let token = this.nextToken;
+    getNextNonWhitespaceToken(): ?Element {
+        let token = this.getNextToken();
         while (token && token.isWhitespace) {
-            token = token.nextToken;
+            token = token.getNextToken();
         }
         return token;
     }
@@ -294,37 +159,10 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get previousNonWhitespaceToken(): ?Element {
-        let token = this.previousToken;
+    getPreviousNonWhitespaceToken(): ?Element {
+        let token = this.getPreviousToken();
         while (token && token.isWhitespace) {
-            token = token.previousToken;
-        }
-        return token;
-    }
-
-    /**
-     * Next whitespace token. Null if token was not found.
-     *
-     * @returns {Element|null}
-     */
-    get nextWhitespaceToken(): ?Element {
-        let token = this.nextToken;
-        while (token && !(token.isWhitespace)) {
-            token = token.nextToken;
-        }
-        return token;
-    }
-
-    /**
-     * Previous whitespace token. Null if token was not found.
-     *
-     * @returns {Element|null}
-     */
-    get previousWhitespaceToken(): ?Element {
-        let token = this.previousToken;
-
-        while (token && !(token.isWhitespace)) {
-            token = token.previousToken;
+            token = token.getPreviousToken();
         }
         return token;
     }
@@ -334,10 +172,10 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get firstToken(): ?Element {
-        let element = this._firstChild;
+    getFirstToken(): ?Element {
+        let element = this.firstChild;
         while (element && !element.isToken) {
-            element = element._firstChild;
+            element = element.firstChild;
         }
         return element;
     }
@@ -347,48 +185,12 @@ export default class Element {
      *
      * @returns {Element|null}
      */
-    get lastToken(): ?Element {
-        let element = this._lastChild;
+    getLastToken(): ?Element {
+        let element = this.lastChild;
         while (element && !element.isToken) {
-            element = element._lastChild;
+            element = element.lastChild;
         }
         return element;
-    }
-
-    /**
-     * First child element. Null if element does not have children.
-     *
-     * @returns {Element|null}
-     */
-    get firstChild(): ?Element {
-        return this._firstChild;
-    }
-
-    /**
-     * Last child element. Null if element does not have children.
-     *
-     * @returns {Element|null}
-     */
-    get lastChild(): ?Element {
-        return this._lastChild;
-    }
-
-    /**
-     * Direct children of the element.
-     *
-     * @returns {ElementList}
-     */
-    get childElements(): Element[] {
-        return this._childElements.concat();
-    }
-
-    /**
-     * Direct child count.
-     *
-     * @returns {Number}
-     */
-    get childCount(): number {
-        return this._childElements.length;
     }
 
     /**
@@ -396,16 +198,16 @@ export default class Element {
      *
      * @returns {Number[]}
      */
-    get range(): Range {
+    getRange(): Range {
         let counter = 0;
 
-        let previous = this.previousToken;
+        let previous = this.getPreviousToken();
         while (previous) {
-            counter += previous.sourceCodeLength;
-            previous = previous.previousToken;
+            counter += previous._sourceCodeLength;
+            previous = previous.getPreviousToken();
         }
 
-        return [counter, counter + this.sourceCodeLength];
+        return [counter, counter + this.getSourceCodeLength()];
     }
 
     /**
@@ -413,24 +215,24 @@ export default class Element {
      *
      * @returns {Object}
      */
-    get loc(): Location {
-        let prevToken = this.previousToken;
+    getLoc(): Location {
+        let prevToken = this.getPreviousToken();
         let startColumn = 0;
         let startLine = 1;
         while (prevToken) {
-            let lines = prevToken.sourceCodeLines;
+            let lines = prevToken._sourceCodeLines;
             startColumn += lines[lines.length - 1].length;
             if (lines.length > 1) {
                 while (prevToken) {
-                    startLine += prevToken.newlineCount;
-                    prevToken = prevToken.previousToken;
+                    startLine += prevToken.getNewlineCount();
+                    prevToken = prevToken.getPreviousToken();
                 }
                 break;
             }
-            prevToken = prevToken.previousToken;
+            prevToken = prevToken.getPreviousToken();
         }
 
-        let elementLines = this.sourceCodeLines;
+        let elementLines = this.getSourceCodeLines();
         let endLine = startLine + elementLines.length - 1;
         let endColumn = elementLines[elementLines.length - 1].length;
 
@@ -457,12 +259,12 @@ export default class Element {
      *
      * @returns {Number}
      */
-    get sourceCodeLength(): number {
+    getSourceCodeLength(): number {
         let length = 0;
-        let child = this._firstChild;
+        let child = this.firstChild;
         while (child) {
-            length += child.sourceCodeLength;
-            child = child._nextSibling;
+            length += child.getSourceCodeLength();
+            child = child.nextSibling;
         }
         return length;
     }
@@ -472,12 +274,12 @@ export default class Element {
      *
      * @returns {String}
      */
-    get sourceCode(): string {
+    getSourceCode(): string {
         let code = '';
-        let child = this._firstChild;
+        let child = this.firstChild;
         while (child) {
-            code += child.sourceCode;
-            child = child._nextSibling;
+            code += child.getSourceCode();
+            child = child.nextSibling;
         }
         return code;
     }
@@ -487,8 +289,8 @@ export default class Element {
      *
      * @returns {String[]}
      */
-    get sourceCodeLines(): Array<string> {
-        return getLines(this.sourceCode);
+    getSourceCodeLines(): Array<string> {
+        return getLines(this.getSourceCode());
     }
 
     /**
@@ -496,12 +298,12 @@ export default class Element {
      *
      * @returns {Number}
      */
-    get newlineCount(): number {
+    getNewlineCount(): number {
         let count = 0;
-        let child = this._firstChild;
+        let child = this.firstChild;
         while (child) {
-            count += child.newlineCount;
-            child = child._nextSibling;
+            count += child.getNewlineCount();
+            child = child.nextSibling;
         }
         return count;
     }
@@ -516,17 +318,17 @@ export default class Element {
      * @returns {Element}
      */
     removeChild(element: Element): Element {
-        if (element._parentElement !== this) {
+        if (element.parentElement !== this) {
             throw new Error('The element to be removed is not a child of this element.');
         }
 
-        let children = this._childElements.concat();
+        let children = this.childElements.concat();
         let elementIndex = children.indexOf(element);
         children.splice(elementIndex, 1);
 
         this._setChildren(children);
 
-        let ownerProgram = this.ownerProgram;
+        let ownerProgram = this.getOwnerProgram();
         if (ownerProgram) {
             ownerProgram._removeElementsFromProgram([element]);
         }
@@ -558,21 +360,21 @@ export default class Element {
         let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
-            newElements = newElement._childElements;
-            children = this._childElements.concat(newElement._childElements);
+            newElements = newElement.childElements;
+            children = this.childElements.concat(newElement.childElements);
         } else {
-            if (newElement._parentElement) {
+            if (newElement.parentElement) {
                 throw new Error('Remove element before adding again');
             }
             this._ensureCanAdopt(newElement);
             newElements = [newElement];
-            children = this._childElements.concat(newElement);
+            children = this.childElements.concat(newElement);
         }
 
         this._setChildren(children);
 
         if (newElements) {
-            let ownerProgram = this.ownerProgram;
+            let ownerProgram = this.getOwnerProgram();
             if (ownerProgram) {
                 ownerProgram._addElementsToProgram(newElements);
             }
@@ -590,21 +392,21 @@ export default class Element {
         let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
-            newElements = newElement._childElements;
-            children = newElement._childElements.concat(this._childElements);
+            newElements = newElement.childElements;
+            children = newElement.childElements.concat(this.childElements);
         } else {
-            if (newElement._parentElement) {
+            if (newElement.parentElement) {
                 throw new Error('Remove element before adding again');
             }
             this._ensureCanAdopt(newElement);
             newElements = [newElement];
-            children = [newElement].concat(this._childElements);
+            children = [newElement].concat(this.childElements);
         }
 
         this._setChildren(children);
 
         if (newElements) {
-            let ownerProgram = this.ownerProgram;
+            let ownerProgram = this.getOwnerProgram();
             if (ownerProgram) {
                 ownerProgram._addElementsToProgram(newElements);
             }
@@ -619,22 +421,22 @@ export default class Element {
      * @param {Element} referenceChild
      */
     insertChildBefore(newElement: Element, referenceChild: Element) {
-        if (referenceChild._parentElement !== this) {
+        if (referenceChild.parentElement !== this) {
             throw new Error('Invalid reference child');
         }
 
-        let index = this._childElements.indexOf(referenceChild);
-        let childrenBefore = this._childElements.slice(0, index);
-        let childrenAfter = this._childElements.slice(index);
+        let index = this.childElements.indexOf(referenceChild);
+        let childrenBefore = this.childElements.slice(0, index);
+        let childrenAfter = this.childElements.slice(index);
 
         let children: Element[];
         let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
-            newElements = newElement._childElements;
-            children = childrenBefore.concat(newElement._childElements, childrenAfter);
+            newElements = newElement.childElements;
+            children = childrenBefore.concat(newElement.childElements, childrenAfter);
         } else {
-            if (newElement._parentElement) {
+            if (newElement.parentElement) {
                 throw new Error('Remove element before adding again');
             }
 
@@ -646,7 +448,7 @@ export default class Element {
         this._setChildren(children);
 
         if (newElements) {
-            let ownerProgram = this.ownerProgram;
+            let ownerProgram = this.getOwnerProgram();
             if (ownerProgram) {
                 ownerProgram._addElementsToProgram(newElements);
             }
@@ -662,33 +464,33 @@ export default class Element {
      * @param {Element} lastRefChild
      */
     replaceChildren(newElement: Element, firstRefChild: Element, lastRefChild: Element) {
-        if (!firstRefChild || firstRefChild._parentElement !== this) {
+        if (!firstRefChild || firstRefChild.parentElement !== this) {
             throw new Error('Invalid first reference child');
         }
 
-        if (!lastRefChild || lastRefChild._parentElement !== this) {
+        if (!lastRefChild || lastRefChild.parentElement !== this) {
             throw new Error('Invalid last reference child');
         }
 
-        let firstIndex = this._childElements.indexOf(firstRefChild);
-        let lastIndex = this._childElements.indexOf(lastRefChild);
+        let firstIndex = this.childElements.indexOf(firstRefChild);
+        let lastIndex = this.childElements.indexOf(lastRefChild);
 
         if (firstIndex > lastIndex) {
             throw new Error('Invalid reference children order');
         }
 
-        let childrenBefore = this._childElements.slice(0, firstIndex);
-        let childrenAfter = this._childElements.slice(lastIndex + 1);
-        let replacedChildren = this._childElements.slice(firstIndex, lastIndex + 1);
+        let childrenBefore = this.childElements.slice(0, firstIndex);
+        let childrenAfter = this.childElements.slice(lastIndex + 1);
+        let replacedChildren = this.childElements.slice(firstIndex, lastIndex + 1);
 
         let children: Element[];
         let newElements: Element[];
         if (newElement.isFragment) {
             this._ensureCanAdoptFragment(newElement);
-            children = childrenBefore.concat(newElement._childElements, childrenAfter);
-            newElements = newElement._childElements;
+            children = childrenBefore.concat(newElement.childElements, childrenAfter);
+            newElements = newElement.childElements;
         } else {
-            if (newElement._parentElement) {
+            if (newElement.parentElement) {
                 throw new Error('Remove element before adding again');
             }
 
@@ -699,7 +501,7 @@ export default class Element {
 
         this._setChildren(children);
 
-        let ownerProgram = this.ownerProgram;
+        let ownerProgram = this.getOwnerProgram();
 
         if (ownerProgram) {
             ownerProgram._removeElementsFromProgram(replacedChildren);
@@ -707,8 +509,8 @@ export default class Element {
 
         for (let i = 0; i < replacedChildren.length; i++) {
             let replacedChild = replacedChildren[i];
-            replacedChild._previousSibling = null;
-            replacedChild._nextSibling = null;
+            replacedChild.previousSibling = null;
+            replacedChild.nextSibling = null;
             setParentElement(replacedChild, null);
         }
 
@@ -724,27 +526,27 @@ export default class Element {
      * @param {Element} lastRefChild
      */
     removeChildren(firstRefChild: Element, lastRefChild: Element) {
-        if (!firstRefChild || firstRefChild._parentElement !== this) {
+        if (!firstRefChild || firstRefChild.parentElement !== this) {
             throw new Error('Invalid first reference child');
         }
 
-        if (!lastRefChild || lastRefChild._parentElement !== this) {
+        if (!lastRefChild || lastRefChild.parentElement !== this) {
             throw new Error('Invalid last reference child');
         }
 
-        let firstIndex = this._childElements.indexOf(firstRefChild);
-        let lastIndex = this._childElements.indexOf(lastRefChild);
+        let firstIndex = this.childElements.indexOf(firstRefChild);
+        let lastIndex = this.childElements.indexOf(lastRefChild);
 
         if (firstIndex > lastIndex) {
             throw new Error('Invalid reference children order');
         }
 
-        let children = this._childElements.slice(0, firstIndex).concat(this._childElements.slice(lastIndex + 1));
-        let removedChildren = this._childElements.slice(firstIndex, lastIndex + 1);
+        let children = this.childElements.slice(0, firstIndex).concat(this.childElements.slice(lastIndex + 1));
+        let removedChildren = this.childElements.slice(firstIndex, lastIndex + 1);
 
         this._setChildren(children);
 
-        let ownerProgram = this.ownerProgram;
+        let ownerProgram = this.getOwnerProgram();
 
         if (ownerProgram) {
             ownerProgram._removeElementsFromProgram(removedChildren);
@@ -752,8 +554,8 @@ export default class Element {
 
         for (let i = 0; i < removedChildren.length; i++) {
             let removedChild = removedChildren[i];
-            removedChild._previousSibling = null;
-            removedChild._nextSibling = null;
+            removedChild.previousSibling = null;
+            removedChild.nextSibling = null;
             setParentElement(removedChild, null);
         }
     }
@@ -777,22 +579,22 @@ export default class Element {
      * @returns {Array}
      */
     getChildrenBetween(firstRefChild: Element, lastRefChild: Element): Array<Element> {
-        if (!firstRefChild || firstRefChild._parentElement !== this) {
+        if (!firstRefChild || firstRefChild.parentElement !== this) {
             throw new Error('Invalid first reference child');
         }
 
-        if (!lastRefChild || lastRefChild._parentElement !== this) {
+        if (!lastRefChild || lastRefChild.parentElement !== this) {
             throw new Error('Invalid last reference child');
         }
 
-        let firstIndex = this._childElements.indexOf(firstRefChild);
-        let lastIndex = this._childElements.indexOf(lastRefChild);
+        let firstIndex = this.childElements.indexOf(firstRefChild);
+        let lastIndex = this.childElements.indexOf(lastRefChild);
 
         if (firstIndex > lastIndex) {
             throw new Error('Invalid reference children order');
         }
 
-        return this._childElements.slice(firstIndex, lastIndex + 1);
+        return this.childElements.slice(firstIndex, lastIndex + 1);
     }
 
     /**
@@ -808,7 +610,7 @@ export default class Element {
             if (element === child) {
                 throw new Error('The new child element contains the parent.');
             }
-            element = element._parentElement;
+            element = element.parentElement;
         }
     }
 
@@ -819,10 +621,10 @@ export default class Element {
      * @private
      */
     _ensureCanAdoptFragment(fragment: Element) {
-        let fragmentChild = fragment._firstChild;
+        let fragmentChild = fragment.firstChild;
         while (fragmentChild) {
             this._ensureCanAdopt(fragmentChild);
-            fragmentChild = fragmentChild._nextSibling;
+            fragmentChild = fragmentChild.nextSibling;
         }
     }
 
@@ -837,30 +639,30 @@ export default class Element {
 
         if (newChildren.length > 0) {
             let previousChild = newChildren[0];
-            this._firstChild = previousChild;
-            previousChild._previousSibling = null;
+            this.firstChild = previousChild;
+            previousChild.previousSibling = null;
             setParentElement(previousChild, this);
             if (newChildren.length > 1) {
                 // TODO(flow): error with only `let child;`
                 let child = newChildren[1];
                 for (let i = 1; i < newChildren.length; i++) {
                     child = newChildren[i];
-                    child._previousSibling = previousChild;
+                    child.previousSibling = previousChild;
                     setParentElement(child, this);
-                    previousChild._nextSibling = child;
+                    previousChild.nextSibling = child;
                     previousChild = child;
                 }
-                child._nextSibling = null;
-                this._lastChild = child;
+                child.nextSibling = null;
+                this.lastChild = child;
             } else {
-                previousChild._nextSibling = null;
-                this._lastChild = previousChild;
+                previousChild.nextSibling = null;
+                this.lastChild = previousChild;
             }
         } else {
-            this._firstChild = this._lastChild = null;
+            this.firstChild = this.lastChild = null;
         }
 
-        this._childElements = newChildren;
+        this.childElements = newChildren;
     }
 
     /**
@@ -879,9 +681,9 @@ export default class Element {
      * @returns {Element}
      */
     cloneElement(): Element {
-        let clonedChildren: Element[] = new Array(this._childElements.length);
+        let clonedChildren: Element[] = new Array(this.childElements.length);
         for (let i = 0; i < clonedChildren.length; i++) {
-            clonedChildren[i] = this._childElements[i].cloneElement();
+            clonedChildren[i] = this.childElements[i].cloneElement();
         }
         let objectToClone = ((this: any): ConcreteElement);
         return new objectToClone.constructor(clonedChildren);
@@ -898,7 +700,7 @@ class ConcreteElement extends Element {
 }
 
 function setParentElement(element: Element, parentElement: ?Element) {
-    element._parentElement = parentElement;
+    element.parentElement = parentElement;
     if (element._onSetParentElement) {
         element._onSetParentElement(parentElement);
     }

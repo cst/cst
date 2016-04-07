@@ -31,11 +31,7 @@ export default class ExportSpecifier extends ModuleSpecifier {
 
         children.assertEnd();
 
-        this._local = local;
-        this._exported = exported;
-    }
-
-    get exported() {
-        return this._exported;
+        this.local = local;
+        this.exported = exported;
     }
 }

@@ -11,24 +11,12 @@ export default class TemplateElement extends Node {
         let tail = false;
         let value = {
             cooked: templateToken.value,
-            raw: templateToken.sourceCode
+            raw: templateToken.getSourceCode()
         };
 
         children.assertEnd();
 
-        this._tail = tail;
-        this._value = value;
-    }
-
-    get tail() {
-        return this._tail;
-    }
-
-    set tail(bool) {
-        this._tail = bool;
-    }
-
-    get value() {
-        return this._value;
+        this.tail = tail;
+        this.value = value;
     }
 }

@@ -35,10 +35,6 @@ export default class ObjectExpression extends Expression {
         children.passToken('Punctuator', '}');
         children.assertEnd();
 
-        this._properties = properties;
-    }
-
-    get properties() {
-        return this._properties.concat();
+        this.properties = properties;
     }
 }

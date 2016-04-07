@@ -22,15 +22,10 @@ export default class Program extends Statement {
     _traverse: Traverse;
     _body: Array<any>;
     _isProgram: boolean;
-    _plugins: {[key: string]: BasePlugin};
+    plugins: {[key: string]: BasePlugin};
 
     _acceptPlugins(plugins: {[key: string]: BasePlugin}) {
-        Object.freeze(plugins);
-        this._plugins = plugins;
-    }
-
-    get plugins(): {[key: string]: BasePlugin} {
-        return this._plugins;
+        this.plugins = plugins;
     }
 
     _acceptChildren(children: ElementAssert) {
@@ -55,8 +50,8 @@ export default class Program extends Statement {
         children.passToken('EOF');
         children.assertEnd();
 
-        this._body = body;
-        this._directives = directives;
+        this.body = body;
+        this.directives = directives;
     }
 
     /**
@@ -87,14 +82,6 @@ export default class Program extends Statement {
     _removeElementsFromProgram(elements: Array<Element>) {
         this._traverse.removeElements(elements);
         this._emit('elements-remove', elements);
-    }
-
-    get body(): Array<any> {
-        return this._body.concat();
-    }
-
-    get directives(): Array<any> {
-        return this._directives;
     }
 
     on(eventName: string, callback: Function) {

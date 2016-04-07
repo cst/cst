@@ -32,20 +32,8 @@ export default class UpdateExpression extends Expression {
 
         children.assertEnd();
 
-        this._argument = argument;
-        this._operator = operator;
-        this._prefix = prefix;
-    }
-
-    get argument() {
-        return this._argument;
-    }
-
-    get operator() {
-        return this._operator;
-    }
-
-    get prefix() {
-        return this._prefix;
+        this.argument = argument;
+        this.operator = operator;
+        this.prefix = prefix;
     }
 }
