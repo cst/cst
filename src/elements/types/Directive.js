@@ -6,13 +6,10 @@ export default class Directive extends Statement {
     }
 
     _acceptChildren(children) {
-        this._value = children.passExpression();
+        var value = children.passExpression();
         children.skipNonCode();
         children.skipSemicolon();
         children.assertEnd();
-    }
-
-    get value() {
-        return this._value;
+        this.value = value;
     }
 }

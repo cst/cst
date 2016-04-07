@@ -52,15 +52,7 @@ export default class ImportDeclaration extends ModuleDeclaration {
 
         children.assertEnd();
 
-        this._specifiers = specifiers;
-        this._source = source;
-    }
-
-    get specifiers() {
-        return this._specifiers;
-    }
-
-    get source() {
-        return this._source;
+        this.specifiers = specifiers;
+        this.source = source;
     }
 }

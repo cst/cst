@@ -28,15 +28,7 @@ export default class YieldExpression extends Expression {
 
         children.assertEnd();
 
-        this._argument = argument;
-        this._delegate = delegate;
-    }
-
-    get argument() {
-        return this._argument;
-    }
-
-    get delegate() {
-        return this._delegate;
+        this.argument = argument;
+        this.delegate = delegate;
     }
 }

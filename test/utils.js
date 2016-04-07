@@ -100,16 +100,13 @@ export function parseAndGetStatementInVariableDeclarator(code: string): Object {
 }
 
 export function assertChildren(element: Element, children: Array<Element>): void {
-    if (element.childCount !== children.length) {
-        throw new Error('Invalid child count');
-    }
     let childElements = element.childElements;
     for (let i = 0; i < childElements.length; i++) {
         if (childElements[i] !== children[i]) {
             throw new Error(
                 'Invalid children\n' +
-                'Actual: "' + element.sourceCode + '"\n' +
-                'Expected: "' + children.map(c => c.sourceCode).join('') + '"'
+                'Actual: "' + element.getSourceCode() + '"\n' +
+                'Expected: "' + children.map(c => c.getSourceCode()).join('') + '"'
             );
         }
     }
@@ -117,9 +114,6 @@ export function assertChildren(element: Element, children: Array<Element>): void
 
 export function validateStructure(element: Element): void {
     let childElements = element.childElements;
-    if (childElements.length !== element.childCount) {
-        throw new Error('Inconsistend child count');
-    }
     for (let i = 0; i < childElements.length; i++) {
         let child = childElements[i];
         if (child.parentElement !== element) {
@@ -145,7 +139,7 @@ export function validateStructure(element: Element): void {
         }
         firstToken = currentChild || null;
 
-        if (child.firstToken !== firstToken) {
+        if (child.getFirstToken() !== firstToken) {
             throw new Error('Inconsistent first token');
         }
 
@@ -155,7 +149,7 @@ export function validateStructure(element: Element): void {
         }
         lastToken = currentChild || null;
 
-        if (child.lastToken !== lastToken) {
+        if (child.getLastToken() !== lastToken) {
             throw new Error('Inconsistent last token');
         }
 

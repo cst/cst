@@ -32,10 +32,6 @@ export default class ContinueStatement extends Statement {
 
         children.assertEnd();
 
-        this._label = label;
-    }
-
-    get label() {
-        return this._label;
+        this.label = label;
     }
 }

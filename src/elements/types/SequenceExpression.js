@@ -23,10 +23,6 @@ export default class SequenceExpression extends Expression {
 
         children.assertEnd();
 
-        this._expressions = expressions;
-    }
-
-    get expressions() {
-        return this._expressions.concat();
+        this.expressions = expressions;
     }
 }

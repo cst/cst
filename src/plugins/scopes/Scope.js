@@ -10,15 +10,15 @@ export default class Scope {
     constructor(scopeInfo: ScopeInfo) {
         let {node, parentScope, isProgramScope, isFunctionScope, isClassScope, isArrowFunctionScope} = scopeInfo;
 
-        this._node = node;
-        this._parentScope = parentScope;
+        this.node = node;
+        this.parentScope = parentScope;
         if (parentScope) {
-            parentScope._childScopes.push(this);
+            parentScope.childScopes.push(this);
             this._depth = parentScope._depth + 1;
         } else {
             this._depth = 0;
         }
-        this._childScopes = [];
+        this.childScopes = [];
         this._variables = new Map();
         this._references = new Map();
         this._isProgramScope = Boolean(isProgramScope);
@@ -36,10 +36,10 @@ export default class Scope {
     _isFunctionScope: boolean;
     _isClassScope: boolean;
     _isArrowFunctionScope: boolean;
-    _node: Node;
+    node: Node;
     _depth: number;
-    _parentScope: ?Scope;
-    _childScopes: Scope[];
+    parentScope: ?Scope;
+    childScopes: Scope[];
     _variables: Map<string, Variable[]>;
     _references: Map<string, Reference[]>;
 
@@ -51,8 +51,8 @@ export default class Scope {
         if (variables) {
             variables.push(variable);
             variables.sort((variable1: Variable, variable2: Variable) => {
-                let typeOrder1 = typeOrder[variable1._type];
-                let typeOrder2 = typeOrder[variable2._type];
+                let typeOrder1 = typeOrder[variable1.type];
+                let typeOrder2 = typeOrder[variable2.type];
                 if (typeOrder1 > typeOrder2) {
                     return 1;
                 }
@@ -69,8 +69,8 @@ export default class Scope {
     _addDefinition(definitionInfo: DefinitionInfo) {
         let {node, name, type} = definitionInfo;
         if (type === types.Variable) {
-            if (!this._isFunctionScope && this._parentScope) {
-                this._parentScope._addDefinition(definitionInfo);
+            if (!this._isFunctionScope && this.parentScope) {
+                this.parentScope._addDefinition(definitionInfo);
                 return;
             }
         }
@@ -101,7 +101,7 @@ export default class Scope {
     }
 
     _removeDefinition(definition: Definition) {
-        let variable = definition._variable;
+        let variable = definition.variable;
 
         variable._removeDefinition(definition);
 
@@ -127,12 +127,12 @@ export default class Scope {
     }
 
     _adjustReferencesOnVariableAdd(variable: Variable) {
-        let depth = variable._scope._depth;
+        let depth = variable.scope._depth;
         let references = this._references.get(variable.name);
         if (references) {
             for (let reference of references) {
-                let refVar = reference._variable;
-                let varDepth = refVar._scope._depth;
+                let refVar = reference.variable;
+                let varDepth = refVar.scope._depth;
                 if (varDepth === depth) {
                     if (typeOrder[variable.type] < typeOrder[refVar.type]) {
                         refVar._transferReferences(variable);
@@ -141,13 +141,13 @@ export default class Scope {
                 } else if (varDepth < depth) {
                     refVar._references.delete(reference);
                     variable._addReference(reference);
-                    reference._variable = variable;
+                    reference.variable = variable;
                     removeVariableIfRequired(refVar);
                 }
             }
         }
 
-        for (let childScope of this._childScopes) {
+        for (let childScope of this.childScopes) {
             childScope._adjustReferencesOnVariableAdd(variable);
         }
     }
@@ -174,9 +174,9 @@ export default class Scope {
         do {
             let variables = currentScope._variables.get(name);
             if (variables) {
-                if (reference._type) {
+                if (reference.type) {
                     for (let variable of variables) {
-                        if (variable._type === reference._type) {
+                        if (variable.type === reference.type) {
                             variable._addReference(reference);
                             return;
                         }
@@ -186,7 +186,7 @@ export default class Scope {
                     return;
                 }
             }
-            if (!currentScope._parentScope) {
+            if (!currentScope.parentScope) {
                 let globalVariable = new Variable({
                     name, type: types.ImplicitGlobal, scope: currentScope
                 });
@@ -212,13 +212,13 @@ export default class Scope {
                     currentScope._addVariable(builtInVariable);
                     return;
                 }
-                currentScope = currentScope._parentScope;
+                currentScope = currentScope.parentScope;
             }
         } while (true);
     }
 
     _removeReference(reference: Reference) {
-        let variable = reference._variable;
+        let variable = reference.variable;
         let name = variable.name;
         let references = this._references.get(name);
         if (references) {
@@ -252,41 +252,29 @@ export default class Scope {
         return scope;
     }
 
-    get node(): Node {
-        return this._node;
-    }
-
-    get parentScope(): ?Scope {
-        return this._parentScope;
-    }
-
-    get variables(): Variable[] {
+    getVariables(): Variable[] {
         return [].concat.apply([], toArray(this._variables.values()));
     }
 
-    get references(): Reference[] {
+    getReferences(): Reference[] {
         return [].concat.apply([], toArray(this._references.values()));
     }
 
     destroy() {
-        let parentScope = this._parentScope;
+        let parentScope = this.parentScope;
         if (parentScope) {
-            let scopeIndex = parentScope._childScopes.indexOf(this);
+            let scopeIndex = parentScope.childScopes.indexOf(this);
             if (scopeIndex !== -1) {
-                parentScope._childScopes.splice(scopeIndex, 1);
+                parentScope.childScopes.splice(scopeIndex, 1);
             }
         }
-        this.references.forEach(this._removeReference, this);
-    }
-
-    get childScopes(): Scope[] {
-        return this._childScopes;
+        this.getReferences().forEach(this._removeReference, this);
     }
 }
 
 function removeVariableIfRequired(variable: Variable) {
     if (variable._references.size === 0 && variable._definitions.size === 0) {
-        let variables = variable._scope._variables.get(variable._name);
+        let variables = variable.scope._variables.get(variable.name);
         if (variables) {
             let index = variables.indexOf(variable);
 
@@ -295,25 +283,25 @@ function removeVariableIfRequired(variable: Variable) {
             }
 
             if (variables.length === 0) {
-                variable._scope._variables.delete(variable._name);
+                variable.scope._variables.delete(variable.name);
             }
         }
     }
 }
 
 function removeVariable(variable: Variable) {
-    let scope = variable._scope;
-    let variables = scope._variables.get(variable._name);
+    let scope = variable.scope;
+    let variables = scope._variables.get(variable.name);
 
     if (variables) {
         let index = variables.indexOf(variable);
         if (index !== -1) {
             variables.splice(index, 1);
             if (variables.length === 0) {
-                scope._variables.delete(variable._name);
+                scope._variables.delete(variable.name);
             }
             for (var reference of variable._references) {
-                reference._scope._assignReference(reference, variable._name);
+                reference.scope._assignReference(reference, variable.name);
             }
         }
     }

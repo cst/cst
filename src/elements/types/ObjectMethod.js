@@ -9,6 +9,7 @@ const getterAndSetter = {
 export default class ObjectMethod extends Node {
     constructor(childNodes) {
         super('ObjectMethod', childNodes);
+        this.isFunction = true;
     }
 
     _acceptChildren(children) {
@@ -71,41 +72,13 @@ export default class ObjectMethod extends Node {
         children.assertEnd();
 
         this._generator = generator;
-        this._kind = kind;
-        this._key = key;
-        this._value = value;
-        this._computed = computed;
-        this._method = method;
-        this._params = params;
-        this._body = body;
-    }
-
-    get key() {
-        return this._key;
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get params() {
-        return this._params;
-    }
-
-    get value() {
-        return this._value;
-    }
-
-    get kind() {
-        return this._kind;
-    }
-
-    get method() {
-        return this._method;
-    }
-
-    get computed() {
-        return this._computed;
+        this.kind = kind;
+        this.key = key;
+        this.value = value;
+        this.computed = computed;
+        this.method = method;
+        this.params = params;
+        this.body = body;
     }
 }
 

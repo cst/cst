@@ -31,20 +31,8 @@ export default class AssignmentExpression extends Expression {
         let right = children.passExpression();
         children.assertEnd();
 
-        this._left = left;
-        this._operator = operator;
-        this._right = right;
-    }
-
-    get left() {
-        return this._left;
-    }
-
-    get right() {
-        return this._right;
-    }
-
-    get operator() {
-        return this._operator;
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
     }
 }

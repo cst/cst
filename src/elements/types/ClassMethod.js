@@ -9,12 +9,12 @@ const getterAndSetter = {
 export default class ClassMethod extends Node {
     constructor(childNodes) {
         super('ClassMethod', childNodes);
+        this.isFunction = true;
     }
 
     _acceptChildren(children) {
         let key;
         let computed;
-        let value;
         let kind;
         let staticMember = false;
         let generator = false;
@@ -74,40 +74,12 @@ export default class ClassMethod extends Node {
 
         children.assertEnd();
 
-        this._params = params;
-        this._body = body;
-        this._generator = generator;
-        this._kind = kind;
-        this._key = key;
-        this._computed = computed;
-        this._static = staticMember;
-    }
-
-    get key() {
-        return this._key;
-    }
-
-    get params() {
-        return this._params.concat();
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get kind() {
-        return this._kind;
-    }
-
-    get static() {
-        return this._static;
-    }
-
-    get generator() {
-        return this._generator;
-    }
-
-    get computed() {
-        return this._computed;
+        this.params = params;
+        this.body = body;
+        this.generator = generator;
+        this.kind = kind;
+        this.key = key;
+        this.computed = computed;
+        this.static = staticMember;
     }
 }

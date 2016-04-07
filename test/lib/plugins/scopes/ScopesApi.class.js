@@ -15,7 +15,7 @@ describe('ScopesPlugin', () => {
                 (class {})
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should ignore named class expression', () => {
@@ -23,7 +23,7 @@ describe('ScopesPlugin', () => {
                 (class X {})
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should register class declaration', () => {
@@ -31,11 +31,11 @@ describe('ScopesPlugin', () => {
                 class X {}
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('X');
-            expect(scope.variables[0].type).to.equal('LetVariable');
-            expect(scope.variables[0].definitions[0].node.parentElement.type).to.equal('ClassDeclaration');
-            expect(scope.variables[0].definitions[0].type).to.equal('LetVariable');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('X');
+            expect(scope.getVariables()[0].type).to.equal('LetVariable');
+            expect(scope.getVariables()[0].getDefinitions()[0].node.parentElement.type).to.equal('ClassDeclaration');
+            expect(scope.getVariables()[0].getDefinitions()[0].type).to.equal('LetVariable');
         });
 
         it('should register class declaration', () => {
@@ -44,20 +44,20 @@ describe('ScopesPlugin', () => {
                 class Y extends X {}
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(2);
-            expect(scope.variables[0].name).to.equal('X');
-            expect(scope.variables[0].type).to.equal('LetVariable');
-            expect(scope.variables[0].definitions[0].node.parentElement.type).to.equal('ClassDeclaration');
-            expect(scope.variables[0].definitions[0].type).to.equal('LetVariable');
-            expect(scope.variables[0].references.length).to.equal(2);
-            expect(scope.variables[0].references[0].isWriteOnly).to.equal(true);
-            expect(scope.variables[0].references[1].isReadOnly).to.equal(true);
-            expect(scope.variables[1].name).to.equal('Y');
-            expect(scope.variables[1].type).to.equal('LetVariable');
-            expect(scope.variables[1].definitions[0].node.parentElement.type).to.equal('ClassDeclaration');
-            expect(scope.variables[1].definitions[0].type).to.equal('LetVariable');
-            expect(scope.variables[1].references.length).to.equal(1);
-            expect(scope.variables[1].references[0].isWriteOnly).to.equal(true);
+            expect(scope.getVariables().length).to.equal(2);
+            expect(scope.getVariables()[0].name).to.equal('X');
+            expect(scope.getVariables()[0].type).to.equal('LetVariable');
+            expect(scope.getVariables()[0].getDefinitions()[0].node.parentElement.type).to.equal('ClassDeclaration');
+            expect(scope.getVariables()[0].getDefinitions()[0].type).to.equal('LetVariable');
+            expect(scope.getVariables()[0].getReferences().length).to.equal(2);
+            expect(scope.getVariables()[0].getReferences()[0].isWriteOnly()).to.equal(true);
+            expect(scope.getVariables()[0].getReferences()[1].isReadOnly()).to.equal(true);
+            expect(scope.getVariables()[1].name).to.equal('Y');
+            expect(scope.getVariables()[1].type).to.equal('LetVariable');
+            expect(scope.getVariables()[1].getDefinitions()[0].node.parentElement.type).to.equal('ClassDeclaration');
+            expect(scope.getVariables()[1].getDefinitions()[0].type).to.equal('LetVariable');
+            expect(scope.getVariables()[1].getReferences().length).to.equal(1);
+            expect(scope.getVariables()[1].getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should ignore method names', () => {
@@ -67,11 +67,11 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
             let classScope = scope.childScopes[0];
-            expect(classScope.childScopes[0].variables.length).to.equal(1);
-            expect(classScope.childScopes[0].variables[0].name).to.equal('val');
-            expect(classScope.childScopes[0].variables[0].type).to.equal('Parameter');
+            expect(classScope.childScopes[0].getVariables().length).to.equal(1);
+            expect(classScope.childScopes[0].getVariables()[0].name).to.equal('val');
+            expect(classScope.childScopes[0].getVariables()[0].type).to.equal('Parameter');
         });
 
         it('should ignore getter names', () => {
@@ -81,7 +81,7 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
         });
 
         it('should ignore setter names', () => {
@@ -91,11 +91,11 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(0);
+            expect(scope.getVariables().length).to.equal(0);
             let classScope = scope.childScopes[0];
-            expect(classScope.childScopes[0].variables.length).to.equal(1);
-            expect(classScope.childScopes[0].variables[0].name).to.equal('val');
-            expect(classScope.childScopes[0].variables[0].type).to.equal('Parameter');
+            expect(classScope.childScopes[0].getVariables().length).to.equal(1);
+            expect(classScope.childScopes[0].getVariables()[0].name).to.equal('val');
+            expect(classScope.childScopes[0].getVariables()[0].type).to.equal('Parameter');
         });
 
         it('should not ignore computed method names', () => {
@@ -105,9 +105,9 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('method');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('method');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
         });
 
         it('should not ignore computed getter names', () => {
@@ -117,9 +117,9 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('method');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('method');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
         });
 
         it('should not ignore computed setter names', () => {
@@ -129,13 +129,13 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let scope = program.plugins.scopes.acquire(program);
-            expect(scope.variables.length).to.equal(1);
-            expect(scope.variables[0].name).to.equal('method');
-            expect(scope.variables[0].type).to.equal('ImplicitGlobal');
+            expect(scope.getVariables().length).to.equal(1);
+            expect(scope.getVariables()[0].name).to.equal('method');
+            expect(scope.getVariables()[0].type).to.equal('ImplicitGlobal');
             let classScope = scope.childScopes[0];
-            expect(classScope.childScopes[0].variables.length).to.equal(1);
-            expect(classScope.childScopes[0].variables[0].name).to.equal('val');
-            expect(classScope.childScopes[0].variables[0].type).to.equal('Parameter');
+            expect(classScope.childScopes[0].getVariables().length).to.equal(1);
+            expect(classScope.childScopes[0].getVariables()[0].name).to.equal('val');
+            expect(classScope.childScopes[0].getVariables()[0].type).to.equal('Parameter');
         });
 
         it('should support super', () => {
@@ -152,15 +152,16 @@ describe('ScopesPlugin', () => {
             `);
             let scope = program.plugins.scopes.acquire(program);
             let classScope = scope.childScopes[0];
-            expect(classScope.variables.length).to.equal(1);
-            expect(classScope.variables[0].name).to.equal('super');
-            expect(classScope.variables[0].type).to.equal('BuiltIn');
-            expect(classScope.variables[0].definitions.length).to.equal(0);
-            expect(classScope.variables[0].references.length).to.equal(2);
-            expect(classScope.variables[0].references[0].isReadOnly).to.equal(true);
-            expect(classScope.variables[0].references[0].node.parentElement.type).to.equal('CallExpression');
-            expect(classScope.variables[0].references[1].isReadOnly).to.equal(true);
-            expect(classScope.variables[0].references[1].node.parentElement.type).to.equal('MemberExpression');
+            expect(classScope.getVariables().length).to.equal(1);
+            expect(classScope.getVariables()[0].name).to.equal('super');
+            expect(classScope.getVariables()[0].type).to.equal('BuiltIn');
+            expect(classScope.getVariables()[0].getDefinitions().length).to.equal(0);
+            expect(classScope.getVariables()[0].getReferences().length).to.equal(2);
+            expect(classScope.getVariables()[0].getReferences()[0].isReadOnly()).to.equal(true);
+            expect(classScope.getVariables()[0].getReferences()[0].node.parentElement.type).to.equal('CallExpression');
+            expect(classScope.getVariables()[0].getReferences()[1].isReadOnly()).to.equal(true);
+            expect(classScope.getVariables()[0].getReferences()[1].node.parentElement.type)
+                .to.equal('MemberExpression');
 
         });
     });

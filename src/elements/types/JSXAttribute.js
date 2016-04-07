@@ -17,15 +17,7 @@ export default class JSXAttribute extends Node {
         }
         children.assertEnd();
 
-        this._name = name;
-        this._value = value;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    get value() {
-        return this._value;
+        this.name = name;
+        this.value = value;
     }
 }

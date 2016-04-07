@@ -50,7 +50,7 @@ describe('BlockStatement', () => {
         expect(statement.body[1].type).to.equal('EmptyStatement');
         expect(statement.body[2].type).to.equal('EmptyStatement');
         expect(statement.childElements.length).to.equal(11);
-        expect(statement.childElements.map(el => el.sourceCode)).to.deep.equal([
+        expect(statement.childElements.map(el => el.getSourceCode())).to.deep.equal([
             '{', ' ', ';', ' ', ';', ' ', ';', ' ', '/* */', ' ', '}'
         ]);
     });

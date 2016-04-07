@@ -561,11 +561,11 @@ export default class ScopesApi {
         ) {
             let reference = this._programScope._programReferences.get(node);
             if (reference) {
-                reference._scope._removeReference(reference);
+                reference.scope._removeReference(reference);
             }
             let definition = this._programScope._programDefinitions.get(node);
             if (definition) {
-                definition._scope._removeDefinition(definition);
+                definition.scope._removeDefinition(definition);
             }
         }
     }
@@ -623,11 +623,11 @@ export default class ScopesApi {
     findVariable(node: Node): ?Variable {
         let reference = this._programScope._programReferences.get(node);
         if (reference) {
-            return reference._variable;
+            return reference.variable;
         }
         let definition = this._programScope._programDefinitions.get(node);
         if (definition) {
-            return definition._variable;
+            return definition.variable;
         }
     }
 }

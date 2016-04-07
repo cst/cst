@@ -12,10 +12,6 @@ export default class JSXText extends Expression {
         children.moveNext();
         children.assertEnd();
 
-        this._value = value;
-    }
-
-    get value() {
-        return this._value;
+        this.value = value;
     }
 }

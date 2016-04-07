@@ -52,20 +52,8 @@ export default class ExportNamedDeclaration extends ModuleDeclaration {
 
         children.assertEnd();
 
-        this._declaration = declaration;
-        this._specifiers = specifiers;
-        this._source = source;
-    }
-
-    get declaration() {
-        return this._declaration;
-    }
-
-    get specifiers() {
-        return this._specifiers;
-    }
-
-    get source() {
-        return this._source;
+        this.declaration = declaration;
+        this.specifiers = specifiers;
+        this.source = source;
     }
 }

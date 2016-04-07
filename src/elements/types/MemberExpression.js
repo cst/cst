@@ -3,6 +3,7 @@ import Expression from '../Expression';
 export default class MemberExpression extends Expression {
     constructor(childNodes) {
         super('MemberExpression', childNodes);
+        this.isAssignable = true;
     }
 
     _acceptChildren(children) {
@@ -28,24 +29,8 @@ export default class MemberExpression extends Expression {
 
         children.assertEnd();
 
-        this._object = object;
-        this._property = property;
-        this._computed = computed;
-    }
-
-    get object() {
-        return this._object;
-    }
-
-    get property() {
-        return this._property;
-    }
-
-    get computed() {
-        return this._computed;
-    }
-
-    get isAssignable() {
-        return true;
+        this.object = object;
+        this.property = property;
+        this.computed = computed;
     }
 }

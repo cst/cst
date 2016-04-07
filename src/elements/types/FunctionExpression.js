@@ -9,6 +9,8 @@ export default class FunctionExpression extends Expression {
         super('FunctionExpression', childNodes);
         this._short = false;
         this._generatorFromProperty = false;
+        this.expression = false;
+        this.isFunction = true;
     }
 
     _acceptChildren(children) {
@@ -50,11 +52,11 @@ export default class FunctionExpression extends Expression {
 
         children.assertEnd();
 
-        this._async = async;
-        this._id = id;
-        this._params = params;
-        this._body = body;
-        this._generator = generator;
+        this.async = async;
+        this.id = id;
+        this.params = params;
+        this.body = body;
+        this.generator = generator;
         this._short = short;
     }
 
@@ -66,29 +68,6 @@ export default class FunctionExpression extends Expression {
             this._short = false;
             this._generatorFromProperty = false;
         }
-    }
-
-    get async() {
-        return this._async;
-    }
-
-    get params() {
-        return this._params.concat();
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get expression() {
-        return false;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get generator() {
-        return this._short ? this._generatorFromProperty : this._generator;
+        this.generator = this._short ? this._generatorFromProperty : this.generator;
     }
 }

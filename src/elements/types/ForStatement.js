@@ -49,25 +49,9 @@ export default class ForStatement extends Statement {
 
         children.assertEnd();
 
-        this._init = init;
-        this._test = test;
-        this._update = update;
-        this._body = body;
-    }
-
-    get init() {
-        return this._init;
-    }
-
-    get test() {
-        return this._test;
-    }
-
-    get update() {
-        return this._update;
-    }
-
-    get body() {
-        return this._body;
+        this.init = init;
+        this.test = test;
+        this.update = update;
+        this.body = body;
     }
 }

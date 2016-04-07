@@ -15,13 +15,13 @@ describe('ScopesPlugin', () => {
                 var a;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references.length).to.equal(0);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences().length).to.equal(0);
         });
 
         it('should support reference-first', () => {
@@ -30,14 +30,14 @@ describe('ScopesPlugin', () => {
                 var a;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(variableA.references[0].isReadOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(variableA.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should support var with init', () => {
@@ -45,14 +45,14 @@ describe('ScopesPlugin', () => {
                 var a = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should merge multiple vars', () => {
@@ -61,16 +61,16 @@ describe('ScopesPlugin', () => {
                 var a = 2;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA.definitions[1].type).to.equal('Variable');
-            expect(variableA.definitions[1].node.parentElement.init.value).to.equal(2);
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA.getDefinitions()[1].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[1].node.parentElement.init.value).to.equal(2);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should merge multiple vars in sub block scopes', () => {
@@ -83,16 +83,16 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA.definitions[1].type).to.equal('Variable');
-            expect(variableA.definitions[1].node.parentElement.init.value).to.equal(2);
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA.getDefinitions()[1].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[1].node.parentElement.init.value).to.equal(2);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support var patterns', () => {
@@ -100,19 +100,19 @@ describe('ScopesPlugin', () => {
                 var {a, b} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Variable');
-            expect(variableB.definitions[0].type).to.equal('Variable');
-            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableB.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support nested var patterns', () => {
@@ -120,17 +120,17 @@ describe('ScopesPlugin', () => {
                 var {prop1: {a}, prop2: {b}} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Variable');
-            expect(variableB.definitions[0].type).to.equal('Variable');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support multiple var', () => {
@@ -138,21 +138,21 @@ describe('ScopesPlugin', () => {
                 var a, b;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.getVariables().length).to.equal(2);
 
-            let variableA = globalScope.variables[0];
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references.length).to.equal(0);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences().length).to.equal(0);
 
-            let variableB = globalScope.variables[1];
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Variable');
-            expect(variableB.definitions[0].type).to.equal('Variable');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references.length).to.equal(0);
+            expect(variableB.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableB.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences().length).to.equal(0);
         });
 
         it('should support multiple var with init', () => {
@@ -160,23 +160,23 @@ describe('ScopesPlugin', () => {
                 var a = 1, b = 2;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.getVariables().length).to.equal(2);
 
-            let variableA = globalScope.variables[0];
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Variable');
-            expect(variableA.definitions[0].type).to.equal('Variable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableB = globalScope.variables[1];
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Variable');
-            expect(variableB.definitions[0].type).to.equal('Variable');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableB.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support let', () => {
@@ -184,13 +184,13 @@ describe('ScopesPlugin', () => {
                 let a;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references.length).to.equal(0);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences().length).to.equal(0);
         });
 
         it('should support let with init', () => {
@@ -198,14 +198,14 @@ describe('ScopesPlugin', () => {
                 let a = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should merge multiple lets', () => {
@@ -214,16 +214,16 @@ describe('ScopesPlugin', () => {
                 let a = 2;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA.definitions[1].type).to.equal('LetVariable');
-            expect(variableA.definitions[1].node.parentElement.init.value).to.equal(2);
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA.getDefinitions()[1].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[1].node.parentElement.init.value).to.equal(2);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support referencing in nested blocks', () => {
@@ -234,16 +234,16 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            expect(variableA.references[1].node.parentElement.type).to.equal('UpdateExpression');
-            expect(variableA.references[1].isReadWrite).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            expect(variableA.getReferences()[1].node.parentElement.type).to.equal('UpdateExpression');
+            expect(variableA.getReferences()[1].isReadWrite()).to.equal(true);
         });
 
         it('should support let-let definitions in nested blocks', () => {
@@ -254,23 +254,23 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
+            expect(globalScope.getVariables().length).to.equal(1);
 
-            let variableA1 = globalScope.variables[0];
+            let variableA1 = globalScope.getVariables()[0];
             expect(variableA1.name).to.equal('a');
             expect(variableA1.type).to.equal('LetVariable');
-            expect(variableA1.definitions[0].type).to.equal('LetVariable');
-            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA1.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA1.references[0].isWriteOnly).to.equal(true);
+            expect(variableA1.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA1.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA1.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableA2 = globalScope.childScopes[0].variables[0];
+            let variableA2 = globalScope.childScopes[0].getVariables()[0];
             expect(variableA2.name).to.equal('a');
             expect(variableA2.type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].node.parentElement.init.value).to.equal(2);
-            expect(variableA2.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA2.getDefinitions()[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA2.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support var-let definitions in nested blocks', () => {
@@ -281,23 +281,23 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
+            expect(globalScope.getVariables().length).to.equal(1);
 
-            let variableA1 = globalScope.variables[0];
+            let variableA1 = globalScope.getVariables()[0];
             expect(variableA1.name).to.equal('a');
             expect(variableA1.type).to.equal('Variable');
-            expect(variableA1.definitions[0].type).to.equal('Variable');
-            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA1.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA1.references[0].isWriteOnly).to.equal(true);
+            expect(variableA1.getDefinitions()[0].type).to.equal('Variable');
+            expect(variableA1.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA1.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableA2 = globalScope.childScopes[0].variables[0];
+            let variableA2 = globalScope.childScopes[0].getVariables()[0];
             expect(variableA2.name).to.equal('a');
             expect(variableA2.type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].node.parentElement.init.value).to.equal(2);
-            expect(variableA2.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA2.getDefinitions()[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA2.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support const-let definitions in nested blocks', () => {
@@ -308,23 +308,23 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
+            expect(globalScope.getVariables().length).to.equal(1);
 
-            let variableA1 = globalScope.variables[0];
+            let variableA1 = globalScope.getVariables()[0];
             expect(variableA1.name).to.equal('a');
             expect(variableA1.type).to.equal('Constant');
-            expect(variableA1.definitions[0].type).to.equal('Constant');
-            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA1.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA1.references[0].isWriteOnly).to.equal(true);
+            expect(variableA1.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA1.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA1.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableA2 = globalScope.childScopes[0].variables[0];
+            let variableA2 = globalScope.childScopes[0].getVariables()[0];
             expect(variableA2.name).to.equal('a');
             expect(variableA2.type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].type).to.equal('LetVariable');
-            expect(variableA2.definitions[0].node.parentElement.init.value).to.equal(2);
-            expect(variableA2.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA2.getDefinitions()[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA2.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support let-const definitions in nested blocks', () => {
@@ -335,23 +335,23 @@ describe('ScopesPlugin', () => {
                 }
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
+            expect(globalScope.getVariables().length).to.equal(1);
 
-            let variableA1 = globalScope.variables[0];
+            let variableA1 = globalScope.getVariables()[0];
             expect(variableA1.name).to.equal('a');
             expect(variableA1.type).to.equal('LetVariable');
-            expect(variableA1.definitions[0].type).to.equal('LetVariable');
-            expect(variableA1.definitions[0].node.parentElement.init.value).to.equal(1);
-            expect(variableA1.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA1.references[0].isWriteOnly).to.equal(true);
+            expect(variableA1.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA1.getDefinitions()[0].node.parentElement.init.value).to.equal(1);
+            expect(variableA1.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA1.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableA2 = globalScope.childScopes[0].variables[0];
+            let variableA2 = globalScope.childScopes[0].getVariables()[0];
             expect(variableA2.name).to.equal('a');
             expect(variableA2.type).to.equal('Constant');
-            expect(variableA2.definitions[0].type).to.equal('Constant');
-            expect(variableA2.definitions[0].node.parentElement.init.value).to.equal(2);
-            expect(variableA2.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA2.references[0].isWriteOnly).to.equal(true);
+            expect(variableA2.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA2.getDefinitions()[0].node.parentElement.init.value).to.equal(2);
+            expect(variableA2.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA2.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support multiple let', () => {
@@ -359,21 +359,21 @@ describe('ScopesPlugin', () => {
                 let a, b;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.getVariables().length).to.equal(2);
 
-            let variableA = globalScope.variables[0];
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references.length).to.equal(0);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences().length).to.equal(0);
 
-            let variableB = globalScope.variables[1];
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('LetVariable');
-            expect(variableB.definitions[0].type).to.equal('LetVariable');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references.length).to.equal(0);
+            expect(variableB.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableB.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences().length).to.equal(0);
         });
 
         it('should support multiple let with init', () => {
@@ -381,23 +381,23 @@ describe('ScopesPlugin', () => {
                 let a = 1, b = 2;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.getVariables().length).to.equal(2);
 
-            let variableA = globalScope.variables[0];
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableB = globalScope.variables[1];
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('LetVariable');
-            expect(variableB.definitions[0].type).to.equal('LetVariable');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableB.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support let patterns', () => {
@@ -405,19 +405,19 @@ describe('ScopesPlugin', () => {
                 let {a, b} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('LetVariable');
-            expect(variableB.definitions[0].type).to.equal('LetVariable');
-            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableB.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support nested let patterns', () => {
@@ -425,17 +425,17 @@ describe('ScopesPlugin', () => {
                 let {prop1: {a}, prop2: {b}} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('LetVariable');
-            expect(variableA.definitions[0].type).to.equal('LetVariable');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('LetVariable');
-            expect(variableB.definitions[0].type).to.equal('LetVariable');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('LetVariable');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support const', () => {
@@ -443,14 +443,14 @@ describe('ScopesPlugin', () => {
                 const a = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Constant');
-            expect(variableA.definitions[0].type).to.equal('Constant');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support multiple const', () => {
@@ -458,23 +458,23 @@ describe('ScopesPlugin', () => {
                 const a = 1, b = 2;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
+            expect(globalScope.getVariables().length).to.equal(2);
 
-            let variableA = globalScope.variables[0];
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Constant');
-            expect(variableA.definitions[0].type).to.equal('Constant');
-            expect(variableA.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
 
-            let variableB = globalScope.variables[1];
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Constant');
-            expect(variableB.definitions[0].type).to.equal('Constant');
-            expect(variableB.definitions[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].node.parentElement.type).to.equal('VariableDeclarator');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableB.getDefinitions()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].node.parentElement.type).to.equal('VariableDeclarator');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support const patterns', () => {
@@ -482,19 +482,19 @@ describe('ScopesPlugin', () => {
                 const {a, b} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Constant');
-            expect(variableA.definitions[0].type).to.equal('Constant');
-            expect(variableA.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Constant');
-            expect(variableB.definitions[0].type).to.equal('Constant');
-            expect(variableB.definitions[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableB.getDefinitions()[0].node.parentElement.parentElement.parentElement.init.value).to.equal(1);
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support nested let patterns', () => {
@@ -502,17 +502,17 @@ describe('ScopesPlugin', () => {
                 const {prop1: {a}, prop2: {b}} = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(2);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(2);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('a');
             expect(variableA.type).to.equal('Constant');
-            expect(variableA.definitions[0].type).to.equal('Constant');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
-            let variableB = globalScope.variables[1];
+            expect(variableA.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
+            let variableB = globalScope.getVariables()[1];
             expect(variableB.name).to.equal('b');
             expect(variableB.type).to.equal('Constant');
-            expect(variableB.definitions[0].type).to.equal('Constant');
-            expect(variableB.references[0].isWriteOnly).to.equal(true);
+            expect(variableB.getDefinitions()[0].type).to.equal('Constant');
+            expect(variableB.getReferences()[0].isWriteOnly()).to.equal(true);
         });
     });
 });

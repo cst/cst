@@ -15,12 +15,12 @@ describe('ScopesPlugin', () => {
                 x;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(variableA.references[0].isReadOnly).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(variableA.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should support write reference', () => {
@@ -28,12 +28,12 @@ describe('ScopesPlugin', () => {
                 x = 1;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('AssignmentExpression');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('AssignmentExpression');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support increment reference', () => {
@@ -41,12 +41,12 @@ describe('ScopesPlugin', () => {
                 x++;
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(variableA.references[0].isReadWrite).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(variableA.getReferences()[0].isReadWrite()).to.equal(true);
         });
 
         it('should support read reference in nested scope', () => {
@@ -56,12 +56,12 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('ExpressionStatement');
-            expect(variableA.references[0].isReadOnly).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('ExpressionStatement');
+            expect(variableA.getReferences()[0].isReadOnly()).to.equal(true);
         });
 
         it('should support write reference in nested scope', () => {
@@ -71,12 +71,12 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('AssignmentExpression');
-            expect(variableA.references[0].isWriteOnly).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('AssignmentExpression');
+            expect(variableA.getReferences()[0].isWriteOnly()).to.equal(true);
         });
 
         it('should support increment reference in nested scope', () => {
@@ -86,12 +86,12 @@ describe('ScopesPlugin', () => {
                 })
             `);
             let globalScope = program.plugins.scopes.acquire(program);
-            expect(globalScope.variables.length).to.equal(1);
-            let variableA = globalScope.variables[0];
+            expect(globalScope.getVariables().length).to.equal(1);
+            let variableA = globalScope.getVariables()[0];
             expect(variableA.name).to.equal('x');
             expect(variableA.type).to.equal('ImplicitGlobal');
-            expect(variableA.references[0].node.parentElement.type).to.equal('UpdateExpression');
-            expect(variableA.references[0].isReadWrite).to.equal(true);
+            expect(variableA.getReferences()[0].node.parentElement.type).to.equal('UpdateExpression');
+            expect(variableA.getReferences()[0].isReadWrite()).to.equal(true);
         });
     });
 });

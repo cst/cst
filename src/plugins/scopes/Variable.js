@@ -7,26 +7,26 @@ import toArray from '../../utils/toArray';
 
 export default class Variable {
     constructor({name, type, scope}: {name: string, type: string, scope: Scope}) {
-        this._name = name;
-        this._type = type;
-        this._scope = scope;
+        this.name = name;
+        this.type = type;
+        this.scope = scope;
         this._definitions = new Set();
         this._references = new Set();
     }
 
-    _name: string;
-    _scope: Scope;
-    _type: string;
+    name: string;
+    type: string;
+    scope: Scope;
     _references: Set<Reference>;
     _definitions: Set<Definition>;
 
     _addDefinition(definition: Definition) {
-        definition._variable = this;
+        definition.variable = this;
         this._definitions.add(definition);
     }
 
     _addReference(reference: Reference) {
-        reference._variable = this;
+        reference.variable = this;
         this._references.add(reference);
     }
 
@@ -40,27 +40,19 @@ export default class Variable {
 
     _transferReferences(variable: Variable) {
         for (let reference of this._references) {
-            if (!reference._type) {
+            if (!reference.type) {
                 this._references.delete(reference);
                 variable._references.add(reference);
-                reference._variable = variable;
+                reference.variable = variable;
             }
         }
     }
 
-    get name(): string {
-        return this._name;
-    }
-
-    get type(): string {
-        return this._type;
-    }
-
-    get definitions(): Definition[] {
+    getDefinitions(): Definition[] {
         return toArray(this._definitions);
     }
 
-    get references(): Reference[] {
+    getReferences(): Reference[] {
         return toArray(this._references);
     }
 }

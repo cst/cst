@@ -8,7 +8,8 @@ import Element from './Element';
  * @name Node
  */
 export default class Node extends Element {
-    get isNode(): boolean {
-        return true;
+    constructor(type, children) {
+        super(type, children);
+        this.isNode = true;
     }
 }

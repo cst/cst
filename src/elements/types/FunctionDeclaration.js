@@ -4,10 +4,12 @@ import getFunctionParams from './utils/getFunctionParams';
 export default class FunctionDeclaration extends Statement {
     constructor(childNodes) {
         super('FunctionDeclaration', childNodes);
+        this.expression = false;
+        this.isFunction = true;
     }
 
     _acceptChildren(children) {
-        let params = [];
+        let params;
         let async = false;
         let id = null;
 
@@ -39,34 +41,10 @@ export default class FunctionDeclaration extends Statement {
 
         children.assertEnd();
 
-        this._async = async;
-        this._id = id;
-        this._params = params;
-        this._body = body;
-        this._generator = generator;
-    }
-
-    get async() {
-        return this._async;
-    }
-
-    get params() {
-        return this._params.concat();
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get expression() {
-        return false;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get generator() {
-        return this._generator;
+        this.async = async;
+        this.id = id;
+        this.params = params;
+        this.body = body;
+        this.generator = generator;
     }
 }

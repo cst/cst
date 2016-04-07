@@ -13,6 +13,6 @@ export default class ImportNamespaceSpecifier extends ModuleSpecifier {
         let local = children.passNode('Identifier');
         children.assertEnd();
 
-        this._local = local;
+        this.local = local;
     }
 }

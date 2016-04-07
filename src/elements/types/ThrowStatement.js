@@ -12,10 +12,6 @@ export default class ThrowStatement extends Statement {
         children.skipNonCode();
         children.skipSemicolon();
         children.assertEnd();
-        this._argument = argument;
-    }
-
-    get argument() {
-        return this._argument;
+        this.argument = argument;
     }
 }

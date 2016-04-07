@@ -22,15 +22,7 @@ export default class WhileStatement extends Statement {
 
         children.assertEnd();
 
-        this._test = test;
-        this._body = body;
-    }
-
-    get test() {
-        return this._test;
-    }
-
-    get body() {
-        return this._body;
+        this.test = test;
+        this.body = body;
     }
 }

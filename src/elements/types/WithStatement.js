@@ -22,15 +22,7 @@ export default class WithStatement extends Statement {
 
         children.assertEnd();
 
-        this._object = object;
-        this._body = body;
-    }
-
-    get object() {
-        return this._object;
-    }
-
-    get body() {
-        return this._body;
+        this.object = object;
+        this.body = body;
     }
 }

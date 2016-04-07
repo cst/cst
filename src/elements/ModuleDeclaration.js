@@ -8,7 +8,8 @@ import Statement from './Statement';
  * @name ModuleDeclaration
  */
 export default class ModuleDeclaration extends Statement {
-    get isModuleDeclaration(): boolean {
-        return true;
+    constructor(type, children) {
+        super(type, children);
+        this.isModuleDeclaration = true;
     }
 }

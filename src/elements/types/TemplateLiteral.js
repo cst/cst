@@ -27,15 +27,7 @@ export default class TemplateLiteral extends Expression {
             quasis[quasis.length - 1].tail = true;
         }
 
-        this._quasis = quasis;
-        this._expressions = expressions;
-    }
-
-    get quasis() {
-        return this._quasis;
-    }
-
-    get expressions() {
-        return this._expressions;
+        this.quasis = quasis;
+        this.expressions = expressions;
     }
 }

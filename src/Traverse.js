@@ -46,10 +46,10 @@ export default class Traverse {
                 tokenIndex.addElement(element);
             } else {
                 nodeIndex.addElement(element);
-                let child = element._firstChild;
+                let child = element.firstChild;
                 while (child) {
                     addElementTree(child);
-                    child = child._nextSibling;
+                    child = child.nextSibling;
                 }
             }
         }
@@ -68,10 +68,10 @@ export default class Traverse {
                 tokenIndex.removeElement(element);
             } else {
                 nodeIndex.removeElement(element);
-                let child = element._firstChild;
+                let child = element.firstChild;
                 while (child) {
                     removeElementTree(child);
-                    child = child._nextSibling;
+                    child = child.nextSibling;
                 }
             }
         }
@@ -95,15 +95,15 @@ class ElementIndexByType {
     }
 
     addElement(element: Element): void {
-        let items = this._index[element._type];
+        let items = this._index[element.type];
         if (!items) {
-            items = this._index[element._type] = [];
+            items = this._index[element.type] = [];
         }
         items[items.length] = element;
     }
 
     removeElement(element: Element): void {
-        let items = this._index[element._type];
+        let items = this._index[element.type];
         items.splice(items.indexOf(element), 1);
     }
 }

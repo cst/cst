@@ -22,15 +22,7 @@ export default class VariableDeclarator extends Node {
 
         children.assertEnd();
 
-        this._id = id;
-        this._init = init;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get init() {
-        return this._init;
+        this.id = id;
+        this.init = init;
     }
 }

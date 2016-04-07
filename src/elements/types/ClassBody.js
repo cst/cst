@@ -20,10 +20,6 @@ export default class ClassBody extends Node {
         children.passToken('Punctuator', '}');
         children.assertEnd();
 
-        this._body = body;
-    }
-
-    get body() {
-        return this._body.concat();
+        this.body = body;
     }
 }

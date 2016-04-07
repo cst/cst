@@ -3,6 +3,7 @@ import Node from '../Node';
 export default class AssignmentPattern extends Node {
     constructor(childNodes) {
         super('AssignmentPattern', childNodes);
+        this.isPattern = true;
     }
 
     _acceptChildren(children) {
@@ -14,19 +15,7 @@ export default class AssignmentPattern extends Node {
         let right = children.passExpression();
         children.assertEnd();
 
-        this._left = left;
-        this._right = right;
-    }
-
-    get left() {
-        return this._left;
-    }
-
-    get right() {
-        return this._right;
-    }
-
-    isPattern() {
-        return true;
+        this.left = left;
+        this.right = right;
     }
 }

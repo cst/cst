@@ -16,15 +16,7 @@ export default class LabeledStatement extends Statement {
 
         children.assertEnd();
 
-        this._label = label;
-        this._body = body;
-    }
-
-    get label() {
-        return this._label;
-    }
-
-    get body() {
-        return this._body;
+        this.label = label;
+        this.body = body;
     }
 }

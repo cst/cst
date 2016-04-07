@@ -30,15 +30,7 @@ export default class SwitchStatement extends Statement {
         children.passToken('Punctuator', '}');
         children.assertEnd();
 
-        this._discriminant = discriminant;
-        this._cases = cases;
-    }
-
-    get discriminant() {
-        return this._discriminant;
-    }
-
-    get cases() {
-        return this._cases.concat();
+        this.discriminant = discriminant;
+        this.cases = cases;
     }
 }

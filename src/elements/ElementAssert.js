@@ -20,26 +20,8 @@ export default class ElementAssert {
     }
 
     _elements: Array<Element>;
-    _currentElement: ?Element;
+    currentElement: ?Element;
     _position: number;
-
-    /**
-     * True if end of child list was reached.
-     *
-     * @returns {Boolean}
-     */
-    get isEnd(): boolean {
-        return this._currentElement === undefined;
-    }
-
-    /**
-     * Currect element or null if end of child list was reached.
-     *
-     * @returns {Element|null}
-     */
-    get currentElement(): ?Element {
-        return this._currentElement;
-    }
 
     /**
      * Asserts that the current element is a token.
@@ -49,7 +31,7 @@ export default class ElementAssert {
      * @param {String|Object} [tokenValue] if object is given, checks if value of token exists as object key.
      */
     assertToken(tokenType: string, tokenValue: string | Object): void {
-        let {isToken, type, value} = this._currentElement || {};
+        let {isToken, type, value} = this.currentElement || {};
 
         if (!isToken) {
             throw new Error(`Token expected but "${type}" found`);
@@ -77,7 +59,7 @@ export default class ElementAssert {
      * @param {String} nodeType
      */
     assertNode(nodeType: string): void {
-        let {isNode, type} = this._currentElement || {};
+        let {isNode, type} = this.currentElement || {};
 
         if (!isNode) {
             throw new Error(`Node expected but "${type}" found`);
@@ -95,7 +77,7 @@ export default class ElementAssert {
      * @param {Array} nodeTypes
      */
     assertOneOfNode(nodeTypes: Array<string>): void {
-        let {isNode, type} = this._currentElement || {};
+        let {isNode, type} = this.currentElement || {};
 
         if (!isNode) {
             throw new Error(`Node expected but "${type}" found`);
@@ -110,7 +92,7 @@ export default class ElementAssert {
      * Asserts that the current element is an expression.
      */
     assertExpression(): void {
-        let {isExpression, type} = this._currentElement || {};
+        let {isExpression, type} = this.currentElement || {};
 
         if (!isExpression) {
             throw new Error(`Expression expected but "${type}" found`);
@@ -121,7 +103,7 @@ export default class ElementAssert {
      * Asserts that the current element is an assignment.
      */
     assertAssignable(): void {
-        let {isAssignable, type} = this._currentElement || {};
+        let {isAssignable, type} = this.currentElement || {};
 
         if (!isAssignable) {
             throw new Error(`Expected assignable expression but ${type} found.`);
@@ -132,7 +114,7 @@ export default class ElementAssert {
      * Asserts that the current element is a pattern.
      */
     assertPattern(): void {
-        let {isPattern, type} = this._currentElement || {};
+        let {isPattern, type} = this.currentElement || {};
 
         if (!isPattern) {
             throw new Error(`Expected pattern but ${type} found.`);
@@ -143,7 +125,7 @@ export default class ElementAssert {
      * Asserts that the current element is a statement.
      */
     assertStatement(): void {
-        let {isStatement, type} = this._currentElement || {};
+        let {isStatement, type} = this.currentElement || {};
 
         if (!isStatement) {
             throw new Error(`Statement expected but "${type}" found`);
@@ -154,7 +136,7 @@ export default class ElementAssert {
      * Asserts that the current element is a statement.
      */
     assertModuleSpecifier(): void {
-        let {isModuleSpecifier, type} = this._currentElement || {};
+        let {isModuleSpecifier, type} = this.currentElement || {};
 
         if (!isModuleSpecifier) {
             throw new Error(`ModuleSpecifier expected but "${type}" found`);
@@ -165,8 +147,8 @@ export default class ElementAssert {
      * Asserts that the end of child list was reached.
      */
     assertEnd(): void {
-        if (this._currentElement !== undefined) {
-            let {type} = this._currentElement || {};
+        if (this.currentElement !== undefined) {
+            let {type} = this.currentElement || {};
             throw new Error(`Expected end of node list but "${type}" found`);
         }
     }
@@ -180,7 +162,7 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isToken(tokenType: string, tokenValue?: string | Object): boolean {
-        let {isToken, type, value} = this._currentElement || {};
+        let {isToken, type, value} = this.currentElement || {};
 
         if (!isToken || (arguments.length > 0 && type !== tokenType)) {
             return false;
@@ -204,7 +186,7 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isNode(nodeType: string): boolean {
-        let {isNode, type} = this._currentElement || {};
+        let {isNode, type} = this.currentElement || {};
 
         return !(!isNode || (arguments.length > 0 && type !== nodeType));
     }
@@ -215,7 +197,7 @@ export default class ElementAssert {
      * @returns {Boolean}
      */
     isStatement(): boolean {
-        let {isStatement} = this._currentElement || {};
+        let {isStatement} = this.currentElement || {};
 
         return isStatement;
     }
@@ -230,7 +212,7 @@ export default class ElementAssert {
      */
     passToken(tokenType: string, tokenValue?: string | Object): ?Element {
         this.assertToken.apply(this, arguments);
-        let token = this._currentElement;
+        let token = this.currentElement;
         this.moveNext();
         return token;
     }
@@ -244,7 +226,7 @@ export default class ElementAssert {
      */
     passNode(nodeType: string): ?Element {
         this.assertNode.apply(this, arguments);
-        let node = this._currentElement;
+        let node = this.currentElement;
         this.moveNext();
         return node;
     }
@@ -258,7 +240,7 @@ export default class ElementAssert {
      */
     passOneOfNode(nodeTypes: Array<string>): ?Element {
         this.assertOneOfNode(nodeTypes);
-        let node = this._currentElement;
+        let node = this.currentElement;
         this.moveNext();
         return node;
     }
@@ -318,13 +300,13 @@ export default class ElementAssert {
     _passExpressionInParens(assertCallback: Function): Element {
         let openParens = 0;
 
-        while (this._currentElement.type === 'Punctuator' && this._currentElement.value === '(') {
+        while (this.currentElement.type === 'Punctuator' && this.currentElement.value === '(') {
             openParens++;
             this.moveNext();
             this.skipNonCode();
         }
 
-        let expression = this._currentElement;
+        let expression = this.currentElement;
 
         if (!expression) {
             throw new Error('Could not match an expression');
@@ -363,7 +345,7 @@ export default class ElementAssert {
      */
     passStatement(): Element {
         this.assertStatement();
-        let result = this._currentElement;
+        let result = this.currentElement;
         this.moveNext();
         if (!result) {
             throw new Error('Could not match statement');
@@ -379,7 +361,7 @@ export default class ElementAssert {
      */
     passPattern(): Element {
         this.assertPattern();
-        let result = this._currentElement;
+        let result = this.currentElement;
         this.moveNext();
         if (!result) {
             throw new Error('Could not match pattern');
@@ -395,7 +377,7 @@ export default class ElementAssert {
      */
     passModuleSpecifier(): ?Element {
         this.assertModuleSpecifier();
-        let result = this._currentElement;
+        let result = this.currentElement;
         this.moveNext();
         return result;
     }
@@ -405,7 +387,7 @@ export default class ElementAssert {
      */
     skipNonCode() {
         while (true) {
-            let {isCode} = this._currentElement || {};
+            let {isCode} = this.currentElement || {};
             if (isCode !== false) {
                 break;
             }
@@ -418,12 +400,12 @@ export default class ElementAssert {
      */
     skipSameLineNonCode() {
         while (true) {
-            let {isCode} = this._currentElement || {};
+            let {isCode} = this.currentElement || {};
             if (isCode !== false) {
                 break;
             }
 
-            if (this._currentElement && this._currentElement.newlineCount > 0) {
+            if (this.currentElement && this.currentElement.getNewlineCount() > 0) {
                 break;
             }
 
@@ -435,7 +417,7 @@ export default class ElementAssert {
      * Skips a semicolon.
      */
     skipSemicolon() {
-        if (this._currentElement && this._currentElement.type === 'Punctuator' && this._currentElement.value === ';') {
+        if (this.currentElement && this.currentElement.type === 'Punctuator' && this.currentElement.value === ';') {
             this.moveNext();
         }
     }
@@ -455,6 +437,7 @@ export default class ElementAssert {
      */
     _navigate(position: number) {
         this._position = position;
-        this._currentElement = this._elements[position];
+        this.currentElement = this._elements[position];
+        this.isEnd = this.currentElement === undefined;
     }
 }

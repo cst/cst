@@ -13,15 +13,7 @@ export default class JSXMemberExpression extends Expression {
         let property = children.passNode('JSXIdentifier');
         children.assertEnd();
 
-        this._object = object;
-        this._property = property;
-    }
-
-    get object() {
-        return this._object;
-    }
-
-    get property() {
-        return this._property;
+        this.object = object;
+        this.property = property;
     }
 }

@@ -34,26 +34,10 @@ export default class ObjectProperty extends Node {
 
         children.assertEnd();
 
-        this._key = key;
-        this._value = value;
-        this._shorthand = shorthand;
-        this._computed = computed;
-    }
-
-    get key() {
-        return this._key;
-    }
-
-    get value() {
-        return this._value;
-    }
-
-    get shorthand() {
-        return this._shorthand;
-    }
-
-    get computed() {
-        return this._computed;
+        this.key = key;
+        this.value = value;
+        this.shorthand = shorthand;
+        this.computed = computed;
     }
 }
 

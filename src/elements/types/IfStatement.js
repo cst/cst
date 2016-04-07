@@ -31,20 +31,8 @@ export default class IfStatement extends Statement {
 
         children.assertEnd();
 
-        this._test = test;
-        this._consequent = consequent;
-        this._alternate = alternate;
-    }
-
-    get test() {
-        return this._test;
-    }
-
-    get consequent() {
-        return this._consequent;
-    }
-
-    get alternate() {
-        return this._alternate;
+        this.test = test;
+        this.consequent = consequent;
+        this.alternate = alternate;
     }
 }

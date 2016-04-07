@@ -16,6 +16,7 @@ export default class UnaryExpression extends Expression {
 
     constructor(childNodes) {
         super('UnaryExpression', childNodes);
+        this.prefix = true;
     }
 
     _acceptChildren(children) {
@@ -32,19 +33,7 @@ export default class UnaryExpression extends Expression {
 
         children.assertEnd();
 
-        this._argument = argument;
-        this._operator = operator;
-    }
-
-    get argument() {
-        return this._argument;
-    }
-
-    get operator() {
-        return this._operator;
-    }
-
-    get prefix() {
-        return true;
+        this.argument = argument;
+        this.operator = operator;
     }
 }

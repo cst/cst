@@ -1,7 +1,7 @@
 /* @flow */
 
 import Element from './Element';
-import {getLines} from '../utils/lines';
+import {getLines, getLineInfo} from '../utils/lines';
 
 export default class Token extends Element {
     /**
@@ -57,16 +57,18 @@ export default class Token extends Element {
                 isCode = false;
                 break;
         }
-        this._value = value;
+        this.value = value;
         this._sourceCode = _sourceCode;
         this._sourceCodeLength = _sourceCode.length;
         this._sourceCodeLines = getLines(_sourceCode);
-        this._isComment = isComment;
-        this._isWhitespace = isWhitespace;
-        this._isCode = isCode;
+        this.isToken = true;
+        this.isComment = isComment;
+        this.isWhitespace = isWhitespace;
+        this.isCode = isCode;
+        this.isNonCodeToken = !isCode;
     }
 
-    _value: string;
+    value: string;
     _sourceCode: string;
     _sourceCodeLength: number;
     _sourceCodeLines: Array<string>;
@@ -74,48 +76,32 @@ export default class Token extends Element {
     _isWhitespace: boolean;
     _isCode: boolean;
 
-    get firstToken(): ?Token | Element {
+    getFirstToken(): ?Token | Element {
         return this;
     }
 
-    get lastToken(): ?Token | Element {
+    getLastToken(): ?Token | Element {
         return this;
     }
 
-    get isToken(): boolean {
-        return true;
-    }
-
-    get isComment(): boolean {
-        return this._isComment;
-    }
-
-    get isCode(): boolean {
-        return this._isCode;
-    }
-
-    get isWhitespace(): boolean {
-        return this._isWhitespace;
-    }
-
-    get value(): ?string {
-        return this._value;
-    }
-
-    get sourceCode(): string {
+    getSourceCode(): string {
         return this._sourceCode;
     }
 
-    get sourceCodeLength(): number {
+    getSourceCodeLength(): number {
         return this._sourceCodeLength;
     }
 
-    get sourceCodeLines(): Array<string> {
-        return this._sourceCodeLines.concat();
+    getSourceCodeLines(): Array<string> {
+        return this._sourceCodeLines;
     }
 
-    get newlineCount(): number {
+    getNewlineCount(): number {
         return this._sourceCodeLines.length - 1;
+    }
+
+    getValueLineInfo() {
+        return getLineInfo(this.value);
     }
 
     _setChildren(newChildren: Array<any>): void {
@@ -123,7 +109,7 @@ export default class Token extends Element {
             throw new Error('Token nodes cannot contain child nodes');
         }
 
-        this._childElements = newChildren;
+        this.childElements = newChildren;
     }
 
     /**
@@ -132,7 +118,7 @@ export default class Token extends Element {
      * @returns {Element}
      */
     cloneElement(): Token {
-        return new Token(this._type, this._value, this._sourceCode);
+        return new Token(this.type, this.value, this._sourceCode);
     }
 }
 

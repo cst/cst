@@ -15,10 +15,6 @@ export default class ExportNamespaceSpecifier extends ModuleSpecifier {
         let exported = children.passNode('Identifier');
         children.assertEnd();
 
-        this._exported = exported;
-    }
-
-    get exported() {
-        return this._exported;
+        this.exported = exported;
     }
 }

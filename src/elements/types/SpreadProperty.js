@@ -6,17 +6,13 @@ export default class SpreadProperty extends Node {
     }
 
     _acceptChildren(children) {
-        let argument = null;
+        let argument;
 
         children.passToken('Punctuator', '...');
         children.skipNonCode();
         argument = children.passExpression();
         children.assertEnd();
 
-        this._argument = argument;
-    }
-
-    get argument() {
-        return this._argument;
+        this.argument = argument;
     }
 }

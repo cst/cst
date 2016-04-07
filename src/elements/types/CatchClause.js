@@ -21,15 +21,7 @@ export default class CatchClause extends Node {
         let body = children.passStatement('BlockStatement');
         children.assertEnd();
 
-        this._param = param;
-        this._body = body;
-    }
-
-    get body() {
-        return this._body;
-    }
-
-    get param() {
-        return this._param;
+        this.param = param;
+        this.body = body;
     }
 }
