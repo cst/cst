@@ -1,4 +1,4 @@
-import {parseAndGetProgram} from '../../utils';
+import {parseAndGetProgram, parseAndGetObjectProperty} from '../../utils';
 import Token from '../../../src/elements/Token.js';
 
 import {expect} from 'chai';
@@ -21,6 +21,10 @@ describe('Token', () => {
         let program = parseAndGetProgram('// Hello');
         let token = program.getFirstToken();
         expect(token.type).to.equal('CommentLine');
+    });
+
+    it('should not throw for "Identifier" which presented as a "Keyword" (#108)', () => {
+        expect(parseAndGetObjectProperty('0: 1').type).to.equal('ObjectProperty');
     });
 
     describe('String', () => {
