@@ -11,10 +11,8 @@
     "url": "https://github.com/cst/cst/issues"
   },
   "contributors": [
-    {
-      "name": "Henry Zhu",
-      "email": "hi@henryzoo.com"
-    }
+    "Henry Zhu <hi@henryzoo.com>",
+    "Oleg Gaidarenko <markelog@gmail.com>"
   ],
   "license": "MIT",
   "main": "lib/index.js",
