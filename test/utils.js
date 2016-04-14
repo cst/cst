@@ -46,6 +46,12 @@ export function parseAndGetClassMember(code: string): Object {
     return program.body[0].expression.body.body[0];
 }
 
+export function parseAndGetObjectKey(code: string): Object {
+    var parser = new Parser();
+    var program = parser.parse(`({${code}: 1})`);
+    return program.body[0].expression.properties[0].key;
+}
+
 export function parseAndGetSuper(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`(class{ constructor() { ${code} }})`);

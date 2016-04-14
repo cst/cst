@@ -10,14 +10,21 @@ export default class Identifier extends Expression {
     _acceptChildren(children) {
         let name;
 
-        if (children.isToken('Identifier')) {
-            name = children.passToken('Identifier').value;
+        children.assertToken();
 
-        // TODO: temporary fix,
-        // until https://github.com/babel/babylon/issues/18 is resolved
-        } else {
-            name = children.passToken('Boolean').value;
+        // @see https://github.com/babel/babylon/issues/18
+        switch (children.currentElement.type) {
+            case 'Identifier':
+                name = children.currentElement.value;
+                break;
+            case 'Boolean':
+            case 'Null':
+                name = children.currentElement._sourceCode;
+                break;
+            default:
+                children.assertToken('Identifier');
         }
+        children.passToken();
 
         children.assertEnd();
         this.name = name;
