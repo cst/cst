@@ -45,20 +45,29 @@ The CST for this example:
 
 ```js
 declare class Element {
+
   // traversal for children
   childElements: Array<Element>;
-  // direct child count
-  childCount: number;
+  firstChild: ?Element;
+  lastChild: ?Element;
+
   // traversal for parent
   parentElement: ?Element;
+
   // traversing between siblings
   nextSibling: ?Element;
   previousSibling: ?Element;
 
+  // traversing to first/last tokens (not only direct tokens)
+  getFirstToken(): ?Token;
+  getLastToken(): ?Token;
+
+  // traversing to next/previous tokens (not only siblings)
+  getNextToken(): ?Token;
+  getPreviousToken(): ?Token;
+
   // Code properties
   type: string;
-  sourceCode: string;
-  sourceCodeLength: number;
   isToken: boolean;
   isNode: boolean;
   isExpression: boolean;
@@ -68,6 +77,10 @@ declare class Element {
   isFragment: boolean;
   isModuleDeclaration: boolean;
   isModuleSpecifier: boolean;
+
+  // Code methods
+  getSourceCode(): string;
+  getSourceCodeLength(): number;
 
   // Mutation methods
 
@@ -80,21 +93,14 @@ declare class Element {
   // replaces specified child interval (from `firstChildRef` to lastChildRef`) with specified child.
   replaceChildren(newElement: Element, firstRefChild: Element, lastRefChild: Element): void;
 
-  // Location properties
-  range(): Range;
-  loc(): Location;
+  // Location methods
+  getRange(): Range;
+  getLoc(): Location;
 }
 
 declare class Token extends Element {
-  // traversing next/previous token
-  nextToken: ?Token;
-  previousToken: ?Token;
-  // traversing to first/last tokens (not only direct tokens)
-  firstToken: ?Token;
-  lastToken: ?Token;
-  // traversing to first/last direct child
-  firstChild: ?Token;
-  lastChild: ?Token;
+  // token value
+  value: string;
 }
 
 type Range = [
