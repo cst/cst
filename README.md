@@ -4,7 +4,7 @@
 
 ## CST
 
-Check out [code-example](https://github.com/cst/cst/wiki/How-to-add-a-property-to-an-object) and rest of the wiki for more.
+Check out code [samples](https://github.com/cst/cst/wiki/How-to-add-a-property-to-an-object) and rest of the wiki for more.
 
 `CST` means Concrete Syntax Tree. Unlike an `AST` (Abstract Syntax Tree), a `CST` contains all the information
 from the JavaScript source file: whitespace, punctuators, comments. This information is extremely useful for
