@@ -141,7 +141,7 @@ export default class Parser {
         let program = buildElementTree(ast, tokens);
         let programPlugins = {};
         let plugins = this._options.plugins;
-        for (let plugin of plugins) {
+        for (let plugin of [...plugins]) {
             let api = plugin.createApiForProgram(program);
             if (api) {
                 if (plugin.pluginName in programPlugins) {
@@ -172,7 +172,7 @@ export default class Parser {
             directiveTypes.push(DIRECTIVE_GRIT);
         }
 
-        for (let directive of directiveTypes) {
+        for (let directive of [...directiveTypes]) {
             code = code.replace(directive.regexp, function(str, value, pos) {
                 hasDirectives = true;
                 directiveInstances[pos] = {
@@ -200,7 +200,7 @@ export default class Parser {
         program.tokens = ast.tokens;
 
         if (hasDirectives) {
-            for (let token of program.tokens) {
+            for (let token of [...program.tokens]) {
                 let directiveInstance = directiveInstances[token.start];
                 if (directiveInstances[token.start]) {
                     token.type = directiveInstance.type;

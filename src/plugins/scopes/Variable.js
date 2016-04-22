@@ -4,6 +4,7 @@ import type Definition from './Definition';
 import type Reference from './Reference';
 import type Scope from './Scope';
 import toArray from '../../utils/toArray';
+import Set from 'core-js/library/fn/set';
 
 export default class Variable {
     constructor({name, type, scope}: {name: string, type: string, scope: Scope}) {

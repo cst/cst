@@ -1,3 +1,5 @@
+import Set from 'core-js/library/fn/set';
+
 export class SetIndex {
     constructor(type, children, isRoot) {
         this._isRoot = isRoot;

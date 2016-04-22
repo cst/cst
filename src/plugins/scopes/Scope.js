@@ -5,6 +5,7 @@ import Reference from './Reference';
 import Variable from './Variable';
 import {default as Definition, types, typeOrder} from './Definition';
 import toArray from '../../utils/toArray';
+import Map from 'core-js/library/fn/map';
 
 export default class Scope {
     constructor(scopeInfo: ScopeInfo) {
@@ -77,7 +78,7 @@ export default class Scope {
 
         let variables = this._variables.get(name) || [];
         let variable: ?Variable;
-        for (let item of variables) {
+        for (let item of [...variables]) {
             if (item.type === type) {
                 variable = item;
                 break;
@@ -130,7 +131,7 @@ export default class Scope {
         let depth = variable._scope._depth;
         let references = this._references.get(variable.name);
         if (references) {
-            for (let reference of references) {
+            for (let reference of [...references]) {
                 let refVar = reference._variable;
                 let varDepth = refVar._scope._depth;
                 if (varDepth === depth) {
@@ -147,7 +148,7 @@ export default class Scope {
             }
         }
 
-        for (let childScope of this._childScopes) {
+        for (let childScope of [...this._childScopes]) {
             childScope._adjustReferencesOnVariableAdd(variable);
         }
     }
@@ -175,7 +176,7 @@ export default class Scope {
             let variables = currentScope._variables.get(name);
             if (variables) {
                 if (reference._type) {
-                    for (let variable of variables) {
+                    for (let variable of [...variables]) {
                         if (variable._type === reference._type) {
                             variable._addReference(reference);
                             return;
@@ -312,7 +313,7 @@ function removeVariable(variable: Variable) {
             if (variables.length === 0) {
                 scope._variables.delete(variable._name);
             }
-            for (var reference of variable._references) {
+            for (var reference of [...variable._references]) {
                 reference._scope._assignReference(reference, variable._name);
             }
         }

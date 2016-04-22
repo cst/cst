@@ -58,8 +58,8 @@ describe('integrated/requireCurlyBraces', () => {
     it('should add curly braces to all supported statements', () => {
         let program = parseAndGetProgram(sourceCode, {strictMode: false});
         for (var typeName in types) {
-            for (let node of program.selectNodesByType(typeName)) {
-                for (let propName of types[typeName]) {
+            for (let node of [...program.selectNodesByType(typeName)]) {
+                for (let propName of [...types[typeName]]) {
                     let propValue = node[propName];
                     if (propValue) {
                         var block = new BlockStatement([

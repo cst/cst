@@ -41,6 +41,7 @@ import JSXElement from '../../elements/types/JSXElement';
 import JSXMemberExpression from '../../elements/types/JSXMemberExpression';
 import JSXNamespacedName from '../../elements/types/JSXNamespacedName';
 import {types} from './Definition';
+import Map from 'core-js/library/fn/map';
 
 const scopedBlocks = {
     'ForStatement': true,
