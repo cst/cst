@@ -13,7 +13,14 @@ export default class ClassBody extends Node {
         children.skipNonCode();
 
         while (!children.isToken('Punctuator', '}')) {
-            body.push(children.passNode('ClassMethod'));
+            if (children.isNode('ClassProperty')) {
+                body.push(children.passNode('ClassProperty'));
+            }
+
+            if (children.isNode('ClassMethod')) {
+                body.push(children.passNode('ClassMethod'));
+            }
+
             children.skipNonCode();
         }
 

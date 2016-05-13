@@ -16,6 +16,7 @@ import ClassBody from './types/ClassBody';
 import ClassDeclaration from './types/ClassDeclaration';
 import ClassExpression from './types/ClassExpression';
 import ClassMethod from './types/ClassMethod';
+import ClassProperty from './types/ClassProperty';
 import ConditionalExpression from './types/ConditionalExpression';
 import ContinueStatement from './types/ContinueStatement';
 import DebuggerStatement from './types/DebuggerStatement';
@@ -107,6 +108,7 @@ export default {
     ClassDeclaration,
     ClassExpression,
     ClassMethod,
+    ClassProperty,
     ConditionalExpression,
     ContinueStatement,
     DebuggerStatement,

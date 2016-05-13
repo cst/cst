@@ -15,6 +15,7 @@ export default {
     ClassDeclaration: ['id', 'superClass', 'body'],
     ClassExpression: ['id', 'superClass', 'body'],
     ClassMethod: ['key', 'body', 'params'],
+    ClassProperty: ['key', 'value'],
     ConditionalExpression: ['test', 'consequent', 'alternate'],
     ContinueStatement: ['label'],
     DebuggerStatement: [],
