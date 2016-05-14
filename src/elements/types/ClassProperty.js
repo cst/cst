@@ -7,6 +7,7 @@ export default class ClassProperty extends Node {
 
     _acceptChildren(children) {
         this.static = false;
+        this.value = null;
 
         if (children.isToken('Identifier', 'static')) {
             this.static = true;
@@ -17,10 +18,12 @@ export default class ClassProperty extends Node {
         this.key = children.passAssignable();
         children.skipNonCode();
 
-        children.passToken('Punctuator', '=');
-        children.skipNonCode();
+        if (children.isToken('Punctuator', '=')) {
+            children.passToken('Punctuator', '=');
+            children.skipNonCode();
 
-        this.value = children.passNode();
+            this.value = children.passNode();
+        }
 
         children.assertEnd();
 
