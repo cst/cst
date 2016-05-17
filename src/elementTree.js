@@ -52,7 +52,9 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
     let childProps = visitorKeys[elementType];
 
     if (!childProps) {
-        throw new Error(`Cannot iterate using ${elementType}`);
+        let error = new SyntaxError(`Cannot iterate using ${elementType}`);
+        error.loc = ast.loc.start;
+        throw error;
     }
 
     let childElements = [];
