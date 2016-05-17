@@ -5,13 +5,19 @@ import {expect} from 'chai';
 
 describe('Parser::parse', () => {
     let code;
+    let oldVisitorKey;
 
     beforeEach(() => {
         code = `class test {
 			render = () => {}
 		}`;
 
+        oldVisitorKey = visitorKeys.ClassProperty;
         delete visitorKeys.ClassProperty;
+    });
+
+    afterEach(() => {
+        visitorKeys.ClassProperty = oldVisitorKey;
     });
 
     it('should iterate by types only', () => {
