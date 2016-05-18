@@ -6,6 +6,7 @@ export default {
     AssignmentPattern: ['left', 'right'],
     AwaitExpression: ['argument'],
     BinaryExpression: ['left', 'right'],
+    BindExpression: ['object', 'callee'],
     BlockStatement: ['body', 'directives'],
     BooleanLiteral: [],
     BreakStatement: ['label'],

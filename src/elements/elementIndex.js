@@ -7,6 +7,7 @@ import ArrayPattern from './types/ArrayPattern';
 import ArrowFunctionExpression from './types/ArrowFunctionExpression';
 import AwaitExpression from './types/AwaitExpression';
 import BinaryExpression from './types/BinaryExpression';
+import BindExpression from './types/BindExpression';
 import BlockStatement from './types/BlockStatement';
 import BooleanLiteral from './types/BooleanLiteral';
 import BreakStatement from './types/BreakStatement';
@@ -99,6 +100,7 @@ export default {
     ArrowFunctionExpression,
     AwaitExpression,
     BinaryExpression,
+    BindExpression,
     BlockStatement,
     BooleanLiteral,
     BreakStatement,

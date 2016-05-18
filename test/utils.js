@@ -22,6 +22,10 @@ export function parseAndGetExpression(code: string, options: CSTParserOptions): 
     return program.body[0].expression;
 }
 
+export function parseAndGetBindExpression(code: string, options: CSTParserOptions): Object {
+    return parseAndGetProgram(code, options).selectNodesByType('BindExpression')[0];
+}
+
 export function parseAndGetExpressionInFunction(code: string, options: CSTParserOptions): Object {
     var parser = new Parser(options);
     var program = parser.parse(`(function(){( ${code} )})`);
