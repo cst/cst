@@ -51,5 +51,8 @@
     "babel-types": "^6.7.2",
     "babylon": "^6.7.0",
     "source-map-support": "^0.4.0"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }
