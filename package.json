@@ -49,7 +49,7 @@
   "dependencies": {
     "babel-runtime": "^6.6.1",
     "babel-types": "^6.7.2",
-    "babylon": "^6.7.0",
+    "babylon": "^6.8.1",
     "source-map-support": "^0.4.0"
   },
   "files": [
