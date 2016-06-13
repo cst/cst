@@ -13,7 +13,6 @@ describe('ClassMethod', () => {
         expect(member.static).to.equal(false);
         expect(member.computed).to.equal(false);
         expect(member.generator).to.equal(false);
-        expect(member.static).to.equal(false);
     });
 
     it('should accept getters with computed name', () => {
@@ -29,7 +28,6 @@ describe('ClassMethod', () => {
         expect(member.static).to.equal(false);
         expect(member.computed).to.equal(true);
         expect(member.generator).to.equal(false);
-        expect(member.static).to.equal(false);
     });
 
     it('should accept settersas', () => {
@@ -43,7 +41,6 @@ describe('ClassMethod', () => {
         expect(member.static).to.equal(false);
         expect(member.computed).to.equal(false);
         expect(member.generator).to.equal(false);
-        expect(member.static).to.equal(false);
     });
 
     it('should accept setters with computed name', () => {
