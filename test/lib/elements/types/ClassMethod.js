@@ -11,6 +11,7 @@ describe('ClassMethod', () => {
         expect(member.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
         expect(member.generator).to.equal(false);
     });
@@ -26,6 +27,7 @@ describe('ClassMethod', () => {
         expect(member.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(true);
         expect(member.generator).to.equal(false);
     });
@@ -39,6 +41,7 @@ describe('ClassMethod', () => {
         expect(member.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
         expect(member.generator).to.equal(false);
     });
@@ -55,6 +58,7 @@ describe('ClassMethod', () => {
         expect(member.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(true);
     });
 
@@ -69,6 +73,7 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
     });
 
@@ -83,6 +88,7 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
         expect(member.generator).to.equal(true);
     });
@@ -98,6 +104,7 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('constructor');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
     });
 
@@ -115,6 +122,7 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(false);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(true);
     });
 
@@ -126,6 +134,7 @@ describe('ClassMethod', () => {
         expect(member.params).to.deep.equal([]);
         expect(member.kind).to.equal('get');
         expect(member.static).to.equal(true);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
     });
 
@@ -138,6 +147,7 @@ describe('ClassMethod', () => {
         expect(member.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(true);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
     });
 
@@ -153,6 +163,7 @@ describe('ClassMethod', () => {
         expect(member.params[0].name).to.deep.equal('v');
         expect(member.kind).to.equal('set');
         expect(member.static).to.equal(true);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(true);
     });
 
@@ -167,6 +178,7 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(true);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(false);
     });
 
@@ -184,6 +196,12 @@ describe('ClassMethod', () => {
         expect(member.params[1].name).to.deep.equal('w');
         expect(member.kind).to.equal('method');
         expect(member.static).to.equal(true);
+        expect(member.async).to.equal(false);
         expect(member.computed).to.equal(true);
+    });
+
+    it('should parse async method', () => {
+        let member = parseAndGetClassMember('async x() { ; }');
+        expect(member.async).to.equal(true);
     });
 });

@@ -18,10 +18,17 @@ export default class ClassMethod extends Node {
         let kind;
         let staticMember = false;
         let generator = false;
+        let async = false;
         let params;
 
         if (children.isToken('Identifier', 'static')) {
             staticMember = true;
+            children.passToken();
+            children.skipNonCode();
+        }
+
+        if (children.isToken('Identifier', 'async')) {
+            async = true;
             children.passToken();
             children.skipNonCode();
         }
@@ -75,6 +82,7 @@ export default class ClassMethod extends Node {
         children.assertEnd();
 
         this.params = params;
+        this.async = async;
         this.body = body;
         this.generator = generator;
         this.kind = kind;
