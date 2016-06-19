@@ -66,6 +66,22 @@ describe('FunctionDeclaration', () => {
         expect(expression.generator).to.equal(false);
     });
 
+    it('should accept object pattern with object pattern', () => {
+        var expression = parseAndGetStatement('function func ( { x = 1 } ) { ; }');
+        expect(expression.params.length).to.equal(1);
+        expect(expression.params[0].type).to.equal('ObjectPattern');
+        expect(expression.params[0].properties[0].value.type).to.equal('AssignmentPattern');
+    });
+
+    it('should accept object pattern with assignment pattern', () => {
+        var expression = parseAndGetStatement('function func ( { x = 1 } = 1 ) { ; }');
+        expect(expression.params.length).to.equal(1);
+        expect(expression.params[0].type).to.equal('AssignmentPattern');
+        expect(expression.params[0].left.type).to.equal('ObjectPattern');
+        expect(expression.params[0].left.properties[0].key.type).to.equal('Identifier');
+        expect(expression.params[0].left.properties[0].value.type).to.equal('AssignmentPattern');
+    });
+
     it('should support generator', () => {
         var expression = parseAndGetStatement('function * func ( x ) { ; }');
         expect(expression.generator).to.equal(true);

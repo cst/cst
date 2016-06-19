@@ -44,6 +44,13 @@ export function parseAndGetObjectProperty(code: string): Object {
     return program.body[0].expression.properties[0];
 }
 
+export function parseAndGetObjectPropertyDefaultValue(code: string): Object {
+    var parser = new Parser();
+    var program = parser.parse(`({${code}} = {})`);
+
+    return program.body[0].expression.left.properties[0];
+}
+
 export function parseAndGetClassMember(code: string): Object {
     var parser = new Parser();
     var program = parser.parse(`(class{${code}})`);
