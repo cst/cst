@@ -102,6 +102,29 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 children[children.length] = buildElementTreeItem(childElement, state);
                 childElement = childElements[++childElementIndex];
 
+                // Go back for the ({ test = 1 } = {}) in order to
+                // include "AssignmentPattern" type.
+                //
+                // Essentialy, we would need to do this for all elements,
+                // because of it, right now, instead of the nodes we sometimes pass tokens,
+                // which is not ideal.
+                //
+                // This babylone "feature" was noticed quite late, so we doing it
+                // only when we really require it, so now this is basically a "hack".
+                //
+                // Need to fix this one day
+                if (
+                    elementType === 'ObjectProperty' &&
+                    childElement &&
+                    childElement.type === 'AssignmentPattern' &&
+                    state.token.start > childElement.start
+                ) {
+                    while (state.token.start !== childElement.start) {
+                        state.pos--;
+                        state.token = state.tokens[state.pos];
+                    }
+                }
+
                 if (!state.token ||
                     (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
                 ) {

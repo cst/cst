@@ -14,7 +14,9 @@ export default class ObjectProperty extends Node {
         computed = children.isToken('Punctuator', '[');
         key = readKey(children);
 
-        if (children.isEnd && key.type === 'Identifier') {
+        if (children.isNode('AssignmentPattern')) {
+            value = children.passNode();
+        } else if (children.isEnd && key.type === 'Identifier') {
             shorthand = true;
             value = key;
         } else {
