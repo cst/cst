@@ -51,6 +51,16 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
     var elementType = ast.type;
     let childProps = visitorKeys[elementType];
 
+    // Skip first `Identifier` for ({ test = 1 } = {})
+    // since it is already used in `AssignmentPattern`
+    // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
+    if (
+        ast.type === 'ObjectProperty' &&
+        ast.value.type === 'AssignmentPattern'
+    ) {
+        delete ast.key;
+    }
+
     if (!childProps) {
         let error = new SyntaxError(`Cannot iterate using ${elementType}`);
         error.loc = ast.loc.start;
@@ -69,16 +79,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
             for (let j = 0; j < childAst.length; j++) {
                 if (childAst[j] === null) {
                     continue;
-                }
-
-                // Skip first `Identifier` for ({ test = 1 } = {})
-                // since it is already used in `AssignmentPattern`
-                // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
-                if (
-                    childAst[j].type === 'ObjectProperty' &&
-                    childAst[j].value.type === 'AssignmentPattern'
-                ) {
-                    delete childAst[j].key;
                 }
 
                 childElements[childElements.length] = childAst[j];
