@@ -11,34 +11,28 @@ export default class ObjectProperty extends Node {
         let shorthand = false;
         let computed = false;
 
-        // Hack :/
-        // See https://github.com/babel/babylon/issues/49
-        if (
-            children._elements.length === 2 &&
-            children._elements[1].type === 'AssignmentPattern'
-        ) {
-            children.currentElement.getSourceCode = () => '';
-        }
-
         computed = children.isToken('Punctuator', '[');
-        key = readKey(children);
 
         if (children.isNode('AssignmentPattern')) {
             value = children.passNode();
-        } else if (children.isEnd && key.type === 'Identifier') {
-            shorthand = true;
-            value = key;
+            key = value.left;
         } else {
-            children.skipNonCode();
-            if (children.isNode('FunctionExpression')) {
-                value = children.passNode('FunctionExpression');
+            key = readKey(children);
+            if (children.isEnd && key.type === 'Identifier') {
+                shorthand = true;
+                value = key;
             } else {
-                children.passToken('Punctuator', ':');
                 children.skipNonCode();
-                if (children.currentElement.isPattern) {
-                    value = children.passPattern();
+                if (children.isNode('FunctionExpression')) {
+                    value = children.passNode('FunctionExpression');
                 } else {
-                    value = children.passExpression();
+                    children.passToken('Punctuator', ':');
+                    children.skipNonCode();
+                    if (children.currentElement.isPattern) {
+                        value = children.passPattern();
+                    } else {
+                        value = children.passExpression();
+                    }
                 }
             }
         }

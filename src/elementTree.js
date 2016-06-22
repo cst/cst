@@ -99,24 +99,27 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 children[children.length] = new EmptyNodeClass([]);
                 childElement = childElements[++childElementIndex];
             } else {
-                children[children.length] = buildElementTreeItem(childElement, state);
-                childElement = childElements[++childElementIndex];
+                let nextChild = childElements[childElementIndex + 1];
 
-                // Go back for the ({ test = 1 } = {}) in order to
-                // include "AssignmentPattern" type.
-                //
+                // Skip first `Identifier` for ({ test = 1 } = {})
+                // since it is already used in `AssignmentPattern`
                 // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
                 if (
                     elementType === 'ObjectProperty' &&
-                    childElement &&
-                    childElement.type === 'AssignmentPattern' &&
-                    state.token.start > childElement.start
+                    nextChild && nextChild.type === 'AssignmentPattern'
                 ) {
-                    while (state.token.start !== childElement.start) {
+                    while (state.token.start !== nextChild.start) {
                         state.pos--;
                         state.token = state.tokens[state.pos];
                     }
+
+                    childElement = childElements[++childElementIndex];
+
+                    continue;
                 }
+
+                children[children.length] = buildElementTreeItem(childElement, state);
+                childElement = childElements[++childElementIndex];
 
                 if (!state.token ||
                     (state.token.start === end && (state.token.end !== end || elementType !== 'Program'))
