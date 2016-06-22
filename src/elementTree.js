@@ -60,16 +60,31 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
     let childElements = [];
     for (let i = 0; i < childProps.length; i++) {
         let childAst = ast[childProps[i]];
-        if (childAst) {
-            if (Array.isArray(childAst)) {
-                for (let j = 0; j < childAst.length; j++) {
-                    if (childAst[j] !== null) {
-                        childElements[childElements.length] = childAst[j];
-                    }
+
+        if (!childAst) {
+            continue;
+        }
+
+        if (Array.isArray(childAst)) {
+            for (let j = 0; j < childAst.length; j++) {
+                if (childAst[j] === null) {
+                    continue;
                 }
-            } else {
-                childElements[childElements.length] = childAst;
+
+                // Skip first `Identifier` for ({ test = 1 } = {})
+                // since it is already used in `AssignmentPattern`
+                // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
+                if (
+                    childAst[j].type === 'ObjectProperty' &&
+                    childAst[j].value.type === 'AssignmentPattern'
+                ) {
+                    delete childAst[j].key;
+                }
+
+                childElements[childElements.length] = childAst[j];
             }
+        } else {
+            childElements[childElements.length] = childAst;
         }
     }
 
@@ -100,23 +115,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 childElement = childElements[++childElementIndex];
             } else {
                 let nextChild = childElements[childElementIndex + 1];
-
-                // Skip first `Identifier` for ({ test = 1 } = {})
-                // since it is already used in `AssignmentPattern`
-                // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
-                if (
-                    elementType === 'ObjectProperty' &&
-                    nextChild && nextChild.type === 'AssignmentPattern'
-                ) {
-                    while (state.token.start !== nextChild.start) {
-                        state.pos--;
-                        state.token = state.tokens[state.pos];
-                    }
-
-                    childElement = childElements[++childElementIndex];
-
-                    continue;
-                }
 
                 children[children.length] = buildElementTreeItem(childElement, state);
                 childElement = childElements[++childElementIndex];
