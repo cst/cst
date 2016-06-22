@@ -105,13 +105,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 // Go back for the ({ test = 1 } = {}) in order to
                 // include "AssignmentPattern" type.
                 //
-                // Essentialy, we would need to do this for all elements,
-                // because of it, right now, instead of the nodes we sometimes pass tokens,
-                // which is not ideal.
-                //
-                // This babylone "feature" was noticed quite late, so we doing it
-                // only when we really require it, so now this is basically a "hack".
-                //
                 // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
                 if (
                     elementType === 'ObjectProperty' &&
