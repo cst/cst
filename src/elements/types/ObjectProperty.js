@@ -11,6 +11,15 @@ export default class ObjectProperty extends Node {
         let shorthand = false;
         let computed = false;
 
+        // Hack :/
+        // See https://github.com/babel/babylon/issues/49
+        if (
+            children._elements.length === 2 &&
+            children._elements[1].type === 'AssignmentPattern'
+        ) {
+            children.currentElement.getSourceCode = () => '';
+        }
+
         computed = children.isToken('Punctuator', '[');
         key = readKey(children);
 

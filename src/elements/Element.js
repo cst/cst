@@ -277,6 +277,7 @@ export default class Element {
     getSourceCode(): string {
         let code = '';
         let child = this.firstChild;
+
         while (child) {
             code += child.getSourceCode();
             child = child.nextSibling;

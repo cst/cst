@@ -112,7 +112,7 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 // This babylone "feature" was noticed quite late, so we doing it
                 // only when we really require it, so now this is basically a "hack".
                 //
-                // Need to fix this one day
+                // Need to fix this one day (See https://github.com/babel/babylon/issues/49)
                 if (
                     elementType === 'ObjectProperty' &&
                     childElement &&
