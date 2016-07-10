@@ -6,6 +6,10 @@ describe('ClassBody', () => {
         expect(parseAndGetStatement('class X {}').body.type).to.equal('ClassBody');
     });
 
+    it('should work with semicolons after methods', () => {
+        expect(parseAndGetStatement('class X { x() {}; }').body.type).to.equal('ClassBody');
+    });
+
     it('should accept empty member list', () => {
         var statement = parseAndGetStatement('class X {}').body;
         expect(statement.type).to.equal('ClassBody');

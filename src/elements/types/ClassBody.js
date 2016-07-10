@@ -21,6 +21,11 @@ export default class ClassBody extends Node {
                 body.push(children.passNode('ClassMethod'));
             }
 
+            // For the class Test { x() {}; } case
+            if (children.isToken('Punctuator', ';')) {
+                children.passToken('Punctuator', ';');
+            }
+
             children.skipNonCode();
         }
 
