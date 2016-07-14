@@ -235,12 +235,10 @@ describe('ObjectExpression', () => {
         expect(expression.properties[0].key.type).to.equal('Identifier');
         expect(expression.properties[0].key.name).to.equal('x');
         expect(expression.properties[0].body.type).to.equal('BlockStatement');
-        expect(expression.properties[0].value).to.equal(undefined);
         expect(expression.properties[0].method).to.equal(false);
         expect(expression.properties[1].key.type).to.equal('Identifier');
         expect(expression.properties[1].key.name).to.equal('y');
         expect(expression.properties[1].body.type).to.equal('BlockStatement');
-        expect(expression.properties[1].value).to.equal(undefined);
         expect(expression.properties[1].method).to.equal(false);
     });
 

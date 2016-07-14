@@ -14,13 +14,13 @@ export default class ObjectMethod extends Node {
 
     _acceptChildren(children) {
         let key;
-        let value;
         let generator = false;
-        let method = false;
         let computed = false;
-        let kind;
+        let kind = 'method';
+        let async = false;
         let params = [];
         let body;
+        let method = true;
 
         if (children.isToken('Punctuator', '*')) {
             children.passToken();
@@ -28,57 +28,40 @@ export default class ObjectMethod extends Node {
             generator = true;
         }
 
+        if (children.isToken('Identifier', 'async')) {
+            async = true;
+            children.passToken();
+            children.skipNonCode();
+        }
+
         if (children.isToken('Identifier', getterAndSetter)) {
             kind = children.currentElement.value;
+            method = false;
 
             children.passToken('Identifier');
             children.skipNonCode();
-
-            computed = children.isToken('Punctuator', '[');
-            key = readKey(children);
-
-            children.skipNonCode();
-
-            params = getFunctionParams(children);
-            children.skipNonCode();
-
-            body = children.passNode('BlockStatement');
-        } else {
-            kind = 'method';
-            computed = children.isToken('Punctuator', '[');
-            key = readKey(children);
-
-            children.skipNonCode();
-
-            if (children.isToken('Punctuator')) {
-                method = true;
-
-                params = getFunctionParams(children);
-                children.skipNonCode();
-
-                body = children.passNode('BlockStatement');
-
-            } else {
-                children.passToken('Punctuator', ':');
-                children.skipNonCode();
-                if (children.currentElement.isPattern) {
-                    value = children.passPattern();
-                } else {
-                    value = children.passExpression();
-                }
-            }
         }
+
+        computed = children.isToken('Punctuator', '[');
+        key = readKey(children);
+
+        children.skipNonCode();
+
+        params = getFunctionParams(children);
+        children.skipNonCode();
+
+        body = children.passNode('BlockStatement');
 
         children.assertEnd();
 
-        this._generator = generator;
+        this.generator = generator;
         this.kind = kind;
         this.key = key;
-        this.value = value;
         this.computed = computed;
         this.method = method;
         this.params = params;
         this.body = body;
+        this.async = async;
     }
 }
 
