@@ -74,7 +74,6 @@ declare class Element {
   isStatement: boolean;
   isWhitespace: boolean;
   isFragment: boolean;
-  isFragment: boolean;
   isModuleDeclaration: boolean;
   isModuleSpecifier: boolean;
 
