@@ -37,7 +37,6 @@ import ClassDeclaration from '../../elements/types/ClassDeclaration';
 import ClassMethod from '../../elements/types/ClassMethod';
 import JSXIdentifier from '../../elements/types/JSXIdentifier';
 import JSXAttribute from '../../elements/types/JSXAttribute';
-import JSXElement from '../../elements/types/JSXElement';
 import JSXMemberExpression from '../../elements/types/JSXMemberExpression';
 import JSXNamespacedName from '../../elements/types/JSXNamespacedName';
 import {types} from './Definition';

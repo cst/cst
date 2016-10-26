@@ -70,7 +70,7 @@ export default class ClassMethod extends Node {
         }
 
         if (children.isNode('Identifier')) {
-            id = children.passNode();
+            children.passNode();
             children.skipNonCode();
         }
 

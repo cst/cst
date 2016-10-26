@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import Benchmark from 'benchmark';
 import chalk from 'chalk';
 import elementIndex from '../../src/elements/elementIndex';

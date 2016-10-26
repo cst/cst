@@ -18,7 +18,8 @@
       2,
       120
     ],
-    "no-unused-vars": 1,
+    "no-constant-condition": 0,
+    "no-unused-var": 1,
     "valid-jsdoc": 1
   }
 }

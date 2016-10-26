@@ -4,7 +4,6 @@ import {parse} from 'babylon';
 
 import type {BabylonToken} from './elementTree';
 import type Program from './elements/types/Program';
-import type Token from './elements/Token';
 import {buildTokenList, buildElementTree} from './elementTree';
 import type BasePlugin from './plugins/BasePlugin';
 

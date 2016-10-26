@@ -5,12 +5,10 @@ import {expect} from 'chai';
 describe('Element', () => {
     describe('Traversing', () => {
         let program;
-        let firstVar;
         let secondVar;
 
         beforeEach(() => {
             program = parseAndGetProgram('var\nfirst = 1; var second = 2;');
-            firstVar = program.selectTokensByType('Keyword')[0];
             secondVar = program.selectTokensByType('Keyword')[1];
         });
 
