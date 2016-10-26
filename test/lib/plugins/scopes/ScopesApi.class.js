@@ -4,7 +4,7 @@ import {parseAndGetProgram} from '../../../utils';
 
 function parse(codeLines) {
     return parseAndGetProgram([].concat(codeLines).join('\n'), {
-        plugins: [new ScopesPlugin()]
+        plugins: [new ScopesPlugin()],
     });
 }
 
@@ -162,7 +162,6 @@ describe('ScopesPlugin', () => {
             expect(classScope.getVariables()[0].getReferences()[1].isReadOnly()).to.equal(true);
             expect(classScope.getVariables()[0].getReferences()[1].node.parentElement.type)
                 .to.equal('MemberExpression');
-
         });
     });
 });

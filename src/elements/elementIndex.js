@@ -181,5 +181,5 @@ export default {
     VariableDeclarator,
     WithStatement,
     WhileStatement,
-    YieldExpression
+    YieldExpression,
 };

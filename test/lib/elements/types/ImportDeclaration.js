@@ -8,14 +8,14 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept import with no specifiers', () => {
-        var statement = parseAndGetStatement('import "jquery";');
+        let statement = parseAndGetStatement('import "jquery";');
         expect(statement.specifiers.length).to.be.equal(0);
         expect(statement.source.type).to.equal('StringLiteral');
         expect(statement.source.value).to.equal('jquery');
     });
 
     it('should accept import with a default specifier', () => {
-        var statement = parseAndGetStatement('import $ from "jquery";');
+        let statement = parseAndGetStatement('import $ from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers[0].type).to.equal('ImportDefaultSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
@@ -25,7 +25,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept import with a named import specifier', () => {
-        var statement = parseAndGetStatement('import {$} from "jquery";');
+        let statement = parseAndGetStatement('import {$} from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers[0].type).to.equal('ImportSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
@@ -37,7 +37,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept import with a re-named import specifier', () => {
-        var statement = parseAndGetStatement('import {$ as jQuery} from "jquery";');
+        let statement = parseAndGetStatement('import {$ as jQuery} from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers[0].type).to.equal('ImportSpecifier');
         expect(statement.specifiers[0].imported.type).to.equal('Identifier');
@@ -49,7 +49,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept import of entire module', () => {
-        var statement = parseAndGetStatement('import * as $ from "jquery";');
+        let statement = parseAndGetStatement('import * as $ from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers[0].type).to.equal('ImportNamespaceSpecifier');
         expect(statement.specifiers[0].local.type).to.equal('Identifier');
@@ -59,7 +59,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept default import and name imports', () => {
-        var statement = parseAndGetStatement('import $, { b,c } from "jquery";');
+        let statement = parseAndGetStatement('import $, { b,c } from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers.length).to.equal(3);
         expect(statement.specifiers[0].type).to.equal('ImportDefaultSpecifier');
@@ -76,7 +76,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should accept default pattern import and name imports', () => {
-        var statement = parseAndGetStatement('import { default as a } from "jquery";');
+        let statement = parseAndGetStatement('import { default as a } from "jquery";');
         expect(statement.type).to.equal('ImportDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ImportSpecifier');
@@ -89,7 +89,7 @@ describe('ImportDeclaration', () => {
     });
 
     it('should not accept trailing whitespace', () => {
-        var statement = parseAndGetStatement('import "jquery";');
+        let statement = parseAndGetStatement('import "jquery";');
         expect(() => {
             statement.appendChild(new Token('Whitespace', '   '));
         }).to.throw('Expected end of node list but "Whitespace" found');

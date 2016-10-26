@@ -24,7 +24,6 @@ describe('Parser::parse', () => {
         try {
             new Parser().parse(code);
             expect(false).to.equal(true);
-
         } catch (e) {
             expect(e.message).to.equal('Cannot iterate using ClassProperty');
             expect(e.loc).to.deep.equal({line: 2, column: 3});

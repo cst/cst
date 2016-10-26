@@ -1,9 +1,6 @@
 import {
     parseAndGetObjectProperty,
-    parseAndGetObjectPropertyDefaultValue
 } from '../../../utils';
-
-import Parser from '../../../../src/Parser';
 
 import {expect} from 'chai';
 

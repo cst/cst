@@ -8,7 +8,7 @@ export default class ArrayPattern extends Node {
     }
 
     _acceptChildren(children) {
-        var elements = [];
+        let elements = [];
         children.passToken('Punctuator', '[');
         children.skipNonCode();
         while (!children.isToken('Punctuator', ']')) {

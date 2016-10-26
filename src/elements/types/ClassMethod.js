@@ -3,7 +3,7 @@ import getFunctionParams from './utils/getFunctionParams';
 
 const getterAndSetter = {
     get: true,
-    set: true
+    set: true,
 };
 
 export default class ClassMethod extends Node {
@@ -70,7 +70,7 @@ export default class ClassMethod extends Node {
         }
 
         if (children.isNode('Identifier')) {
-            id = children.passNode();
+            children.passNode();
             children.skipNonCode();
         }
 

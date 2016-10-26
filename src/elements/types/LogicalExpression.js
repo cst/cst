@@ -2,7 +2,7 @@ import Expression from '../Expression';
 
 const logicalOperators = {
     '||': true,
-    '&&': true
+    '&&': true,
 };
 
 export default class LogicalExpression extends Expression {

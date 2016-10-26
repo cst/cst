@@ -6,19 +6,19 @@ import type Program from '../src/elements/types/Program';
 import Parser from '../src/Parser';
 
 export function parseAndGetProgram(code: string, options: CSTParserOptions): Program {
-    var parser = new Parser(options);
+    let parser = new Parser(options);
     return parser.parse(code);
 }
 
 export function parseAndGetStatement(code: string, options: CSTParserOptions): Object {
-    var parser = new Parser(options);
-    var program = parser.parse(code);
+    let parser = new Parser(options);
+    let program = parser.parse(code);
     return program.body[0];
 }
 
 export function parseAndGetExpression(code: string, options: CSTParserOptions): Object {
-    var parser = new Parser(options);
-    var program = parser.parse('(' + code + ')');
+    let parser = new Parser(options);
+    let program = parser.parse('(' + code + ')');
     return program.body[0].expression;
 }
 
@@ -27,50 +27,50 @@ export function parseAndGetBindExpression(code: string, options: CSTParserOption
 }
 
 export function parseAndGetExpressionInFunction(code: string, options: CSTParserOptions): Object {
-    var parser = new Parser(options);
-    var program = parser.parse(`(function(){( ${code} )})`);
+    let parser = new Parser(options);
+    let program = parser.parse(`(function(){( ${code} )})`);
     return program.body[0].expression.body.body[0].expression;
 }
 
 export function parseAndGetPattern(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`(${code} = 1)`);
+    let parser = new Parser();
+    let program = parser.parse(`(${code} = 1)`);
     return program.body[0].expression.left;
 }
 
 export function parseAndGetObjectProperty(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`({${code}})`);
+    let parser = new Parser();
+    let program = parser.parse(`({${code}})`);
     return program.body[0].expression.properties[0];
 }
 
 export function parseAndGetObjectPropertyDefaultValue(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`({${code}} = {})`);
+    let parser = new Parser();
+    let program = parser.parse(`({${code}} = {})`);
 
     return program.body[0].expression.left.properties[0];
 }
 
 export function parseAndGetClassMember(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`(class{${code}})`);
+    let parser = new Parser();
+    let program = parser.parse(`(class{${code}})`);
     return program.body[0].expression.body.body[0];
 }
 
 export function parseAndGetObjectKey(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`({${code}: 1})`);
+    let parser = new Parser();
+    let program = parser.parse(`({${code}: 1})`);
     return program.body[0].expression.properties[0].key;
 }
 
 export function parseAndGetSuper(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`(class{ constructor() { ${code} }})`);
+    let parser = new Parser();
+    let program = parser.parse(`(class{ constructor() { ${code} }})`);
     return program.body[0].expression.body.body[0].body.body[0].expression;
 }
 
 export function parseAndGetStatementInLoop(code: string, loopLabel: string): Object {
-    var parser = new Parser();
+    let parser = new Parser();
     if (loopLabel) {
         let program = parser.parse(`${loopLabel}: while(true){${code}}`);
         return program.body[0].body.body.body[0];
@@ -81,38 +81,38 @@ export function parseAndGetStatementInLoop(code: string, loopLabel: string): Obj
 }
 
 export function parseAndGetStatementInFunction(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`function _name(){${code}}`);
+    let parser = new Parser();
+    let program = parser.parse(`function _name(){${code}}`);
     return program.body[0].body.body[0];
 }
 
 export function parseAndGetBlockStatementInFunction(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`function _name(){${code}}`);
+    let parser = new Parser();
+    let program = parser.parse(`function _name(){${code}}`);
     return program.body[0].body;
 }
 
 export function parseAndGetStatementInFunctionParams(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`function _name(${code}){}`);
+    let parser = new Parser();
+    let program = parser.parse(`function _name(${code}){}`);
     return program.body[0].params;
 }
 
 export function parseAndGetExpressionInGenerator(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`function * _name(){(${code});}`);
+    let parser = new Parser();
+    let program = parser.parse(`function * _name(){(${code});}`);
     return program.body[0].body.body[0].expression;
 }
 
 export function parseAndGetExpressionInAsyncFunction(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`async function _name(){(${code});}`);
+    let parser = new Parser();
+    let program = parser.parse(`async function _name(){(${code});}`);
     return program.body[0].body.body[0].expression;
 }
 
 export function parseAndGetStatementInVariableDeclarator(code: string): Object {
-    var parser = new Parser();
-    var program = parser.parse(`var ${code};`);
+    let parser = new Parser();
+    let program = parser.parse(`var ${code};`);
     return program.body[0].declarations[0];
 }
 
@@ -123,7 +123,7 @@ export function assertChildren(element: Element, children: Array<Element>): void
             throw new Error(
                 'Invalid children\n' +
                 'Actual: "' + element.getSourceCode() + '"\n' +
-                'Expected: "' + children.map(c => c.getSourceCode()).join('') + '"'
+                'Expected: "' + children.map((c) => c.getSourceCode()).join('') + '"'
             );
         }
     }

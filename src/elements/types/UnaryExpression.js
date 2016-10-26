@@ -7,7 +7,7 @@ const unaryOperators = {
     '~': true,
     'typeof': true,
     'void': true,
-    'delete': true
+    'delete': true,
 };
 
 export default class UnaryExpression extends Expression {

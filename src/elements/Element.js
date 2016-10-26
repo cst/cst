@@ -60,7 +60,6 @@ export default class Element {
         this.isPattern = false;
         this.isAssignable = false;
         this.isFragment = false;
-
     }
 
     type: string;
@@ -90,7 +89,7 @@ export default class Element {
     }
 
     getNextToken() {
-        var element = this;
+        let element = this;
         while (element) {
             if (element.nextSibling) {
                 return element.nextSibling.getFirstToken();
@@ -103,7 +102,7 @@ export default class Element {
     }
 
     getPreviousToken() {
-        var element = this;
+        let element = this;
         while (element) {
             if (element.previousSibling) {
                 return element.previousSibling.getLastToken();
@@ -243,12 +242,12 @@ export default class Element {
         return {
             start: {
                 line: startLine,
-                column: startColumn
+                column: startColumn,
             },
             end: {
                 line: endLine,
-                column: endColumn
-            }
+                column: endColumn,
+            },
         };
     }
 

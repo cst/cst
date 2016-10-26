@@ -1,13 +1,10 @@
 import {expect} from 'chai';
-import Fragment from '../../../../src/elements/Fragment';
-import Token from '../../../../src/elements/Token';
-import Identifier from '../../../../src/elements/types/Identifier';
 import ScopesPlugin from '../../../../src/plugins/scopes/ScopesPlugin';
-import {parseAndGetProgram, parseAndGetStatement, parseAndGetExpression} from '../../../utils';
+import {parseAndGetProgram} from '../../../utils';
 
 function parse(codeLines) {
     return parseAndGetProgram([].concat(codeLines).join('\n'), {
-        plugins: [new ScopesPlugin()]
+        plugins: [new ScopesPlugin()],
     });
 }
 
@@ -189,7 +186,7 @@ describe('ScopesPlugin', () => {
         it('should resolve template string tag', () => {
             let program = parse([
                 'let tag;',
-                '(tag`hello`)'
+                '(tag`hello`)',
             ]);
             let scope = program.plugins.scopes.acquire(program);
             expect(scope.getVariables().length).to.equal(1);

@@ -6,7 +6,7 @@ export default class ExpressionStatement extends Statement {
     }
 
     _acceptChildren(children) {
-        var expression = children.passExpression();
+        let expression = children.passExpression();
         children.skipNonCode();
         children.skipSemicolon();
         children.assertEnd();

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import Benchmark from 'benchmark';
 import chalk from 'chalk';
 import elementIndex from '../../src/elements/elementIndex';
@@ -8,13 +10,13 @@ import {
     ArrayChildren,
     ListChildren,
     ListChildrenNonRecursive,
-    ListChildrenRecursiveClosure
+    ListChildrenRecursiveClosure,
 } from './elements/noIndexElements';
 
 import {
     SetIndex,
     HashIndex,
-    ArrayIndex
+    ArrayIndex,
 } from './elements/indexElements';
 
 let tests = [];
@@ -43,7 +45,7 @@ let availableTypes = Object.keys(elementIndex);
         },
         'Parse, fix tokens, build CST': function() {
             parser.parse(code);
-        }
+        },
     });
 })();
 
@@ -58,7 +60,7 @@ let availableTypes = Object.keys(elementIndex);
         'NO INDEX, List children, closure recursive': ListChildrenRecursiveClosure,
         'INDEX, using sets': SetIndex,
         'INDEX, using hashes': HashIndex,
-        'INDEX, using arrays': ArrayIndex
+        'INDEX, using arrays': ArrayIndex,
     };
 
     let [, counts] = buildElementTree(ListChildren, depth, childrenCount);
@@ -72,7 +74,7 @@ let availableTypes = Object.keys(elementIndex);
 
     test('Searching by type', Object.keys(structureTypes).map(function(typeName) {
         let [structure] = buildElementTree(structureTypes[typeName], depth, childrenCount);
-        var callback = function callback() {
+        let callback = function callback() {
             for (let type of availableTypes) {
                 let count = structure.select(type).length;
                 if (counts[type] !== count) {

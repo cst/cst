@@ -19,5 +19,5 @@ export {default as types} from './elements/elementIndex';
 export {default as plugins} from './plugins/pluginsIndex';
 
 export const api = {
-    ScopesApi
+    ScopesApi,
 };

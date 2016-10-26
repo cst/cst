@@ -4,7 +4,6 @@ import {parse} from 'babylon';
 
 import type {BabylonToken} from './elementTree';
 import type Program from './elements/types/Program';
-import type Token from './elements/Token';
 import {buildTokenList, buildElementTree} from './elementTree';
 import type BasePlugin from './plugins/BasePlugin';
 
@@ -44,13 +43,13 @@ import type BasePlugin from './plugins/BasePlugin';
 // https://developer.apple.com/library/watchos/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/UIAutomation.html
 const DIRECTIVE_APPLE_INSTRUMENTATION = {
     type: 'AppleInstrumentationDirective',
-    regexp: /^#([^\n]+)/gm
+    regexp: /^#([^\n]+)/gm,
 };
 
 // https://www.chromium.org/developers/web-development-style-guide
 const DIRECTIVE_GRIT = {
     type: 'GritDirective',
-    regexp: /^\s*<(\/?\s*(?:if|include)(?!\w)[^]*?)>/gim
+    regexp: /^\s*<(\/?\s*(?:if|include)(?!\w)[^]*?)>/gim,
 };
 
 // checking for the options passed to the babel parse method
@@ -89,13 +88,13 @@ export default class Parser {
                 'exportExtensions': true,
                 'functionBind': true,
                 'objectRestSpread': true,
-                'trailingFunctionCommas': true
+                'trailingFunctionCommas': true,
             },
             languageExtensions: {
                 jsx: true,
-                flow: true
+                flow: true,
             },
-            plugins: []
+            plugins: [],
         };
 
         if (options) {
@@ -116,22 +115,22 @@ export default class Parser {
      * @param {CSTParserOptions} newOptions
      */
     setOptions(newOptions: CSTParserOptions) {
-        var currentOptions = this._options;
-        var currentExperimentalFeatures = currentOptions.experimentalFeatures;
-        var currentLanguageExtensions = currentOptions.languageExtensions;
-        var newExperimentalFeatures = newOptions.experimentalFeatures;
-        var newLanguageExtensions = newOptions.languageExtensions;
+        let currentOptions = this._options;
+        let currentExperimentalFeatures = currentOptions.experimentalFeatures;
+        let currentLanguageExtensions = currentOptions.languageExtensions;
+        let newExperimentalFeatures = newOptions.experimentalFeatures;
+        let newLanguageExtensions = newOptions.languageExtensions;
         this._options = {
             ...currentOptions,
             ...newOptions,
             experimentalFeatures: {
                 ...currentExperimentalFeatures,
-                ...newExperimentalFeatures
+                ...newExperimentalFeatures,
             },
             languageExtensions: {
                 ...currentLanguageExtensions,
-                ...newLanguageExtensions
-            }
+                ...newLanguageExtensions,
+            },
         };
     }
 
@@ -144,7 +143,7 @@ export default class Parser {
         for (let plugin of plugins) {
             let api = plugin.createApiForProgram(program);
             if (api) {
-                var pluginName = plugin.getPluginName();
+                let pluginName = plugin.getPluginName();
                 if (pluginName in programPlugins) {
                     throw new Error(`Plugin "${pluginName}" was already registered.`);
                 } else {
@@ -177,7 +176,7 @@ export default class Parser {
             code = code.replace(directive.regexp, function(str, value, pos) {
                 hasDirectives = true;
                 directiveInstances[pos] = {
-                    type: directive.type, value
+                    type: directive.type, value,
                 };
 
                 // Cut 4 characters to save correct line/column info for surrounding code
@@ -193,8 +192,8 @@ export default class Parser {
             allowSuperOutsideMethod: options.allowSuperOutsideMethod,
             plugins: [
                 ...Object.keys(options.experimentalFeatures),
-                ...Object.keys(options.languageExtensions)
-            ]
+                ...Object.keys(options.languageExtensions),
+            ],
         });
 
         let program = ast.program;

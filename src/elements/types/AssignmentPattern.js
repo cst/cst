@@ -7,7 +7,6 @@ export default class AssignmentPattern extends Node {
     }
 
     _acceptChildren(children) {
-
         let left = children.passPattern();
         children.skipNonCode();
         children.passToken('Punctuator', '=');

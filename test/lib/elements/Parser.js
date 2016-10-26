@@ -19,8 +19,8 @@ describe('Parser', () => {
     it('should support apple instrumentation directives', () => {
         let program = parseAndGetProgram('#import "1.js"\n#import "2.js"\n/* hello */', {
             languageExtensions: {
-                appleInstrumentationDirectives: true
-            }
+                appleInstrumentationDirectives: true,
+            },
         });
         expect(program.childElements[0].type).to.equal('AppleInstrumentationDirective');
         expect(program.childElements[0].value).to.equal('import "1.js"');
@@ -38,8 +38,8 @@ describe('Parser', () => {
     it('should support grit directives', () => {
         let program = parseAndGetProgram('<include src="assert1.js">\n<include src="assert2.js">\n/* hello */', {
             languageExtensions: {
-                gritDirectives: true
-            }
+                gritDirectives: true,
+            },
         });
         expect(program.childElements[0].type).to.equal('GritDirective');
         expect(program.childElements[0].value).to.equal('include src="assert1.js"');
@@ -57,8 +57,8 @@ describe('Parser', () => {
     it('should support ios imports', () => {
         let program = parseAndGetProgram('#import "abc.js"\n#import abc.js\nvar a = 5;', {
             languageExtensions: {
-                appleInstrumentationDirectives: true
-            }
+                appleInstrumentationDirectives: true,
+            },
         });
 
         expect(program.childElements[0].type).to.equal('AppleInstrumentationDirective');

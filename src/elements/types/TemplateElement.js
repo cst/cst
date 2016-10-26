@@ -11,7 +11,7 @@ export default class TemplateElement extends Node {
         let tail = false;
         let value = {
             cooked: templateToken.value,
-            raw: templateToken.getSourceCode()
+            raw: templateToken.getSourceCode(),
         };
 
         children.assertEnd();

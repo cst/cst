@@ -9,7 +9,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept template with only a template element', () => {
-        var expression = parseAndGetExpression('`1`');
+        let expression = parseAndGetExpression('`1`');
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(1);
         expect(expression.quasis[0].type).to.equal('TemplateElement');
@@ -20,7 +20,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept multiline template', () => {
-        var expression = parseAndGetExpression('`a\n' +
+        let expression = parseAndGetExpression('`a\n' +
             'b\n' +
             'c\n' +
         '`');
@@ -34,7 +34,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept template with only an expression', () => {
-        var expression = parseAndGetExpression('`${a}`');
+        let expression = parseAndGetExpression('`${a}`');
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(2);
         expect(expression.quasis[0].tail).to.equal(false);
@@ -49,7 +49,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept template with only an expression with spaces', () => {
-        var expression = parseAndGetExpression('` ${ a } `');
+        let expression = parseAndGetExpression('` ${ a } `');
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(2);
         expect(expression.quasis[0].tail).to.equal(false);
@@ -64,7 +64,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept template with multiple expressions', () => {
-        var expression = parseAndGetExpression('`a${b}c${d}e`');
+        let expression = parseAndGetExpression('`a${b}c${d}e`');
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(3);
         expect(expression.quasis[0].tail).to.equal(false);
@@ -84,7 +84,7 @@ describe('TemplateLiteral', () => {
     });
 
     it('should accept nested templates', () => {
-        var expression = parseAndGetExpression('`b${`${1+1}c`}3`');
+        let expression = parseAndGetExpression('`b${`${1+1}c`}3`');
         expect(expression.type).to.equal('TemplateLiteral');
         expect(expression.quasis.length).to.equal(2);
         expect(expression.quasis[0].tail).to.equal(false);

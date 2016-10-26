@@ -253,7 +253,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpression(): Element {
-        return this._passExpressionInParens(expression => expression.isExpression);
+        return this._passExpressionInParens((expression) => expression.isExpression);
     }
 
     /**
@@ -264,7 +264,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpressionOrWhitespace(): Element {
-        return this._passExpressionInParens(expression => expression.isExpression || expression.isWhitespace);
+        return this._passExpressionInParens((expression) => expression.isExpression || expression.isWhitespace);
     }
 
     /**
@@ -275,7 +275,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passExpressionOrSuper(): Element {
-        return this._passExpressionInParens(expression => expression.isExpression || expression.type === 'Super');
+        return this._passExpressionInParens((expression) => expression.isExpression || expression.type === 'Super');
     }
 
     /**
@@ -287,7 +287,7 @@ export default class ElementAssert {
      */
     passExpressionOrSpreadElement(): Element {
         return this._passExpressionInParens(
-            expression => expression.isExpression || expression.type === 'SpreadElement');
+            (expression) => expression.isExpression || expression.type === 'SpreadElement');
     }
 
     /**
@@ -334,7 +334,7 @@ export default class ElementAssert {
      * @returns {Element}
      */
     passAssignable(): Element {
-        return this._passExpressionInParens(expression => expression.isAssignable);
+        return this._passExpressionInParens((expression) => expression.isAssignable);
     }
 
     /**

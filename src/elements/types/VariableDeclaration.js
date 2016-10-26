@@ -1,9 +1,9 @@
 import Statement from '../Statement';
 
-var validKinds = {
+let validKinds = {
     var: true,
     let: true,
-    const: true
+    const: true,
 };
 
 export default class VariableDeclaration extends Statement {

@@ -7,7 +7,7 @@ describe('RegExpLiteral', () => {
     });
 
     it('should accept regexp', () => {
-        var expression = parseAndGetExpression('/123/');
+        let expression = parseAndGetExpression('/123/');
         expect(expression.type).to.equal('RegExpLiteral');
         expect(expression.value).to.equal(undefined);
         expect(expression.pattern).to.equal('123');
@@ -17,7 +17,7 @@ describe('RegExpLiteral', () => {
     });
 
     it('should accept regexp with flags', () => {
-        var expression = parseAndGetExpression('/123/gm');
+        let expression = parseAndGetExpression('/123/gm');
         expect(expression.type).to.equal('RegExpLiteral');
         expect(expression.value).to.equal(undefined);
         expect(expression.pattern).to.equal('123');

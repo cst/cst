@@ -20,10 +20,8 @@ export default class BreakStatement extends Statement {
                 label = children.passNode('Identifier');
                 children.skipNonCode();
                 children.skipSemicolon();
-
             } else if (children.isToken('Punctuator', ';')) {
                 children.passToken();
-
             } else {
                 children.passToken();
                 children.skipSemicolon();

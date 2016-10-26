@@ -7,7 +7,7 @@ describe('ForOfStatement', () => {
     });
 
     it('should accept single statement', () => {
-        var statement = parseAndGetStatement('for (i of x) x;');
+        let statement = parseAndGetStatement('for (i of x) x;');
         expect(statement.left.type).to.equal('Identifier');
         expect(statement.left.name).to.equal('i');
         expect(statement.right.type).to.equal('Identifier');
@@ -19,7 +19,7 @@ describe('ForOfStatement', () => {
     });
 
     it('should accept expression of parentheses', () => {
-        var statement = parseAndGetStatement('for ((i) of (x)) x;');
+        let statement = parseAndGetStatement('for ((i) of (x)) x;');
         expect(statement.left.type).to.equal('Identifier');
         expect(statement.left.name).to.equal('i');
         expect(statement.right.type).to.equal('Identifier');
@@ -31,7 +31,7 @@ describe('ForOfStatement', () => {
     });
 
     it('should accept variable declaration', () => {
-        var statement = parseAndGetStatement('for ( var i of x ) x;');
+        let statement = parseAndGetStatement('for ( var i of x ) x;');
         expect(statement.left.type).to.equal('VariableDeclaration');
         expect(statement.left.declarations[0].id.name).to.equal('i');
         expect(statement.right.type).to.equal('Identifier');
@@ -43,7 +43,7 @@ describe('ForOfStatement', () => {
     });
 
     it('should accept whitespaces', () => {
-        var statement = parseAndGetStatement('for ( ( i ) of ( x ) ) x;');
+        let statement = parseAndGetStatement('for ( ( i ) of ( x ) ) x;');
         expect(statement.left.type).to.equal('Identifier');
         expect(statement.left.name).to.equal('i');
         expect(statement.right.type).to.equal('Identifier');
@@ -55,7 +55,7 @@ describe('ForOfStatement', () => {
     });
 
     it('should accept blocks', () => {
-        var statement = parseAndGetStatement('for (i of x) { x; }');
+        let statement = parseAndGetStatement('for (i of x) { x; }');
         expect(statement.left.type).to.equal('Identifier');
         expect(statement.left.name).to.equal('i');
         expect(statement.right.type).to.equal('Identifier');

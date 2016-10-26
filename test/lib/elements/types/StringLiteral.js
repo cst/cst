@@ -7,22 +7,22 @@ describe('StringLiteral', () => {
     });
 
     it('should accept double quoted string', () => {
-        var expression = parseAndGetExpression('"123"');
+        let expression = parseAndGetExpression('"123"');
         expect(expression.type).to.equal('StringLiteral');
         expect(expression.value).to.equal('123');
         expect(expression.raw).to.equal('"123"');
     });
 
     it('should accept single quoted string', () => {
-        var expression = parseAndGetExpression('\'123\'');
+        let expression = parseAndGetExpression('\'123\'');
         expect(expression.type).to.equal('StringLiteral');
         expect(expression.value).to.equal('123');
         expect(expression.raw).to.equal('\'123\'');
     });
 
     it('should accept string escapes', () => {
-        var value = '" \\" \\n \\r \\t \\f \\b \\v \\0 \\\n \\u006F \\251 \\xa9 \\u{000000000061} "';
-        var expression = parseAndGetExpression(value, {strictMode: false});
+        let value = '" \\" \\n \\r \\t \\f \\b \\v \\0 \\\n \\u006F \\251 \\xa9 \\u{000000000061} "';
+        let expression = parseAndGetExpression(value, {strictMode: false});
         expect(expression.type).to.equal('StringLiteral');
         expect(expression.value).to.equal(' " \n \r \t \f \b \u000b \0  o © © a ');
         expect(expression.raw).to.equal(value);
