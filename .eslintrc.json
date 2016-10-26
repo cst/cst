@@ -1,12 +1,21 @@
 {
   "parser": "babel-eslint",
   "extends": "eslint:recommended",
+  "plugins": [
+    "flowtype"
+  ],
   "env": {
     "es6": true,
     "mocha": true,
     "node": true
   },
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  },
   "rules": {
+    "flowtype/define-flow-type": 1,
     "indent": [
       2,
       4,
@@ -16,10 +25,11 @@
     ],
     "max-len": [
       2,
-      120
+      120,
+      {"ignoreComments": true}
     ],
     "no-constant-condition": 0,
-    "no-unused-var": 1,
+    "no-unused-vars": 1,
     "valid-jsdoc": 1
   }
 }
