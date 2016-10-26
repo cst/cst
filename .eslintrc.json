@@ -1,5 +1,11 @@
 {
   "parser": "babel-eslint",
+  "extends": "eslint:recommended",
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
   "rules": {
     "indent": [
       2,
@@ -12,6 +18,7 @@
       2,
       120
     ],
-    "valid-jsdoc": 2
+    "no-unused-vars": 1,
+    "valid-jsdoc": 1
   }
 }

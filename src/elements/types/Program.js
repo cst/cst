@@ -108,4 +108,4 @@ export default class Program extends Statement {
             }
         }
     }
-};
+}
