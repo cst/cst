@@ -22,8 +22,7 @@
     "test:live": "mocha --watch",
     "test:benchmark": "babel-node test/benchmarks/benchmarks.js",
     "watch": "gaze 'npm run build' 'src/**/*.js'",
-    "lint": "npm run lint:jscs",
-    "lint:jscs": "jscs src test",
+    "lint": "eslint src test",
     "flow": "flow check",
     "build": "babel src -d lib --source-maps",
     "precommit": "npm test",
@@ -32,6 +31,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
+    "babel-eslint": "~7.0.0",
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-plugin-transform-flow-strip-types": "^6.7.0",
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
@@ -41,9 +41,9 @@
     "benchmark": "^2.1.0",
     "chai": "^3.5.0",
     "chalk": "^1.1.1",
+    "eslint": "~3.8.1",
     "gaze-cli": "^0.2.0",
     "husky": "^0.11.4",
-    "jscs": "^2.11.0",
     "mocha": "^2.5.3"
   },
   "dependencies": {

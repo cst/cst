@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "max-len": [
+      2,
+      120
+    ],
+    "valid-jsdoc": 2
+  }
+}
