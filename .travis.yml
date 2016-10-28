@@ -6,9 +6,19 @@ cache:
   directories:
   - node_modules
 
+script:
+  - 'if [ -n "${LINT-}" ]; then npm run lint ; fi'
+  - npm run test:unit
+
 node_js:
   - "0.10"
   - "0.12"
   - "4"
   - "5"
   - "6"
+
+matrix:
+  fast_finish: true
+  include:
+    - node_js: "node"
+      env: LINT=true
