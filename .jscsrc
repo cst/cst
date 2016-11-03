@@ -17,5 +17,6 @@
         "checkRedundantAccess": true,
         "requireNewlineAfterDescription": true
     },
-	"preset": "google"
+	"preset": "google",
+    "excludeFiles": ["test/3rdParty/babylon/**"]
 }
