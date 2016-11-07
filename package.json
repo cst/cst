@@ -42,6 +42,7 @@
     "chai": "^3.5.0",
     "chalk": "^1.1.1",
     "eslint": "~3.8.1",
+    "eslint-config-google": "~0.7.0",
     "eslint-plugin-flowtype": "~2.25.0",
     "gaze-cli": "^0.2.0",
     "husky": "^0.11.4",

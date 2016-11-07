@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": "eslint:recommended",
+  "extends": "google",
   "plugins": [
     "flowtype"
   ],
