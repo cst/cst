@@ -1,4 +1,5 @@
 import Expression from '../Expression';
+import acceptArgumentList from './utils/acceptArgumentList';
 
 export default class NewExpression extends Expression {
     constructor(childNodes) {
@@ -6,35 +7,10 @@ export default class NewExpression extends Expression {
     }
 
     _acceptChildren(children) {
-        let args = [];
-
         children.passToken('Keyword', 'new');
         children.skipNonCode();
 
-        let callee = children.passExpression();
-
-        if (!children.isEnd) {
-            children.skipNonCode();
-
-            children.passToken('Punctuator', '(');
-            children.skipNonCode();
-
-            if (!children.isToken('Punctuator', ')')) {
-                args.push(children.passExpression());
-                children.skipNonCode();
-                while (!children.isToken('Punctuator', ')')) {
-                    children.passToken('Punctuator', ',');
-                    children.skipNonCode();
-                    args.push(children.passExpression());
-                    children.skipNonCode();
-                }
-            }
-            children.passToken('Punctuator', ')');
-        }
-
-        children.assertEnd();
-
-        this.callee = callee;
-        this.arguments = args;
+        this.callee = children.passExpression();
+        this.arguments = children.isEnd ? [] : acceptArgumentList(children);
     }
 }
