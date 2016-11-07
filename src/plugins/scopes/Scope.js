@@ -188,7 +188,7 @@ export default class Scope {
             }
             if (!currentScope.parentScope) {
                 let globalVariable = new Variable({
-                    name, type: types.ImplicitGlobal, scope: currentScope
+                    name, type: types.ImplicitGlobal, scope: currentScope,
                 });
                 globalVariable._addReference(reference);
                 currentScope._addVariable(globalVariable);
@@ -206,7 +206,7 @@ export default class Scope {
                     )
                 ) {
                     let builtInVariable = new Variable({
-                        name, type: types.BuiltIn, scope: currentScope
+                        name, type: types.BuiltIn, scope: currentScope,
                     });
                     builtInVariable._addReference(reference);
                     currentScope._addVariable(builtInVariable);
@@ -300,7 +300,7 @@ function removeVariable(variable: Variable) {
             if (variables.length === 0) {
                 scope._variables.delete(variable.name);
             }
-            for (var reference of variable._references) {
+            for (let reference of variable._references) {
                 reference.scope._assignReference(reference, variable.name);
             }
         }

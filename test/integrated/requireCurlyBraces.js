@@ -47,24 +47,24 @@ let types = {
     ForInStatement: ['body'],
     DoWhileStatement: ['body'],
     WithStatement: ['body'],
-    SwitchCase: ['consequent']
+    SwitchCase: ['consequent'],
 };
 
 let exceptions = {
-    IfStatement: {alternate: 'IfStatement'}
+    IfStatement: {alternate: 'IfStatement'},
 };
 
 describe('integrated/requireCurlyBraces', () => {
     it('should add curly braces to all supported statements', () => {
         let program = parseAndGetProgram(sourceCode, {strictMode: false});
-        for (var typeName in types) {
+        for (let typeName in types) {
             for (let node of program.selectNodesByType(typeName)) {
                 for (let propName of types[typeName]) {
                     let propValue = node[propName];
                     if (propValue) {
-                        var block = new BlockStatement([
+                        let block = new BlockStatement([
                             Token.create('Punctuator', '{'),
-                            Token.create('Punctuator', '}')
+                            Token.create('Punctuator', '}'),
                         ]);
                         if (Array.isArray(propValue)) {
                             let children = propValue;

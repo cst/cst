@@ -11,7 +11,7 @@ export default class RegExpLiteral extends Expression {
         let flags = children.currentElement.value.flags;
         let extra = {
             rawValue: undefined,
-            raw: children.currentElement.getSourceCode()
+            raw: children.currentElement.getSourceCode(),
         };
 
         children.moveNext();

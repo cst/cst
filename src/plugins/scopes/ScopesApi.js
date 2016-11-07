@@ -46,7 +46,7 @@ const scopedBlocks = {
     'ForInStatement': true,
     'ForOfStatement': true,
     'SwitchStatement': true,
-    'CatchClause': true
+    'CatchClause': true,
 };
 
 export default class ScopesApi {
@@ -172,7 +172,7 @@ export default class ScopesApi {
             node,
             parentScope: undefined,
             isFunctionScope: true,
-            isProgramScope: true
+            isProgramScope: true,
         });
     }
 
@@ -180,7 +180,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isClassScope: true
+            isClassScope: true,
         });
     }
 
@@ -188,7 +188,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isClassScope: true
+            isClassScope: true,
         });
     }
 
@@ -196,7 +196,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isFunctionScope: true
+            isFunctionScope: true,
         });
     }
 
@@ -204,7 +204,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isFunctionScope: true
+            isFunctionScope: true,
         });
     }
 
@@ -212,7 +212,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isFunctionScope: true
+            isFunctionScope: true,
         });
     }
 
@@ -220,7 +220,7 @@ export default class ScopesApi {
         this._addScope({
             node,
             parentScope: this._getParentScopeFor(node),
-            isFunctionScope: true
+            isFunctionScope: true,
         });
     }
 
@@ -229,14 +229,14 @@ export default class ScopesApi {
             node,
             parentScope: this._getParentScopeFor(node),
             isFunctionScope: true,
-            isArrowFunctionScope: true
+            isArrowFunctionScope: true,
         });
     }
 
     _addScopedBlock(node: Node) {
         this._addScope({
             node,
-            parentScope: this._getParentScopeFor(node)
+            parentScope: this._getParentScopeFor(node),
         });
     }
 
@@ -258,7 +258,7 @@ export default class ScopesApi {
         }
         this._addScope({
             node,
-            parentScope: this._getScopeFor(parentElement)
+            parentScope: this._getScopeFor(parentElement),
         });
     }
 
@@ -449,7 +449,7 @@ export default class ScopesApi {
                     name: node.name,
                     read: false,
                     write: true,
-                    type: types.SelfReference
+                    type: types.SelfReference,
                 });
                 return;
             }
@@ -464,7 +464,7 @@ export default class ScopesApi {
                         name: node.name,
                         read: false,
                         write: true,
-                        type: types.LetVariable
+                        type: types.LetVariable,
                     });
                     return;
                 }
@@ -477,14 +477,14 @@ export default class ScopesApi {
                     this._addDefinitionToScope(parentScope, {
                         node: node,
                         name: node.name,
-                        type: types.LetVariable
+                        type: types.LetVariable,
                     });
                     this._addReferenceToScope(parentScope, {
                         node: node,
                         name: node.name,
                         read: false,
                         write: true,
-                        type: types.LetVariable
+                        type: types.LetVariable,
                     });
                 }
                 return;
@@ -495,14 +495,14 @@ export default class ScopesApi {
                 this._addDefinitionToScope(scope, {
                     node: node,
                     name: node.name,
-                    type: types.SelfReference
+                    type: types.SelfReference,
                 });
                 this._addReferenceToScope(scope, {
                     node: node,
                     name: node.name,
                     read: false,
                     write: true,
-                    type: types.SelfReference
+                    type: types.SelfReference,
                 });
                 return;
             }

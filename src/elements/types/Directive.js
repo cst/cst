@@ -6,7 +6,7 @@ export default class Directive extends Statement {
     }
 
     _acceptChildren(children) {
-        var value = children.passExpression();
+        let value = children.passExpression();
         children.skipNonCode();
         children.skipSemicolon();
         children.assertEnd();

@@ -6,7 +6,7 @@ export default class ClassBody extends Node {
     }
 
     _acceptChildren(children) {
-        var body = [];
+        let body = [];
 
         children.assertToken('Punctuator', '{');
         children.moveNext();

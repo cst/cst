@@ -7,14 +7,14 @@ describe('VariableDeclarator', () => {
     });
 
     it('should accept declaration without init', () => {
-        var statement = parseAndGetStatementInVariableDeclarator('x');
+        let statement = parseAndGetStatementInVariableDeclarator('x');
         expect(statement.type).to.equal('VariableDeclarator');
         expect(statement.id.name).to.equal('x');
         expect(statement.init).to.equal(null);
     });
 
     it('should accept declaration with init', () => {
-        var statement = parseAndGetStatementInVariableDeclarator('x = 1');
+        let statement = parseAndGetStatementInVariableDeclarator('x = 1');
         expect(statement.type).to.equal('VariableDeclarator');
         expect(statement.id.name).to.equal('x');
         expect(statement.init.type).to.equal('NumericLiteral');
@@ -22,7 +22,7 @@ describe('VariableDeclarator', () => {
     });
 
     it('should accept declaration with parentheses', () => {
-        var statement = parseAndGetStatementInVariableDeclarator('x = ( 1 )');
+        let statement = parseAndGetStatementInVariableDeclarator('x = ( 1 )');
         expect(statement.type).to.equal('VariableDeclarator');
         expect(statement.id.name).to.equal('x');
         expect(statement.init.type).to.equal('NumericLiteral');
@@ -30,7 +30,7 @@ describe('VariableDeclarator', () => {
     });
 
     it('should accept array pattern', () => {
-        var statement = parseAndGetStatementInVariableDeclarator('[ x ] = ( 1 )');
+        let statement = parseAndGetStatementInVariableDeclarator('[ x ] = ( 1 )');
         expect(statement.type).to.equal('VariableDeclarator');
         expect(statement.id.type).to.equal('ArrayPattern');
         expect(statement.id.elements[0].type).to.equal('Identifier');
@@ -40,7 +40,7 @@ describe('VariableDeclarator', () => {
     });
 
     it('should accept object pattern', () => {
-        var statement = parseAndGetStatementInVariableDeclarator('{ x } = ( 1 )');
+        let statement = parseAndGetStatementInVariableDeclarator('{ x } = ( 1 )');
         expect(statement.type).to.equal('VariableDeclarator');
         expect(statement.id.type).to.equal('ObjectPattern');
         expect(statement.id.properties[0].key.type).to.equal('Identifier');

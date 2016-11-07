@@ -26,13 +26,13 @@ export type BabylonToken = {
  * @returns {Program}
  */
 export function buildElementTree(ast: Object, tokens: Array<BabylonToken>): Program {
-    var firstToken = tokens[0];
+    let firstToken = tokens[0];
     ast.start = firstToken.start;
     ast.end = tokens[tokens.length - 1].end;
     return ((buildElementTreeItem(ast, {
         tokens,
         token: firstToken,
-        pos: 0
+        pos: 0,
     }): any): Program);
 }
 
@@ -48,7 +48,7 @@ type ElementTreeItemState = {
  * @returns {Element}
  */
 function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Element {
-    var elementType = ast.type;
+    let elementType = ast.type;
     let childProps = visitorKeys[elementType];
 
     // Skip first `Identifier` for ({ test = 1 } = {})
@@ -160,7 +160,7 @@ export function buildTokenList(codeTokens: Array<BabylonToken>, code: string): A
     let prevPos = 0;
     let result = [];
 
-    for (var i = 0; i < codeTokens.length; i++) {
+    for (let i = 0; i < codeTokens.length; i++) {
         let token = processToken(codeTokens[i], code);
 
         let pos = token.start;
@@ -171,7 +171,7 @@ export function buildTokenList(codeTokens: Array<BabylonToken>, code: string): A
                 value,
                 sourceCode: value,
                 start: prevPos,
-                end: pos
+                end: pos,
             };
         }
         result[result.length] = token;
@@ -194,7 +194,7 @@ let tt = babylon.tokTypes;
  * @param {String} source
  */
 function processToken(token: Object, source: string): BabylonToken {
-    var type = token.type;
+    let type = token.type;
 
     if (type === tt.name) {
         token.type = 'Identifier';

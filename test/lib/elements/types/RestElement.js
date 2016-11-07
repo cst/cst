@@ -7,28 +7,28 @@ describe('RestElement', () => {
     });
 
     it('should accept a single identifier', () => {
-        var statement = parseAndGetStatementInFunctionParams('...a')[0];
+        let statement = parseAndGetStatementInFunctionParams('...a')[0];
         expect(statement.type).to.equal('RestElement');
         expect(statement.argument.type).to.equal('Identifier');
         expect(statement.argument.name).to.equal('a');
     });
 
     it('should accept a single identifier with whitespace in between', () => {
-        var statement = parseAndGetStatementInFunctionParams('... a')[0];
+        let statement = parseAndGetStatementInFunctionParams('... a')[0];
         expect(statement.type).to.equal('RestElement');
         expect(statement.argument.type).to.equal('Identifier');
         expect(statement.argument.name).to.equal('a');
     });
 
     it('should accept a single identifier with a comment in between', () => {
-        var statement = parseAndGetStatementInFunctionParams('... /* adsf */ a')[0];
+        let statement = parseAndGetStatementInFunctionParams('... /* adsf */ a')[0];
         expect(statement.type).to.equal('RestElement');
         expect(statement.argument.type).to.equal('Identifier');
         expect(statement.argument.name).to.equal('a');
     });
 
     it('should allow other params on the left', () => {
-        var statements = parseAndGetStatementInFunctionParams('a, ...b');
+        let statements = parseAndGetStatementInFunctionParams('a, ...b');
         expect(statements[0].type).to.equal('Identifier');
         expect(statements[0].name).to.equal('a');
 
@@ -38,7 +38,7 @@ describe('RestElement', () => {
     });
 
     it('should support rest element with pattern in assignment', () => {
-        var expression = parseAndGetExpression('[a, ...b] = 1');
+        let expression = parseAndGetExpression('[a, ...b] = 1');
         expect(expression.left.type).to.equal('ArrayPattern');
         expect(expression.left.elements[1].type).to.equal('RestElement');
         expect(expression.left.elements[1].argument.type).to.equal('Identifier');
@@ -46,7 +46,7 @@ describe('RestElement', () => {
     });
 
     it('should support rest element with expression in assignment', () => {
-        var expression = parseAndGetExpression('[a, ...x.b] = 1');
+        let expression = parseAndGetExpression('[a, ...x.b] = 1');
         expect(expression.left.type).to.equal('ArrayPattern');
         expect(expression.left.elements[1].type).to.equal('RestElement');
         expect(expression.left.elements[1].argument.type).to.equal('MemberExpression');

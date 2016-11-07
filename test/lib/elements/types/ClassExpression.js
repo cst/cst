@@ -7,7 +7,7 @@ describe('ClassExpression', () => {
     });
 
     it('should accept superClass', () => {
-        var statement = parseAndGetExpression('class X extends Y {}');
+        let statement = parseAndGetExpression('class X extends Y {}');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass.type).to.equal('Identifier');
@@ -17,7 +17,7 @@ describe('ClassExpression', () => {
     });
 
     it('should not require id with superClass', () => {
-        var statement = parseAndGetExpression('class extends Y {}');
+        let statement = parseAndGetExpression('class extends Y {}');
         expect(statement.superClass.type).to.equal('Identifier');
         expect(statement.superClass.name).to.equal('Y');
         expect(statement.body.type).to.equal('ClassBody');
@@ -25,7 +25,7 @@ describe('ClassExpression', () => {
     });
 
     it('should accept expession for superClass', () => {
-        var statement = parseAndGetExpression('class X extends z.Y {}');
+        let statement = parseAndGetExpression('class X extends z.Y {}');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass.type).to.equal('MemberExpression');
@@ -38,7 +38,7 @@ describe('ClassExpression', () => {
     });
 
     it('should not require id with members', () => {
-        var statement = parseAndGetExpression('class { method() {} }');
+        let statement = parseAndGetExpression('class { method() {} }');
         expect(statement.id).to.equal(null);
         expect(statement.superClass).to.equal(null);
         expect(statement.body.type).to.equal('ClassBody');
@@ -48,7 +48,7 @@ describe('ClassExpression', () => {
     });
 
     it('should accept members', () => {
-        var statement = parseAndGetExpression('class X { method() {} }');
+        let statement = parseAndGetExpression('class X { method() {} }');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass).to.equal(null);

@@ -1,6 +1,6 @@
 import {
     parseAndGetObjectProperty,
-    parseAndGetObjectPropertyDefaultValue
+    parseAndGetObjectPropertyDefaultValue,
 } from '../../../utils';
 
 import Parser from '../../../../src/Parser';

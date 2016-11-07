@@ -29,7 +29,7 @@ export const types = {
     CatchClauseError: 'CatchClauseError',
     ImportBinding: 'ImportBinding',
     ImplicitGlobal: 'ImplicitGlobal',
-    BuiltIn: 'BuiltIn'
+    BuiltIn: 'BuiltIn',
 };
 
 /**
@@ -45,5 +45,5 @@ export const typeOrder = {
     CatchClauseError: 1,
     SelfReference: 2,
     BuiltIn: 3,
-    ImplicitGlobal: 3
+    ImplicitGlobal: 3,
 };

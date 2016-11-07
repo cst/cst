@@ -7,7 +7,7 @@ describe('DoWhileStatement', () => {
     });
 
     it('should accept single statement', () => {
-        var statement = parseAndGetStatement('do x; while (true);');
+        let statement = parseAndGetStatement('do x; while (true);');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -16,7 +16,7 @@ describe('DoWhileStatement', () => {
     });
 
     it('should accept expression in parentheses', () => {
-        var statement = parseAndGetStatement('do x; while ((true));');
+        let statement = parseAndGetStatement('do x; while ((true));');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -25,7 +25,7 @@ describe('DoWhileStatement', () => {
     });
 
     it('should accept whitespaces', () => {
-        var statement = parseAndGetStatement('do x ; while ( true );');
+        let statement = parseAndGetStatement('do x ; while ( true );');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -34,14 +34,14 @@ describe('DoWhileStatement', () => {
     });
 
     it('should accept blocks', () => {
-        var statement = parseAndGetStatement('do { x; } while ( true );');
+        let statement = parseAndGetStatement('do { x; } while ( true );');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('BlockStatement');
     });
 
     it('should work without semicolon', () => {
-        var statement = parseAndGetStatement('do x ; while ( true )');
+        let statement = parseAndGetStatement('do x ; while ( true )');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');

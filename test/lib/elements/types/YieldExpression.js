@@ -2,20 +2,19 @@ import {parseAndGetExpressionInGenerator} from '../../../utils';
 import {expect} from 'chai';
 
 describe('YieldExpression', () => {
-
     it('should yield correct type', () => {
         expect(parseAndGetExpressionInGenerator('yield').type).to.equal('YieldExpression');
     });
 
     it('should accept argument', () => {
-        var statement = parseAndGetExpressionInGenerator('yield 1');
+        let statement = parseAndGetExpressionInGenerator('yield 1');
         expect(statement.type).to.equal('YieldExpression');
         expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
     it('should accept function call', () => {
-        var statement = parseAndGetExpressionInGenerator('yield a()');
+        let statement = parseAndGetExpressionInGenerator('yield a()');
         expect(statement.type).to.equal('YieldExpression');
         expect(statement.argument.type).to.equal('CallExpression');
         expect(statement.argument.callee.type).to.equal('Identifier');
@@ -23,7 +22,7 @@ describe('YieldExpression', () => {
     });
 
     it('should accept delegate (*)', () => {
-        var statement = parseAndGetExpressionInGenerator('yield* a()');
+        let statement = parseAndGetExpressionInGenerator('yield* a()');
         expect(statement.type).to.equal('YieldExpression');
         expect(statement.delegate).to.equal(true);
         expect(statement.argument.type).to.equal('CallExpression');
@@ -32,21 +31,21 @@ describe('YieldExpression', () => {
     });
 
     it('should accept argument in parentheses', () => {
-        var statement = parseAndGetExpressionInGenerator('yield ( 1 )');
+        let statement = parseAndGetExpressionInGenerator('yield ( 1 )');
         expect(statement.type).to.equal('YieldExpression');
         expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
     it('should work without semicolon', () => {
-        var statement = parseAndGetExpressionInGenerator('yield 1');
+        let statement = parseAndGetExpressionInGenerator('yield 1');
         expect(statement.type).to.equal('YieldExpression');
         expect(statement.argument.type).to.equal('NumericLiteral');
         expect(statement.argument.value).to.equal(1);
     });
 
     it('should work without semicolon and argument', () => {
-        var statement = parseAndGetExpressionInGenerator('yield');
+        let statement = parseAndGetExpressionInGenerator('yield');
         expect(statement.type).to.equal('YieldExpression');
     });
 });

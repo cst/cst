@@ -1,5 +1,5 @@
 import {
-    parseAndGetObjectProperty
+    parseAndGetObjectProperty,
 } from '../../../utils';
 
 import {expect} from 'chai';

@@ -4,7 +4,7 @@ import {parseAndGetProgram} from '../../../utils';
 
 function parse(codeLines) {
     return parseAndGetProgram([].concat(codeLines).join('\n'), {
-        plugins: [new ScopesPlugin()]
+        plugins: [new ScopesPlugin()],
     });
 }
 

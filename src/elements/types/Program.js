@@ -101,7 +101,7 @@ export default class Program extends Statement {
     }
 
     _emit(eventName: string, data: any) {
-        var handlers = this._eventListeners[eventName];
+        let handlers = this._eventListeners[eventName];
         if (handlers) {
             for (let i = 0; i < handlers.length; i++) {
                 handlers[i](data);

@@ -7,7 +7,7 @@ import {parseAndGetProgram, parseAndGetStatement} from '../../../utils';
 
 function parse(codeLines) {
     return parseAndGetProgram([].concat(codeLines).join('\n'), {
-        plugins: [new ScopesPlugin()]
+        plugins: [new ScopesPlugin()],
     });
 }
 
@@ -109,7 +109,7 @@ describe('ScopesPlugin', () => {
             program.selectNodesByType('ObjectProperty')[0].appendChild(
                 new Fragment([
                     new Token('Punctuator', ':'),
-                    new Identifier([new Token('Identifier', 'b')])
+                    new Identifier([new Token('Identifier', 'b')]),
                 ])
             );
             expect(scope.getVariables().length).to.equal(1);

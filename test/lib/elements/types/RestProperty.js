@@ -1,5 +1,5 @@
 import {
-    parseAndGetStatement
+    parseAndGetStatement,
 } from '../../../utils';
 import {expect} from 'chai';
 

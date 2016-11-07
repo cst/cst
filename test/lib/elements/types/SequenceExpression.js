@@ -7,21 +7,21 @@ describe('SequenceExpression', () => {
     });
 
     it('should accept two items', () => {
-        var expression = parseAndGetExpression('1 , 2');
+        let expression = parseAndGetExpression('1 , 2');
         expect(expression.type).to.equal('SequenceExpression');
         expect(expression.expressions[0].value).to.equal(1);
         expect(expression.expressions[1].value).to.equal(2);
     });
 
     it('should accept parentheses', () => {
-        var expression = parseAndGetExpression('( 1 ) , ( 2 )');
+        let expression = parseAndGetExpression('( 1 ) , ( 2 )');
         expect(expression.type).to.equal('SequenceExpression');
         expect(expression.expressions[0].value).to.equal(1);
         expect(expression.expressions[1].value).to.equal(2);
     });
 
     it('should accept more items', () => {
-        var expression = parseAndGetExpression('1 , 2 , x , y');
+        let expression = parseAndGetExpression('1 , 2 , x , y');
         expect(expression.type).to.equal('SequenceExpression');
         expect(expression.expressions[0].value).to.equal(1);
         expect(expression.expressions[1].value).to.equal(2);
