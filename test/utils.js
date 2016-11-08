@@ -116,6 +116,12 @@ export function parseAndGetStatementInVariableDeclarator(code: string): Object {
     return program.body[0].declarations[0];
 }
 
+export function parseAndGetStatementInVariableDeclaration(code: string): Object {
+    const parser = new Parser();
+    const program = parser.parse(`var ${code};`);
+    return program.body[0];
+}
+
 export function assertChildren(element: Element, children: Array<Element>): void {
     let childElements = element.childElements;
     for (let i = 0; i < childElements.length; i++) {

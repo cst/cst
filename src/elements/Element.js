@@ -408,7 +408,7 @@ export default class Element {
         if (newElements) {
             let ownerProgram = this.getOwnerProgram();
             if (ownerProgram) {
-                ownerProgram._addElementsToProgram(newElements);
+                ownerProgram._prependElementsToProgram(newElements);
             }
         }
     }

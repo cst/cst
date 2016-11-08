@@ -55,6 +55,28 @@ export default class Traverse {
         }
     }
 
+    prependElements(elements: Array<Element>): void {
+        let nodeIndex = this._nodeIndex;
+        let tokenIndex = this._tokenIndex;
+
+        for (let i = 0; i < elements.length; i++) {
+            prependElementTree(elements[i]);
+        }
+
+        function prependElementTree(element) {
+            if (element.isToken) {
+                tokenIndex.prependElement(element);
+            } else {
+                nodeIndex.prependElement(element);
+                let child = element.firstChild;
+                while (child) {
+                    prependElementTree(child);
+                    child = child.nextSibling;
+                }
+            }
+        }
+    }
+
     removeElements(elements: Array<Element>): void {
         let nodeIndex = this._nodeIndex;
         let tokenIndex = this._tokenIndex;
@@ -100,6 +122,15 @@ class ElementIndexByType {
             items = this._index[element.type] = [];
         }
         items[items.length] = element;
+    }
+
+    prependElement(element: Element): void {
+        let items = this._index[element.type];
+        if (!items) {
+            items = this._index[element.type] = [];
+        }
+
+        items.unshift(element);
     }
 
     removeElement(element: Element): void {
