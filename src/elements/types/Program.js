@@ -79,6 +79,11 @@ export default class Program extends Statement {
         this._emit('elements-add', elements);
     }
 
+    _prependElementsToProgram(elements: Array<Element>) {
+        this._traverse.prependElements(elements);
+        this._emit('elements-add', elements);
+    }
+
     _removeElementsFromProgram(elements: Array<Element>) {
         this._traverse.removeElements(elements);
         this._emit('elements-remove', elements);

@@ -1,7 +1,14 @@
+import {expect} from 'chai';
+
 import Element from '../../../src/elements/Element';
 import Fragment from '../../../src/elements/Fragment';
 import Token from '../../../src/elements/Token';
-import {assertChildren, validateStructure} from '../../utils';
+import {
+    assertChildren,
+    validateStructure,
+    parseAndGetProgram,
+    parseAndGetStatementInVariableDeclaration
+} from '../../utils';
 
 describe('Element::prependChild', () => {
     it('should assign tokens to empty element', () => {
@@ -82,6 +89,18 @@ describe('Element::prependChild', () => {
         assertChildren(element1, [token1]);
         assertChildren(element2, [token2]);
         validateStructure(parent);
+    });
+
+    it('should prepend child in correct index order', () => {
+        let program = parseAndGetProgram('var b = 2');
+        let decl = parseAndGetStatementInVariableDeclaration('a = 1');
+
+        decl.parentElement.removeChild(decl);
+        program.prependChild(decl);
+
+        let source = program.selectNodesByType('VariableDeclaration')[0].getSourceCode();
+
+        expect(source).to.equal('var a = 1;');
     });
 });
 
