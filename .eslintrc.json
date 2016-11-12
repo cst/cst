@@ -34,6 +34,8 @@
     "valid-jsdoc": 0,
 
     "prefer-spread": 1,
-    "prefer-rest-params": 1
+    "prefer-rest-params": 1,
+    "guard-for-in": 1,
+    "no-invalid-this": 1
   }
 }
