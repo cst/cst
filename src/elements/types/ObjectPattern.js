@@ -8,7 +8,7 @@ export default class ObjectPattern extends Node {
     }
 
     _acceptChildren(children) {
-        var properties = [];
+        let properties = [];
         children.passToken('Punctuator', '{');
         children.skipNonCode();
         while (!children.isToken('Punctuator', '}')) {

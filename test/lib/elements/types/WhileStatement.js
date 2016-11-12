@@ -7,7 +7,7 @@ describe('WhileStatement', () => {
     });
 
     it('should accept single statement', () => {
-        var statement = parseAndGetStatement('while (true) x;');
+        let statement = parseAndGetStatement('while (true) x;');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -16,7 +16,7 @@ describe('WhileStatement', () => {
     });
 
     it('should accept expression in parentheses', () => {
-        var statement = parseAndGetStatement('while ((true)) x;');
+        let statement = parseAndGetStatement('while ((true)) x;');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -25,7 +25,7 @@ describe('WhileStatement', () => {
     });
 
     it('should accept whitespaces', () => {
-        var statement = parseAndGetStatement('while ( true ) x ;');
+        let statement = parseAndGetStatement('while ( true ) x ;');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -34,7 +34,7 @@ describe('WhileStatement', () => {
     });
 
     it('should accept blocks', () => {
-        var statement = parseAndGetStatement('while ( true ) { x; }');
+        let statement = parseAndGetStatement('while ( true ) { x; }');
         expect(statement.test.type).to.equal('BooleanLiteral');
         expect(statement.test.value).to.equal(true);
         expect(statement.body.type).to.equal('BlockStatement');

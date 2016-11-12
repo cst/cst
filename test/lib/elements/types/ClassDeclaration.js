@@ -7,7 +7,7 @@ describe('ClassDeclaration', () => {
     });
 
     it('should accept superClass', () => {
-        var statement = parseAndGetStatement('class X extends Y {}');
+        let statement = parseAndGetStatement('class X extends Y {}');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass.type).to.equal('Identifier');
@@ -17,7 +17,7 @@ describe('ClassDeclaration', () => {
     });
 
     it('should accept expession for superClass', () => {
-        var statement = parseAndGetStatement('class X extends z.Y {}');
+        let statement = parseAndGetStatement('class X extends z.Y {}');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass.type).to.equal('MemberExpression');
@@ -30,7 +30,7 @@ describe('ClassDeclaration', () => {
     });
 
     it('should accept members', () => {
-        var statement = parseAndGetStatement('class X { method() {} }');
+        let statement = parseAndGetStatement('class X { method() {} }');
         expect(statement.id.type).to.equal('Identifier');
         expect(statement.id.name).to.equal('X');
         expect(statement.superClass).to.equal(null);

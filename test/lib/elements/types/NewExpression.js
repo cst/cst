@@ -8,7 +8,7 @@ describe('NewExpression', () => {
     });
 
     it('should allow without argument list', () => {
-        var expression = parseAndGetExpression('new x');
+        let expression = parseAndGetExpression('new x');
         expect(expression.callee.type).to.equal('Identifier');
         expect(expression.callee.name).to.equal('x');
         expect(expression.arguments.length).to.equal(0);

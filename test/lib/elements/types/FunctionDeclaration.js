@@ -7,7 +7,7 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept empty params', () => {
-        var expression = parseAndGetStatement('function func(){}');
+        let expression = parseAndGetStatement('function func(){}');
         expect(expression.params.length).to.equal(0);
         expect(expression.body.type).to.equal('BlockStatement');
         expect(expression.body.body.length).to.equal(0);
@@ -16,7 +16,7 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept statement', () => {
-        var expression = parseAndGetStatement('function func(){x;}');
+        let expression = parseAndGetStatement('function func(){x;}');
         expect(expression.params.length).to.equal(0);
         expect(expression.body.type).to.equal('BlockStatement');
         expect(expression.body.body.length).to.equal(1);
@@ -25,7 +25,7 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept single argument', () => {
-        var expression = parseAndGetStatement('function func ( x ) { }');
+        let expression = parseAndGetStatement('function func ( x ) { }');
         expect(expression.params.length).to.equal(1);
         expect(expression.params[0].type).to.equal('Identifier');
         expect(expression.params[0].name).to.equal('x');
@@ -33,7 +33,7 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept multiple arguments', () => {
-        var expression = parseAndGetStatement('function func ( x , y ) { }');
+        let expression = parseAndGetStatement('function func ( x , y ) { }');
         expect(expression.params.length).to.equal(2);
         expect(expression.params[0].type).to.equal('Identifier');
         expect(expression.params[0].name).to.equal('x');
@@ -43,7 +43,7 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept multiple arguments and a trailing comma', () => {
-        var expression = parseAndGetStatement('function func ( x , y , ) { }');
+        let expression = parseAndGetStatement('function func ( x , y , ) { }');
         expect(expression.params.length).to.equal(2);
         expect(expression.params[0].type).to.equal('Identifier');
         expect(expression.params[0].name).to.equal('x');
@@ -53,28 +53,28 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should accept array pattern', () => {
-        var expression = parseAndGetStatement('function func ( [ x ] ) { ; }');
+        let expression = parseAndGetStatement('function func ( [ x ] ) { ; }');
         expect(expression.params.length).to.equal(1);
         expect(expression.params[0].type).to.equal('ArrayPattern');
         expect(expression.generator).to.equal(false);
     });
 
     it('should accept object pattern', () => {
-        var expression = parseAndGetStatement('function func ( { x } ) { ; }');
+        let expression = parseAndGetStatement('function func ( { x } ) { ; }');
         expect(expression.params.length).to.equal(1);
         expect(expression.params[0].type).to.equal('ObjectPattern');
         expect(expression.generator).to.equal(false);
     });
 
     it('should accept object pattern with object pattern', () => {
-        var expression = parseAndGetStatement('function func ( { x = 1 } ) { ; }');
+        let expression = parseAndGetStatement('function func ( { x = 1 } ) { ; }');
         expect(expression.params.length).to.equal(1);
         expect(expression.params[0].type).to.equal('ObjectPattern');
         expect(expression.params[0].properties[0].value.type).to.equal('AssignmentPattern');
     });
 
     it('should accept object pattern with assignment pattern', () => {
-        var expression = parseAndGetStatement('function func ( { x = 1 } = 1 ) { ; }');
+        let expression = parseAndGetStatement('function func ( { x = 1 } = 1 ) { ; }');
         expect(expression.params.length).to.equal(1);
         expect(expression.params[0].type).to.equal('AssignmentPattern');
         expect(expression.params[0].left.type).to.equal('ObjectPattern');
@@ -83,12 +83,12 @@ describe('FunctionDeclaration', () => {
     });
 
     it('should support generator', () => {
-        var expression = parseAndGetStatement('function * func ( x ) { ; }');
+        let expression = parseAndGetStatement('function * func ( x ) { ; }');
         expect(expression.generator).to.equal(true);
     });
 
     it('should support async', () => {
-        var expression = parseAndGetStatement('async function func ( x ) { ; }');
+        let expression = parseAndGetStatement('async function func ( x ) { ; }');
         expect(expression.type).to.equal('FunctionDeclaration');
         expect(expression.async).to.equal(true);
     });

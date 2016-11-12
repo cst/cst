@@ -8,7 +8,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a VariableDeclaration', () => {
-        var statement = parseAndGetStatement('export var foo = 1;');
+        let statement = parseAndGetStatement('export var foo = 1;');
         expect(statement.declaration.type).to.equal('VariableDeclaration');
         expect(statement.declaration.kind).to.equal('var');
 
@@ -22,17 +22,17 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a FunctionDeclaration', () => {
-        var statement = parseAndGetStatement('export function f() {};');
+        let statement = parseAndGetStatement('export function f() {};');
         expect(statement.declaration.type).to.equal('FunctionDeclaration');
     });
 
     it('should accept a ClassDeclaration', () => {
-        var statement = parseAndGetStatement('export class C {};');
+        let statement = parseAndGetStatement('export class C {};');
         expect(statement.declaration.type).to.equal('ClassDeclaration');
     });
 
     it('should accept a ModuleSpecifier without a new name', () => {
-        var statement = parseAndGetStatement('export {x};');
+        let statement = parseAndGetStatement('export {x};');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
@@ -43,7 +43,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a ModuleSpecifier with a new name', () => {
-        var statement = parseAndGetStatement('export {x as y};');
+        let statement = parseAndGetStatement('export {x as y};');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
@@ -54,7 +54,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a ModuleSpecifier without a new name from another module', () => {
-        var statement = parseAndGetStatement('export {x} from "m";');
+        let statement = parseAndGetStatement('export {x} from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
@@ -67,7 +67,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept ModuleSpecifiers with a new name from another module', () => {
-        var statement = parseAndGetStatement('export {x as y, a as b} from "m";');
+        let statement = parseAndGetStatement('export {x as y, a as b} from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(2);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
@@ -85,7 +85,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a default ModuleSpecifier with a new name from another module', () => {
-        var statement = parseAndGetStatement('export {default as y} from "m";');
+        let statement = parseAndGetStatement('export {default as y} from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportSpecifier');
@@ -98,7 +98,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a ExportDefaultSpecifier from another module - exportExtensions', () => {
-        var statement = parseAndGetStatement('export x from "m";');
+        let statement = parseAndGetStatement('export x from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportDefaultSpecifier');
@@ -109,7 +109,7 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should accept a ExportNamespaceSpecifier from another module - exportExtensions', () => {
-        var statement = parseAndGetStatement('export * as x from "m";');
+        let statement = parseAndGetStatement('export * as x from "m";');
         expect(statement.type).to.equal('ExportNamedDeclaration');
         expect(statement.specifiers.length).to.equal(1);
         expect(statement.specifiers[0].type).to.equal('ExportNamespaceSpecifier');
@@ -120,12 +120,12 @@ describe('ExportNamedDeclaration', () => {
     });
 
     it('should not throw if there is no semicolon at the end', () => {
-        var statement = parseAndGetStatement('export { foo as default }');
+        let statement = parseAndGetStatement('export { foo as default }');
         expect(statement.type).to.equal('ExportNamedDeclaration');
     });
 
     it('should not accept trailing whitespace', () => {
-        var statement = parseAndGetStatement('export var a;');
+        let statement = parseAndGetStatement('export var a;');
         expect(() => {
             statement.appendChild(new Token('Whitespace', '   '));
         }).to.throw('Expected end of node list but "Whitespace" found');

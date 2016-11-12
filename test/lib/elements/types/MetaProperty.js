@@ -7,7 +7,7 @@ describe('MetaProperty', () => {
     });
 
     it('should accept new.target', () => {
-        var expression = parseAndGetExpression('new.target');
+        let expression = parseAndGetExpression('new.target');
         expect(expression.meta.type).to.equal('Identifier');
         expect(expression.meta.name).to.equal('new');
         expect(expression.property.type).to.equal('Identifier');
@@ -15,7 +15,7 @@ describe('MetaProperty', () => {
     });
 
     it('should accept new.target with spaces', () => {
-        var expression = parseAndGetExpression('new . /* asdf */ target');
+        let expression = parseAndGetExpression('new . /* asdf */ target');
         expect(expression.meta.type).to.equal('Identifier');
         expect(expression.meta.name).to.equal('new');
         expect(expression.property.type).to.equal('Identifier');

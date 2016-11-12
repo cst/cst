@@ -3,7 +3,7 @@ import getFunctionParams from './utils/getFunctionParams';
 
 const getterAndSetter = {
     get: true,
-    set: true
+    set: true,
 };
 
 export default class ObjectMethod extends Node {

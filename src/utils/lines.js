@@ -8,15 +8,15 @@ export function getLines(input: string): string[] {
 }
 
 export function getLineInfo(code) {
-    var lines = [];
+    let lines = [];
     lineBreakRegexGlobal.lastIndex = 0;
-    var lastOffset = 0;
-    var match;
+    let lastOffset = 0;
+    let match;
     while ((match = lineBreakRegexGlobal.exec(code)) !== null) {
         lines.push({
             offset: lastOffset,
             text: code.substring(lastOffset, match.index),
-            lineBreak: match[0]
+            lineBreak: match[0],
         });
         lastOffset = match.index + match[0].length;
     }

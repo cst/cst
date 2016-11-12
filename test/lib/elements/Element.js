@@ -5,12 +5,10 @@ import {expect} from 'chai';
 describe('Element', () => {
     describe('Traversing', () => {
         let program;
-        let firstVar;
         let secondVar;
 
         beforeEach(() => {
             program = parseAndGetProgram('var\nfirst = 1; var second = 2;');
-            firstVar = program.selectTokensByType('Keyword')[0];
             secondVar = program.selectTokensByType('Keyword')[1];
         });
 
@@ -30,7 +28,7 @@ describe('Element', () => {
 
         it('should return removed child', () => {
             let program = parseAndGetProgram('var first = 1; var second = 2;');
-            var child = program.firstChild;
+            let child = program.firstChild;
 
             expect(program.removeChild(program.firstChild)).to.equal(child);
         });
@@ -140,22 +138,22 @@ describe('Element', () => {
 
     describe('range property', () => {
         it('should return range property for VariableDeclarator', () => {
-            var program = parseAndGetProgram('var answer = 1;');
-            var node = program.selectNodesByType('VariableDeclarator')[0];
+            let program = parseAndGetProgram('var answer = 1;');
+            let node = program.selectNodesByType('VariableDeclarator')[0];
 
             expect(node.getRange()).to.include(4, 10);
         });
 
         it('should return range property for VariableDeclaration', () => {
-            var program = parseAndGetProgram('var answer = 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('var answer = 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getRange()).to.include(0, 15);
         });
 
         it('should return range property for second VariableDeclarators', () => {
-            var program = parseAndGetProgram('var first = 1; var second = 2;');
-            var node = program.selectNodesByType('VariableDeclarator')[1];
+            let program = parseAndGetProgram('var first = 1; var second = 2;');
+            let node = program.selectNodesByType('VariableDeclarator')[1];
 
             expect(node.getRange()).to.include(19, 29);
         });
@@ -163,150 +161,150 @@ describe('Element', () => {
 
     describe('loc property', () => {
         it('should return loc property for oneliner', () => {
-            var program = parseAndGetProgram('var answer = 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('var answer = 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 0,
                 },
                 'end': {
                     'line': 1,
-                    'column': 15
-                }
+                    'column': 15,
+                },
             });
         });
 
         it('should return loc property for oneliner first node with additional space', () => {
-            var program = parseAndGetProgram(' var answer = 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram(' var answer = 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 1
+                    'column': 1,
                 },
                 'end': {
                     'line': 1,
-                    'column': 16
-                }
+                    'column': 16,
+                },
             });
         });
 
         it('should return loc property for oneliner first node with space and newline', () => {
-            var program = parseAndGetProgram('\n var answer = 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('\n var answer = 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 2,
-                    'column': 1
+                    'column': 1,
                 },
                 'end': {
                     'line': 2,
-                    'column': 16
-                }
+                    'column': 16,
+                },
             });
         });
 
         it('should return loc property for multiple line breaks', () => {
-            var program = parseAndGetProgram('\n\n\nvar answer = 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('\n\n\nvar answer = 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
-                    'column': 0
+                    'column': 0,
                 },
                 'end': {
                     'line': 4,
-                    'column': 15
-                }
+                    'column': 15,
+                },
             });
         });
 
         it('should return loc property with tricky end', () => {
-            var program = parseAndGetProgram('\n\n\n var answer = \n1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('\n\n\n var answer = \n1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
-                    'column': 1
+                    'column': 1,
                 },
                 'end': {
                     'line': 5,
-                    'column': 2
-                }
+                    'column': 2,
+                },
             });
         });
 
         it('should return loc property with space tricky end', () => {
-            var program = parseAndGetProgram('\n\n\n var answer = \n 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('\n\n\n var answer = \n 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 4,
-                    'column': 1
+                    'column': 1,
                 },
                 'end': {
                     'line': 5,
-                    'column': 3
-                }
+                    'column': 3,
+                },
             });
         });
 
         it('should return loc property with spaces tricky end', () => {
-            var program = parseAndGetProgram('var answer = \n\n\n  1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('var answer = \n\n\n  1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 0,
                 },
                 'end': {
                     'line': 4,
-                    'column': 4
-                }
+                    'column': 4,
+                },
             });
         });
 
         it('should return loc property with spaces & symbol tricky end', () => {
-            var program = parseAndGetProgram('var answer = \n\n2\n 1;');
-            var node = program.selectNodesByType('VariableDeclaration')[0];
+            let program = parseAndGetProgram('var answer = \n\n2\n 1;');
+            let node = program.selectNodesByType('VariableDeclaration')[0];
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 0,
                 },
                 'end': {
                     'line': 3,
-                    'column': 1
-                }
+                    'column': 1,
+                },
             });
         });
 
         it('should return loc property for apple pragmas', () => {
-            var program = parseAndGetProgram('#!/usr/bin/env node', {
+            let program = parseAndGetProgram('#!/usr/bin/env node', {
                 languageExtensions: {
-                    appleInstrumentationDirectives: true
-                }
+                    appleInstrumentationDirectives: true,
+                },
             });
-            var node = program.getFirstToken();
+            let node = program.getFirstToken();
 
             expect(node.getLoc()).to.deep.equal({
                 'start': {
                     'line': 1,
-                    'column': 0
+                    'column': 0,
                 },
                 'end': {
                     'line': 1,
-                    'column': 19
-                }
+                    'column': 19,
+                },
             });
         });
     });

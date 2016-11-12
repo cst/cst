@@ -9,7 +9,7 @@ describe('TaggedTemplateExpression', () => {
     });
 
     it('should accept a tagged template with only a template element', () => {
-        var expression = parseAndGetExpression('a`1`');
+        let expression = parseAndGetExpression('a`1`');
         expect(expression.type).to.equal('TaggedTemplateExpression');
         expect(expression.tag.type).to.equal('Identifier');
         expect(expression.tag.name).to.equal('a');
@@ -23,7 +23,7 @@ describe('TaggedTemplateExpression', () => {
     });
 
     it('should accept a tagged template with only a template element with whitespace', () => {
-        var expression = parseAndGetExpression('a `1`');
+        let expression = parseAndGetExpression('a `1`');
         expect(expression.type).to.equal('TaggedTemplateExpression');
         expect(expression.tag.type).to.equal('Identifier');
         expect(expression.tag.name).to.equal('a');
@@ -37,7 +37,7 @@ describe('TaggedTemplateExpression', () => {
     });
 
     it('should accept a tagged template with multiple expressions', () => {
-        var expression = parseAndGetExpression('a`a${b}c${d}e`');
+        let expression = parseAndGetExpression('a`a${b}c${d}e`');
         expect(expression.type).to.equal('TaggedTemplateExpression');
         expect(expression.tag.type).to.equal('Identifier');
         expect(expression.tag.name).to.equal('a');

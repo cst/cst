@@ -1,5 +1,4 @@
 import Element from '../../../src/elements/Element';
-import Fragment from '../../../src/elements/Fragment';
 import Token from '../../../src/elements/Token';
 import {assertChildren, validateStructure} from '../../utils';
 
@@ -64,4 +63,3 @@ describe('Element::replaceChildren', () => {
         validateStructure(parent);
     });
 });
-

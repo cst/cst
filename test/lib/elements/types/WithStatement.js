@@ -7,7 +7,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept single statement', () => {
-        var statement = parseAndGetStatement('with (true) x;', {strictMode: false});
+        let statement = parseAndGetStatement('with (true) x;', {strictMode: false});
         expect(statement.object.type).to.equal('BooleanLiteral');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -16,7 +16,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept expression in parentheses', () => {
-        var statement = parseAndGetStatement('with ((true)) x;', {strictMode: false});
+        let statement = parseAndGetStatement('with ((true)) x;', {strictMode: false});
         expect(statement.object.type).to.equal('BooleanLiteral');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -25,7 +25,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept whitespaces', () => {
-        var statement = parseAndGetStatement('with ( true ) x ;', {strictMode: false});
+        let statement = parseAndGetStatement('with ( true ) x ;', {strictMode: false});
         expect(statement.object.type).to.equal('BooleanLiteral');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('ExpressionStatement');
@@ -34,7 +34,7 @@ describe('WithStatement', () => {
     });
 
     it('should accept blocks', () => {
-        var statement = parseAndGetStatement('with ( true ) { x; }', {strictMode: false});
+        let statement = parseAndGetStatement('with ( true ) { x; }', {strictMode: false});
         expect(statement.object.type).to.equal('BooleanLiteral');
         expect(statement.object.value).to.equal(true);
         expect(statement.body.type).to.equal('BlockStatement');

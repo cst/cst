@@ -2,7 +2,7 @@ import Expression from '../Expression';
 
 const updateOperators = {
     '++': true,
-    '--': true
+    '--': true,
 };
 
 export default class UpdateExpression extends Expression {

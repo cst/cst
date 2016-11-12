@@ -7,7 +7,7 @@ describe('MemberExpression', () => {
     });
 
     it('should support non-computed', () => {
-        var expression = parseAndGetExpression('x.y');
+        let expression = parseAndGetExpression('x.y');
         expect(expression.object.type).to.equal('Identifier');
         expect(expression.object.name).to.equal('x');
         expect(expression.property.type).to.equal('Identifier');
@@ -16,7 +16,7 @@ describe('MemberExpression', () => {
     });
 
     it('should accept spaces for non-computed', () => {
-        var expression = parseAndGetExpression('x . y');
+        let expression = parseAndGetExpression('x . y');
         expect(expression.object.type).to.equal('Identifier');
         expect(expression.object.name).to.equal('x');
         expect(expression.property.type).to.equal('Identifier');
@@ -25,7 +25,7 @@ describe('MemberExpression', () => {
     });
 
     it('should support computed', () => {
-        var expression = parseAndGetExpression('x[y]');
+        let expression = parseAndGetExpression('x[y]');
         expect(expression.object.type).to.equal('Identifier');
         expect(expression.object.name).to.equal('x');
         expect(expression.property.type).to.equal('Identifier');
@@ -34,7 +34,7 @@ describe('MemberExpression', () => {
     });
 
     it('should accept spaces for computed', () => {
-        var expression = parseAndGetExpression('x [ y ]');
+        let expression = parseAndGetExpression('x [ y ]');
         expect(expression.object.type).to.equal('Identifier');
         expect(expression.object.name).to.equal('x');
         expect(expression.property.type).to.equal('Identifier');
@@ -43,7 +43,7 @@ describe('MemberExpression', () => {
     });
 
     it('should accept parentheses for computed', () => {
-        var expression = parseAndGetExpression('x [ ( y ) ]');
+        let expression = parseAndGetExpression('x [ ( y ) ]');
         expect(expression.object.type).to.equal('Identifier');
         expect(expression.object.name).to.equal('x');
         expect(expression.property.type).to.equal('Identifier');

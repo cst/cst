@@ -8,7 +8,7 @@ describe('ConditionalExpression', () => {
     });
 
     it('should accept expressions', () => {
-        var expression = parseAndGetExpression('x ? y : z');
+        let expression = parseAndGetExpression('x ? y : z');
         expect(expression.test.type).to.equal('Identifier');
         expect(expression.test.name).to.equal('x');
         expect(expression.consequent.type).to.equal('Identifier');
@@ -18,7 +18,7 @@ describe('ConditionalExpression', () => {
     });
 
     it('should accept parentheses', () => {
-        var expression = parseAndGetExpression('( x ) ? ( y ) : ( z )');
+        let expression = parseAndGetExpression('( x ) ? ( y ) : ( z )');
         expect(expression.test.type).to.equal('Identifier');
         expect(expression.test.name).to.equal('x');
         expect(expression.consequent.type).to.equal('Identifier');
@@ -28,7 +28,7 @@ describe('ConditionalExpression', () => {
     });
 
     it('should not accept trailing whitespace', () => {
-        var expression = parseAndGetExpression('x ? y : z');
+        let expression = parseAndGetExpression('x ? y : z');
         expect(() => {
             expression.appendChild(new Token('Whitespace', '   '));
         }).to.throw('Expected end of node list but "Whitespace" found');
