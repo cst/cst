@@ -30,7 +30,10 @@
     ],
     "no-constant-condition": 0,
     "no-unused-vars": 1,
-    "require-jsdoc": 1,
-    "valid-jsdoc": 1
+    "require-jsdoc": 0,
+    "valid-jsdoc": 0,
+
+    "prefer-spread": 1,
+    "prefer-rest-params": 1
   }
 }

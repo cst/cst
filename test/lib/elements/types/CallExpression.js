@@ -10,7 +10,7 @@ describe('CallExpression', () => {
     it('should allow super', () => {
         const classWithSuper =
             'class Foo extends String { constructor() { super ( ) } }';
-        var expression = parseAndGetExpression(classWithSuper)
+        let expression = parseAndGetExpression(classWithSuper)
             .body
             .body[0]
             .body
