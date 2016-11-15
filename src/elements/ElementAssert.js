@@ -211,7 +211,7 @@ export default class ElementAssert {
      * @returns {Element|null}
      */
     passToken(tokenType: string, tokenValue?: string | Object): ?Element {
-        this.assertToken.apply(this, arguments);
+        this.assertToken(...arguments);
         let token = this.currentElement;
         this.moveNext();
         return token;
@@ -225,7 +225,7 @@ export default class ElementAssert {
      * @returns {Element|null}
      */
     passNode(nodeType: string): ?Element {
-        this.assertNode.apply(this, arguments);
+        this.assertNode(...arguments);
         let node = this.currentElement;
         this.moveNext();
         return node;

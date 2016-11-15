@@ -253,11 +253,11 @@ export default class Scope {
     }
 
     getVariables(): Variable[] {
-        return [].concat.apply([], toArray(this._variables.values()));
+        return [].concat(...toArray(this._variables.values()));
     }
 
     getReferences(): Reference[] {
-        return [].concat.apply([], toArray(this._references.values()));
+        return [].concat(...toArray(this._references.values()));
     }
 
     destroy() {

@@ -15,27 +15,24 @@
     }
   },
   "rules": {
-    "flowtype/define-flow-type": 1,
+    "flowtype/define-flow-type": "error",
     "indent": [
-      2,
+      "error",
       4,
       {
         "SwitchCase": 1
       }
     ],
     "max-len": [
-      2,
+      "error",
       120,
       {"ignoreComments": true}
     ],
-    "no-constant-condition": 0,
-    "no-unused-vars": 1,
-    "require-jsdoc": 0,
-    "valid-jsdoc": 0,
+    "require-jsdoc": "off",
+    "valid-jsdoc": "off",
+    "guard-for-in": "off",
+    "no-invalid-this": "off",
 
-    "prefer-spread": 1,
-    "prefer-rest-params": 1,
-    "guard-for-in": 1,
-    "no-invalid-this": 1
+    "prefer-rest-params": "off"
   }
 }

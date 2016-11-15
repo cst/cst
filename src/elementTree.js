@@ -114,8 +114,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
                 children[children.length] = new EmptyNodeClass([]);
                 childElement = childElements[++childElementIndex];
             } else {
-                let nextChild = childElements[childElementIndex + 1];
-
                 children[children.length] = buildElementTreeItem(childElement, state);
                 childElement = childElements[++childElementIndex];
 
