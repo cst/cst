@@ -1,0 +1,550 @@
+{
+    "experimental": {
+        "uncategorised": {
+            "33": true,
+            "34": true,
+            "35": "skip",
+            "36": "skip",
+            "37": "skip",
+            "38": "skip",
+            "39": "skip",
+            "40": "skip",
+            "43": true,
+            "44": true,
+            "45": true,
+            "46": true,
+            "47": true,
+            "48": true,
+            "49": true,
+            "50": true,
+            "51": true,
+            "62": true
+        },
+        "async generators": {
+            "for await": true,
+            "object method": true
+        },
+        "class constructor call": {
+            "plain": true
+        },
+        "class properties": {
+            "computed": true
+        },
+        "decorators": {
+            "class method parameter": true,
+            "export default declaration function declaration parameter": true,
+            "function declaration parameter": true,
+            "function expression parameter": true,
+            "object method parameter": true
+        },
+        "dynamic import": {
+            "inside function": true,
+            "no plugin": true,
+            "parses module": true,
+            "parses strict": true,
+            "return value": true,
+            "top level": true,
+            "variable arguments": true
+        },
+        "export extensions": {
+            "default and ns": true
+        },
+        "function sent": {
+            "inside generator": true
+        },
+        "no async generators": {
+            "error without plugin": true
+        }
+    },
+    "core": {
+        "uncategorised": {
+            "36": true,
+            "43": true,
+            "82": true,
+            "83": true,
+            "84": true,
+            "91": true,
+            "92": true,
+            "93": true,
+            "94": true,
+            "95": true,
+            "96": true,
+            "98": true,
+            "101": true,
+            "134": true,
+            "135": true,
+            "136": true,
+            "137": true,
+            "140": true,
+            "141": true,
+            "142": true,
+            "143": true,
+            "149": true,
+            "200": true,
+            "201": true,
+            "219": true,
+            "221": true,
+            "222": true,
+            "263": true,
+            "264": true,
+            "265": true,
+            "266": true,
+            "267": true,
+            "277": true,
+            "278": true,
+            "285": true,
+            "286": true,
+            "287": true,
+            "288": true,
+            "289": true,
+            "296": true,
+            "297": true,
+            "327": true,
+            "328": true,
+            "342": true,
+            "528": true,
+            "534": true,
+            "538": true,
+            "543": true,
+            "546": true,
+            "549": true
+        }
+    },
+    "es2015": {
+        "uncategorised": {
+            "3": true,
+            "40": true,
+            "41": true,
+            "42": true,
+            "43": true,
+            "44": true,
+            "45": true,
+            "124": true,
+            "166": true,
+            "256": true,
+            "257": true,
+            "259": true,
+            "301": true,
+            "304": true,
+            "356": true,
+            "359": true,
+            "361": true,
+            "363": true,
+            "365": true,
+            "367": true,
+            "368": true,
+            "369": true,
+            "370": true,
+            "371": true,
+            "372": true,
+            "373": true,
+            "374": true,
+            "375": true,
+            "376": true,
+            "377": true,
+            "378": true,
+            "379": true
+        }
+    },
+    "esprima": {
+        "declaration function": {
+            "migrated_0001": true,
+            "migrated_0002": true,
+            "migrated_0003": true,
+            "migrated_0004": true,
+            "migrated_0005": true,
+            "migrated_0009": true,
+            "migrated_0010": true
+        },
+        "directive prolog": {
+            "migrated_0000": true,
+            "migrated_0001": true
+        },
+        "es2015 array pattern": {
+            "patterned catch": true
+        },
+        "es2015 arrow function": {
+            "migrated_0009": true,
+            "migrated_0010": true,
+            "migrated_0011": true,
+            "migrated_0012": true,
+            "migrated_0013": true,
+            "migrated_0014": true
+        },
+        "es2015 class": {
+            "migrated_0019": true
+        },
+        "es2015 destructuring assignment object pattern": {
+            "object pattern assignment": true
+        },
+        "es2015 export declaration": {
+            "invalid export default": true
+        },
+        "es2015 identifier": {
+            "invalid_var_await": true,
+            "module_await": true,
+            "valid_await": true
+        },
+        "es2015 import declaration": {
+            "import default and namespace specifiers": true
+        },
+        "es2015 object pattern": {
+            "properties": true
+        },
+        "es2015 octal integer literal": {
+            "migrated_0000": true
+        },
+        "es2015 spread element": {
+            "new multi spread": true,
+            "new spread": true,
+            "new spread default": true,
+            "new spread first": true,
+            "new spread number": true
+        },
+        "es2015 yield": {
+            "yield array pattern": true,
+            "yield arrow concise body": true,
+            "yield arrow function body": true,
+            "yield arrow parameter default": true,
+            "yield arrow parameter name": true,
+            "yield binding element": true,
+            "yield catch parameter": true,
+            "yield function declaration": true,
+            "yield function declaration formal parameter": true,
+            "yield function expression": true,
+            "yield function expression parameter": true,
+            "yield generator arrow function body": true,
+            "yield generator declaration": true,
+            "yield generator default parameter": true,
+            "yield lexical declaration": true,
+            "yield rest parameter": true,
+            "yield variable declaration": true
+        },
+        "expression assignment": {
+            "migrated_0001": true,
+            "migrated_0002": true
+        },
+        "expression postfix": {
+            "migrated_0002": true,
+            "migrated_0003": true,
+            "migrated_0004": true,
+            "migrated_0005": true
+        },
+        "expression unary": {
+            "migrated_0002": true,
+            "migrated_0003": true,
+            "migrated_0004": true,
+            "migrated_0005": true,
+            "migrated_0011": true
+        },
+        "statement try": {
+            "migrated_0001": true,
+            "migrated_0002": true
+        },
+        "statement variable": {
+            "migrated_0003": true,
+            "migrated_0005": true,
+            "migrated_0006": true
+        },
+        "statement with": {
+            "migrated_0000": true,
+            "migrated_0001": true,
+            "migrated_0002": true
+        }
+    },
+    "flow": {
+        "array types": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true
+        },
+        "bounded polymorphism": {
+            "1": true,
+            "2": true
+        },
+        "call properties": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true
+        },
+        "class properties": {
+            "named static": true
+        },
+        "declare module": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true
+        },
+        "declare statements": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true,
+            "10": true,
+            "11": true,
+            "12": true,
+            "13": true,
+            "14": true,
+            "15": true,
+            "16": true,
+            "17": true
+        },
+        "def site variance": {
+            "1": true
+        },
+        "interfaces module and script": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true
+        },
+        "literal types": {
+            "boolean false": true,
+            "boolean true": true,
+            "null": true,
+            "number binary": true,
+            "number float": true,
+            "number integer": true,
+            "number negative binary": true,
+            "number negative float": true,
+            "number negative octal": true,
+            "number negative octal 2": true,
+            "number octal": true,
+            "number octal 2": true,
+            "string double": true,
+            "string single": true
+        },
+        "optional type": {
+            "1": true,
+            "3": true,
+            "4": true
+        },
+        "qualified generic type": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true
+        },
+        "regression": {
+            "issue 166": true,
+            "issue 2493": true,
+            "issue 92": true
+        },
+        "trailing function commas type": {
+            "1": true
+        },
+        "tuples": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true
+        },
+        "type alias": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true
+        },
+        "type annotations": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true,
+            "10": true,
+            "11": true,
+            "12": true,
+            "13": true,
+            "14": true,
+            "15": true,
+            "16": true,
+            "17": true,
+            "18": true,
+            "19": true,
+            "20": true,
+            "21": true,
+            "22": true,
+            "23": true,
+            "24": true,
+            "25": true,
+            "26": true,
+            "27": true,
+            "28": true,
+            "29": true,
+            "30": true,
+            "31": true,
+            "32": true,
+            "33": true,
+            "34": true,
+            "35": true,
+            "36": true,
+            "37": true,
+            "38": true,
+            "39": true,
+            "40": true,
+            "41": true,
+            "42": true,
+            "43": true,
+            "44": true,
+            "45": true,
+            "46": true,
+            "47": true,
+            "48": true,
+            "49": true,
+            "50": true,
+            "51": true,
+            "52": true,
+            "53": true,
+            "54": true,
+            "55": true,
+            "56": true,
+            "57": true,
+            "58": true,
+            "59": true,
+            "60": true,
+            "61": true,
+            "62": true,
+            "63": true,
+            "64": true,
+            "65": true,
+            "66": true,
+            "67": true,
+            "68": true,
+            "69": true,
+            "70": true,
+            "71": true,
+            "72": true,
+            "73": true,
+            "74": true,
+            "75": true,
+            "76": true,
+            "77": true,
+            "79": true,
+            "80": true,
+            "81": true,
+            "82": true,
+            "83": true,
+            "84": true,
+            "85": true,
+            "86": true,
+            "87": true,
+            "88": true,
+            "89": true,
+            "90": true,
+            "91": true,
+            "92": true,
+            "95": true,
+            "96": true,
+            "97": true,
+            "98": true,
+            "99": true,
+            "100": true,
+            "101": true,
+            "102": true,
+            "103": true,
+            "104": true,
+            "105": true,
+            "107": true,
+            "108": true,
+            "110": true,
+            "111": true,
+            "114": true,
+            "115": true,
+            "118": true,
+            "119": true,
+            "127": true,
+            "128": true,
+            "arrow func return newline": true,
+            "builtin": true,
+            "existential type param": true,
+            "existential type param 2": true,
+            "negative number literal": true,
+            "with default valid": true
+        },
+        "type exports": {
+            "alias": true,
+            "interface": true,
+            "specifier": true,
+            "specifier from": true
+        },
+        "type grouping": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true
+        },
+        "type parameter declaration": {
+            "arrow_with_jsx": true,
+            "arrow_without_jsx": true,
+            "class method reserved word": true,
+            "declare class method reserved word": true,
+            "declare interface method reserved word": true,
+            "default": true,
+            "interface reserved word": true,
+            "object method type param jsx": true,
+            "object reserved word": true,
+            "type object reserved word": true
+        },
+        "typecasts": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true
+        },
+        "anonymous function no parens types": {
+            "good_01": true,
+            "good_02": true,
+            "good_03": true,
+            "good_04": true,
+            "good_05": true,
+            "good_06": true,
+            "good_07": true,
+            "good_08": true,
+            "good_09": true,
+            "good_10": true,
+            "good_11": true,
+            "good_12": true
+        },
+        "anonymous function types": {
+            "good_01": true,
+            "good_03": true,
+            "good_04": true,
+            "good_05": true,
+            "good_06": true,
+            "good_07": true,
+            "good_08": true,
+            "good_09": true,
+            "good_10": true,
+            "good_11": true,
+            "good_12": true,
+            "good_13": true
+        }
+    },
+    "jsx": {
+        "basic": {
+            "21": true
+        }
+    }
+}

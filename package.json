@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
+    "babel-helper-fixtures": "^6.18.2",
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-plugin-transform-flow-strip-types": "^6.7.0",
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
@@ -44,6 +45,8 @@
     "gaze-cli": "^0.2.0",
     "husky": "^0.11.4",
     "jscs": "^2.11.0",
+    "lodash.foreach": "^4.5.0",
+    "lodash.get": "^4.4.2",
     "mocha": "^3.1.2"
   },
   "dependencies": {

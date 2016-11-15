@@ -1,0 +1,3 @@
+[submodule "test/3rdParty/babylon"]
+	path = test/3rdParty/babylon
+	url = https://github.com/babel/babylon.git
