@@ -32,7 +32,9 @@
             "computed": true,
             "edge cases": true,
             "inline": true,
-            "super": true
+            "super": true,
+            "with initializer missing plugin": true,
+            "without initializer missing plugin": true
         },
         "decorators": {
             "class method parameter": true,
