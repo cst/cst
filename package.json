@@ -15,7 +15,7 @@
     "Oleg Gaidarenko <markelog@gmail.com>"
   ],
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
     "test:unit": "mocha",
