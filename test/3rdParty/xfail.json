@@ -35,7 +35,8 @@
             "export default declaration function declaration parameter": true,
             "function declaration parameter": true,
             "function expression parameter": true,
-            "object method parameter": true
+            "object method parameter": true,
+            "computed member expression": "skip"
         },
         "dynamic import": {
             "inside function": true,
