@@ -22,20 +22,30 @@
         },
         "async generators": {
             "for await": true,
-            "object method": true
+            "object method": true,
+            "class method no asi": true
         },
         "class constructor call": {
             "plain": true
         },
         "class properties": {
-            "computed": true
+            "computed": true,
+            "edge cases": true,
+            "inline": true,
+            "super": true
         },
         "decorators": {
             "class method parameter": true,
             "export default declaration function declaration parameter": true,
             "function declaration parameter": true,
             "function expression parameter": true,
-            "object method parameter": true
+            "object method parameter": true,
+            "computed member expression": "skip",
+            "class decorator": true,
+            "class decorator call expr": true,
+            "computed member expr on prop": true,
+            "export decorators on class": true,
+            "export default with nested class": true
         },
         "dynamic import": {
             "inside function": true,
@@ -44,16 +54,113 @@
             "parses strict": true,
             "return value": true,
             "top level": true,
-            "variable arguments": true
+            "variable arguments": true,
+            "generator": true
         },
         "export extensions": {
-            "default and ns": true
+            "default and ns": true,
+            "default type without flow": true,
+            "ns default": true
         },
         "function sent": {
             "inside generator": true
         },
         "no async generators": {
             "error without plugin": true
+        },
+        "class private properties": {
+            "asi success": true,
+            "inline": true,
+            "pbn success": true
+        },
+        "numeric literal separator": {
+            "valid 0": true,
+            "valid 1": true,
+            "valid 10": true,
+            "valid 11": true,
+            "valid 2": true,
+            "valid 3": true,
+            "valid 4": true,
+            "valid 5": true,
+            "valid 6": true,
+            "valid 7": true,
+            "valid 8": true,
+            "valid 9": true
+        },
+        "object rest spread": {
+            "8": true,
+            "16": true,
+            "17": true
+        },
+        "template literal invalid escapes tagged": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true,
+            "10": true,
+            "11": true,
+            "12": true,
+            "13": true,
+            "14": true,
+            "15": true,
+            "16": true,
+            "17": true,
+            "18": true,
+            "19": true,
+            "20": true,
+            "21": true,
+            "22": true,
+            "23": true,
+            "24": true,
+            "25": true,
+            "26": true,
+            "27": true,
+            "28": true,
+            "29": true,
+            "30": true,
+            "31": true,
+            "32": true,
+            "33": true,
+            "34": true,
+            "35": true,
+            "36": true,
+            "37": true,
+            "38": true,
+            "39": true,
+            "40": true,
+            "41": true,
+            "42": true,
+            "43": true,
+            "44": true,
+            "45": true,
+            "46": true,
+            "47": true,
+            "48": true,
+            "49": true,
+            "50": true,
+            "51": true,
+            "52": true,
+            "53": true,
+            "54": true,
+            "55": true,
+            "56": true,
+            "57": true,
+            "58": true,
+            "59": true,
+            "60": true,
+            "61": true,
+            "62": true,
+            "63": true,
+            "64": true,
+            "65": true,
+            "66": true,
+            "67": true,
+            "68": true
         }
     },
     "core": {
@@ -102,12 +209,16 @@
             "327": true,
             "328": true,
             "342": true,
+            "355": true,
+            "356": true,
             "528": true,
             "534": true,
             "538": true,
             "543": true,
             "546": true,
-            "549": true
+            "549": true,
+            "551": true,
+            "553": true
         }
     },
     "es2015": {
@@ -121,16 +232,30 @@
             "45": true,
             "124": true,
             "166": true,
+            "167": true,
+            "168": true,
+            "171": true,
+            "172": true,
+            "174": true,
+            "175": true,
+            "180": true,
+            "181": true,
             "256": true,
             "257": true,
             "259": true,
+            "279": true,
             "301": true,
             "304": true,
             "356": true,
+            "358": true,
             "359": true,
+            "360": true,
             "361": true,
+            "362": true,
             "363": true,
+            "364": true,
             "365": true,
+            "366": true,
             "367": true,
             "368": true,
             "369": true,
@@ -143,7 +268,15 @@
             "376": true,
             "377": true,
             "378": true,
-            "379": true
+            "379": true,
+            ".191": true,
+            ".343": true
+        },
+        "array rest spread": {
+            "with object": true
+        },
+        "destructuring": {
+            "nested": true
         }
     },
     "esprima": {
@@ -172,7 +305,8 @@
             "migrated_0014": true
         },
         "es2015 class": {
-            "migrated_0019": true
+            "migrated_0019": true,
+            ".migrated_0026": true
         },
         "es2015 destructuring assignment object pattern": {
             "object pattern assignment": true
@@ -183,7 +317,8 @@
         "es2015 identifier": {
             "invalid_var_await": true,
             "module_await": true,
-            "valid_await": true
+            "valid_await": true,
+            ".invalid_lone_surrogate": true
         },
         "es2015 import declaration": {
             "import default and namespace specifiers": true
@@ -218,7 +353,11 @@
             "yield generator default parameter": true,
             "yield lexical declaration": true,
             "yield rest parameter": true,
-            "yield variable declaration": true
+            "yield variable declaration": true,
+            ".invalid yield generator arrow default": true,
+            ".yield generator arrow concise body": true,
+            ".yield generator function expression": true,
+            ".yield generator function parameter": true
         },
         "expression assignment": {
             "migrated_0001": true,
@@ -250,6 +389,48 @@
             "migrated_0000": true,
             "migrated_0001": true,
             "migrated_0002": true
+        },
+        "es2015 array binding pattern": {
+            ".invalid elision after rest": true
+        },
+        "es2015 template literals": {
+            ".octal literal": true,
+            ".strict octal literal": true
+        },
+        "invalid syntax": {
+            ".GH 1106 09": true,
+            ".migrated_0033": true,
+            ".migrated_0034": true,
+            ".migrated_0035": true,
+            ".migrated_0036": true,
+            ".migrated_0037": true,
+            ".migrated_0041": true,
+            ".migrated_0042": true,
+            ".migrated_0043": true,
+            ".migrated_0044": true,
+            ".migrated_0048": true,
+            ".migrated_0049": true,
+            ".migrated_0050": true,
+            ".migrated_0051": true,
+            ".migrated_0137": true,
+            ".migrated_0163": true,
+            ".migrated_0165": true,
+            ".migrated_0166": true,
+            ".migrated_0167": true,
+            ".migrated_0169": true
+        },
+        "rest parameter": {
+            "arrow rest parameter array": true,
+            "arrow rest parameter object": true,
+            "rest parameter array": true,
+            "rest parameter object": true
+        },
+        "statement if": {
+            ".migrated_0003": true
+        },
+        "statement iteration": {
+            ".migrated_0021": true,
+            ".pattern in for in": true
         }
     },
     "flow": {
@@ -259,7 +440,10 @@
             "3": true,
             "4": true,
             "5": true,
-            "6": true
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": true
         },
         "bounded polymorphism": {
             "1": true,
@@ -273,7 +457,8 @@
             "5": true
         },
         "class properties": {
-            "named static": true
+            "named static": true,
+            "getter setter": true
         },
         "declare module": {
             "1": true,
@@ -281,7 +466,10 @@
             "3": true,
             "4": true,
             "5": true,
-            "6": true
+            "6": true,
+            "9": true,
+            "10": true,
+            "import": true
         },
         "declare statements": {
             "1": true,
@@ -300,7 +488,8 @@
             "14": true,
             "15": true,
             "16": true,
-            "17": true
+            "17": true,
+            "18": true
         },
         "def site variance": {
             "1": true
@@ -314,7 +503,8 @@
             "6": true,
             "7": true,
             "8": true,
-            "9": true
+            "9": true,
+            "10": true
         },
         "literal types": {
             "boolean false": true,
@@ -346,7 +536,9 @@
         "regression": {
             "issue 166": true,
             "issue 2493": true,
-            "issue 92": true
+            "issue 92": true,
+            "issue 321": true,
+            "issue 336": true
         },
         "trailing function commas type": {
             "1": true
@@ -476,6 +668,11 @@
             "119": true,
             "127": true,
             "128": true,
+            "129": true,
+            "130": true,
+            "135": true,
+            "136": true,
+            "138": true,
             "arrow func return newline": true,
             "builtin": true,
             "existential type param": true,
@@ -539,12 +736,102 @@
             "good_10": true,
             "good_11": true,
             "good_12": true,
-            "good_13": true
+            "good_13": true,
+            "good_14": true
+        },
+        "classes": {
+            "constructor override with class prop plugin": true,
+            "constructor with class prop plugin": true
+        },
+        "comment": {
+            "spread": true
+        },
+        "declare export": {
+            "export class": true,
+            "export default arrow": true,
+            "export default class": true,
+            "export default function": true,
+            "export default union": true,
+            "export from": true,
+            "export function": true,
+            "export interface": true,
+            "export interface and var": true,
+            "export interface commonjs": true,
+            "export named pattern": true,
+            "export star": true,
+            "export star as": true,
+            "export type": true,
+            "export type and var": true,
+            "export type commonjs": true,
+            "export var": true
+        },
+        "object types": {
+            "complex param types": true
+        },
+        "predicates": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "6": true
+        },
+        "type generics": {
+            "1": true,
+            "2": true
+        },
+        "type imports": {
+            "import type": true,
+            "import type shorthand": true
         }
     },
     "jsx": {
         "basic": {
+            "10": true,
             "21": true
+        }
+    },
+    "es2017": {
+        "async functions": {
+            "no method asi": true
+        }
+    },
+    "estree": {
+        "flow": {
+            "string literal annotation": true
+        }
+    },
+    "test262": {
+        "rest parameter": {
+            "array pattern empty": true,
+            "array pattern empty with array": true,
+            "array pattern empty with leading": true,
+            "array pattern empty with object": true,
+            "array pattern empty with rest": true,
+            "array pattern multi element": true,
+            "array pattern multi element with array": true,
+            "array pattern multi element with initializer": true,
+            "array pattern multi element with leading": true,
+            "array pattern multi element with object": true,
+            "array pattern multi element with rest": true,
+            "array pattern single element": true,
+            "array pattern single element with array": true,
+            "array pattern single element with initializer": true,
+            "array pattern single element with leading": true,
+            "array pattern single element with object": true,
+            "array pattern single element with rest": true,
+            "object pattern empty": true,
+            "object pattern empty with array": true,
+            "object pattern empty with leading": true,
+            "object pattern empty with object": true,
+            "object pattern multi element": true,
+            "object pattern multi element with array": true,
+            "object pattern multi element with initializer": true,
+            "object pattern multi element with leading": true,
+            "object pattern multi element with object": true,
+            "object pattern single element": true,
+            "object pattern single element with array": true,
+            "object pattern single element with initializer": true,
+            "object pattern single element with leading": true,
+            "object pattern single element with object": true
         }
     }
 }
