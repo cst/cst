@@ -1,4 +1,5 @@
 import Node from '../Node';
+import Identifier from './Identifier';
 
 export default class ObjectProperty extends Node {
     constructor(childNodes) {
@@ -53,6 +54,10 @@ function readKey(children) {
         children.isNode('Identifier')
     ) {
         return children.passNode();
+    } else if (children.isToken('Identifier')) {
+        // This element is skipped in elementTree::buildElementTreeItem due to:
+        // https://github.com/babel/babylon/issues/49
+        return new Identifier([children.passToken()]);
     } else {
         children.passToken('Punctuator', '[');
         children.skipNonCode();
