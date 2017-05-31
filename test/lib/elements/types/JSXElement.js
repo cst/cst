@@ -60,6 +60,34 @@ describe('JSXElement', () => {
         expect(expression.children[0].expression.type).to.equal('JSXEmptyExpression');
     });
 
+    it('allow opening and closing tag with JSXEmptyExpression with Whitespace and CommentBlock', () => {
+        const expression = parseAndGetExpression('< a >{ /* hi */ }< / a >');
+        expect(expression.type).to.equal('JSXElement');
+        expect(expression.openingElement.type).to.equal('JSXOpeningElement');
+        expect(expression.openingElement.name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.name.name).to.equal('a');
+        expect(expression.openingElement.attributes.length).to.equal(0);
+        expect(expression.openingElement.selfClosing).to.equal(false);
+        expect(expression.closingElement.type).to.equal('JSXClosingElement');
+        expect(expression.openingElement.name.type).to.equal('JSXIdentifier');
+        expect(expression.openingElement.name.name).to.equal('a');
+        expect(expression.openingElement.attributes.length).to.equal(0);
+        expect(expression.children.length).to.equal(1);
+        expect(expression.children[0].type).to.equal('JSXExpressionContainer');
+        expect(expression.children[0].childElements.map((el) => el.getSourceCode())).to.deep.equal([
+            '{', ' /* hi */ ', '}',
+        ]);
+        expect(expression.children[0].expression.type).to.equal('JSXEmptyExpression');
+        expect(expression.children[0].expression.childElements.map((el) => el.getSourceCode())).to.deep.equal([
+            ' ', '/* hi */', ' ',
+        ]);
+        expect(expression.children[0].expression.childElements.map((el) => el.type)).to.deep.equal([
+            'Whitespace',
+            'CommentBlock',
+            'Whitespace',
+        ]);
+    });
+
     it('allow opening and closing tag with JSXText', () => {
         const expression = parseAndGetExpression('< a >asdf< / a >');
         expect(expression.type).to.equal('JSXElement');

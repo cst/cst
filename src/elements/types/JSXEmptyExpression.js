@@ -6,6 +6,7 @@ export default class JSXEmptyExpression extends Expression {
     }
 
     _acceptChildren(children) {
+        children.skipNonCode();
         children.assertEnd();
     }
 }
