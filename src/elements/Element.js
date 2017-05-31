@@ -60,6 +60,7 @@ export default class Element {
         this.isPattern = false;
         this.isAssignable = false;
         this.isFragment = false;
+        this.isExpression = false;
     }
 
     type: string;
