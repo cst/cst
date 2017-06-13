@@ -25,6 +25,7 @@ export default class ClassProperty extends Node {
             this.value = children.passNode();
         }
 
+        children.skipSemicolon();
         children.assertEnd();
 
         // What is computed Class property?
