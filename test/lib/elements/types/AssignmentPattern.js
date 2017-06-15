@@ -137,6 +137,108 @@ describe('AssignmentPattern', () => {
         expect(param.right.properties).to.eql([]);
     });
 
+    it('should accept destructed object with rename', () => {
+        let param = parseAndGetStatementInFunctionParams(' {x: a, y: b} = {} ')[0];
+        expect(param.left.type).to.equal('ObjectPattern');
+        expect(param.left.properties.length).to.equal(2);
+        expect(param.left.properties[0].type).to.equal('ObjectProperty');
+        expect(param.left.properties[0].shorthand).to.equal(false);
+        expect(param.left.properties[0].key.type).to.equal('Identifier');
+        expect(param.left.properties[0].key.name).to.equal('x');
+        expect(param.left.properties[0].value.type).to.equal('Identifier');
+        expect(param.left.properties[0].value.name).to.equal('a');
+
+        expect(param.left.properties[1].type).to.equal('ObjectProperty');
+        expect(param.left.properties[1].shorthand).to.equal(false);
+        expect(param.left.properties[1].key.type).to.equal('Identifier');
+        expect(param.left.properties[1].key.name).to.equal('y');
+        expect(param.left.properties[1].value.type).to.equal('Identifier');
+        expect(param.left.properties[1].value.name).to.equal('b');
+
+        expect(param.right.type).to.equal('ObjectExpression');
+        expect(param.right.properties).to.eql([]);
+    });
+
+    it('should accept destructed object with rename and defaults', () => {
+        const param = parseAndGetStatementInFunctionParams(' {x: a = 1, y: b = 2} = {} ')[0];
+        expect(param.left.type).to.equal('ObjectPattern');
+        expect(param.left.properties.length).to.equal(2);
+        expect(param.left.properties[0].type).to.equal('ObjectProperty');
+        expect(param.left.properties[0].shorthand).to.equal(false);
+        expect(param.left.properties[0].key.type).to.equal('Identifier');
+        expect(param.left.properties[0].key.name).to.equal('x');
+        expect(param.left.properties[0].value.type).to.equal('AssignmentPattern');
+        expect(param.left.properties[0].value.left.type).to.equal('Identifier');
+        expect(param.left.properties[0].value.left.name).to.equal('a');
+        expect(param.left.properties[0].value.right.type).to.equal('NumericLiteral');
+        expect(param.left.properties[0].value.right.value).to.equal(1);
+
+
+        expect(param.left.properties[1].type).to.equal('ObjectProperty');
+        expect(param.left.properties[1].shorthand).to.equal(false);
+        expect(param.left.properties[1].key.type).to.equal('Identifier');
+        expect(param.left.properties[1].key.name).to.equal('y');
+        expect(param.left.properties[1].value.type).to.equal('AssignmentPattern');
+        expect(param.left.properties[1].value.left.type).to.equal('Identifier');
+        expect(param.left.properties[1].value.left.name).to.equal('b');
+        expect(param.left.properties[1].value.right.type).to.equal('NumericLiteral');
+        expect(param.left.properties[1].value.right.value).to.equal(2);
+
+        expect(param.right.type).to.equal('ObjectExpression');
+        expect(param.right.properties).to.eql([]);
+    });
+
+    it('should accect nested object pattern', () => {
+        let param = parseAndGetStatementInFunctionParams('{ x: { y } } = {}')[0];
+        expect(param.left.type).to.equal('ObjectPattern');
+        expect(param.left.properties.length).to.equal(1);
+        const x = param.left.properties[0];
+        expect(x.type).to.equal('ObjectProperty');
+        expect(x.shorthand).to.equal(false);
+        expect(x.key.type).to.equal('Identifier');
+        expect(x.key.name).to.equal('x');
+
+        expect(x.value.type).to.equal('ObjectPattern');
+        expect(x.value.properties.length).to.equal(1);
+        const y = x.value.properties[0];
+        expect(y.type).to.equal('ObjectProperty');
+        expect(y.shorthand).to.equal(true);
+        expect(y.key.type).to.equal('Identifier');
+        expect(y.key.name).to.equal('y');
+        expect(y.value).to.equal(y.key);
+
+        expect(param.right.type).to.equal('ObjectExpression');
+        expect(param.right.properties).to.eql([]);
+    });
+
+    it('should accept nested object pattern with default', () => {
+        let param = parseAndGetStatementInFunctionParams('{ x: { y = 2 } } = {}')[0];
+        expect(param.left.type).to.equal('ObjectPattern');
+        expect(param.left.properties.length).to.equal(1);
+        const x = param.left.properties[0];
+        expect(x.type).to.equal('ObjectProperty');
+        expect(x.shorthand).to.equal(false);
+        expect(x.key.type).to.equal('Identifier');
+        expect(x.key.name).to.equal('x');
+
+        expect(x.value.type).to.equal('ObjectPattern');
+        expect(x.value.properties.length).to.equal(1);
+        const y = x.value.properties[0];
+        expect(y.type).to.equal('ObjectProperty');
+        expect(y.shorthand).to.equal(false);
+        expect(y.key.type).to.equal('Identifier');
+        expect(y.key.name).to.equal('y');
+        expect(y.value.type).to.equal('AssignmentPattern');
+        expect(y.value.left.type).to.equal('Identifier');
+        expect(y.value.left.name).to.equal('y');
+        expect(y.value.right.type).to.equal('NumericLiteral');
+        expect(y.value.right.value).to.equal(2);
+
+        expect(param.right.type).to.equal('ObjectExpression');
+        expect(param.right.properties).to.eql([]);
+    });
+
+
     it('should accept destructed array with default and spaces', () => {
         let param = parseAndGetStatementInFunctionParams(' [x, y] = [1, 2] ')[0];
         expect(param.left.type).to.equal('ArrayPattern');
