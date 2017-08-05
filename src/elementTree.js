@@ -212,7 +212,8 @@ function processToken(token: Object, source: string): BabylonToken {
         type === tt.relational || type === tt.bitShift ||
         type === tt.plusMin || type === tt.modulo ||
         type === tt.exponent || type === tt.prefix ||
-        type === tt.doubleColon ||
+        type === tt.doubleColon || type === tt.bang ||
+        type === tt.tilde ||
         type.isAssign) {
         token.type = 'Punctuator';
         if (!token.value) {
