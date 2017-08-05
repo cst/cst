@@ -194,6 +194,7 @@ export default class Parser {
                 ...Object.keys(options.experimentalFeatures),
                 ...Object.keys(options.languageExtensions),
             ],
+            tokens: true,
         });
 
         let program = ast.program;

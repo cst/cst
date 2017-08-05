@@ -17,8 +17,8 @@ export default class ObjectExpression extends Expression {
                 children.skipNonCode();
                 children.assertToken('Punctuator', '}');
             } else {
-                if (children.isNode('SpreadProperty')) {
-                    properties.push(children.passNode('SpreadProperty'));
+                if (children.isNode('SpreadElement')) {
+                    properties.push(children.passNode('SpreadElement'));
                 } else if (children.isNode('ObjectProperty')) {
                     properties.push(children.passNode('ObjectProperty'));
                 } else {

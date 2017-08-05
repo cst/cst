@@ -1,5 +1,3 @@
-import RestProperty from './types/RestProperty';
-
 import AssignmentExpression from './types/AssignmentExpression';
 import AssignmentPattern from './types/AssignmentPattern';
 import ArrayExpression from './types/ArrayExpression';
@@ -71,7 +69,6 @@ import RestElement from './types/RestElement';
 import ReturnStatement from './types/ReturnStatement';
 import SequenceExpression from './types/SequenceExpression';
 import SpreadElement from './types/SpreadElement';
-import SpreadProperty from './types/SpreadProperty';
 import StringLiteral from './types/StringLiteral';
 import Super from './types/Super';
 import SwitchCase from './types/SwitchCase';
@@ -91,8 +88,6 @@ import WhileStatement from './types/WhileStatement';
 import YieldExpression from './types/YieldExpression';
 
 export default {
-    RestProperty,
-
     AssignmentExpression,
     AssignmentPattern,
     ArrayExpression,
@@ -164,7 +159,6 @@ export default {
     ReturnStatement,
     SequenceExpression,
     SpreadElement,
-    SpreadProperty,
     StringLiteral,
     Super,
     SwitchCase,
