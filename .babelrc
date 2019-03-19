@@ -1,9 +1,9 @@
 {
-  "presets": ["es2015"],
+  "presets": ["@babel/env"],
   "plugins": [
-    "transform-class-properties",
-    "transform-flow-strip-types",
-    "transform-object-rest-spread",
-    "transform-runtime"
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread",
+    "@babel/transform-flow-strip-types",
+    "@babel/transform-runtime"
   ]
 }

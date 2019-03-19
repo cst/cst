@@ -15,7 +15,15 @@ export default class VariableDeclaration extends Statement {
     }
 
     _acceptChildren(children) {
-        let kind = children.passToken('Keyword', validKinds).value;
+        // let is not always a keyword. See:
+        // https://github.com/babel/babel/issues/6719
+        // https://github.com/babel/babel/pull/9375
+        let kind;
+        if (children.currentElement.value === 'let') {
+            kind = children.passToken('Identifier', validKinds).value;
+        } else {
+            kind = children.passToken('Keyword', validKinds).value;
+        }
         children.skipNonCode();
 
         let declarations = [];

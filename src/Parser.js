@@ -1,6 +1,6 @@
 /* @flow */
 
-import {parse} from 'babylon';
+import {parse} from '@babel/parser';
 
 import type {BabylonToken} from './elementTree';
 import type Program from './elements/types/Program';
@@ -82,13 +82,15 @@ export default class Parser {
                 'asyncGenerators': true,
                 'classConstructorCall': true,
                 'classProperties': true,
-                'decorators': true,
+                'decorators-legacy': true,
                 'doExpressions': true,
                 'exponentiationOperator': true,
                 'exportExtensions': true,
                 'functionBind': true,
                 'objectRestSpread': true,
                 'trailingFunctionCommas': true,
+                'exportNamespaceFrom': true,
+                'exportDefaultFrom': true,
             },
             languageExtensions: {
                 jsx: true,
@@ -190,6 +192,7 @@ export default class Parser {
             allowImportExportEverywhere: options.allowImportExportEverywhere,
             allowReturnOutsideFunction: options.allowReturnOutsideFunction,
             allowSuperOutsideMethod: options.allowSuperOutsideMethod,
+            tokens: true, // disabled by default in Babel 7 for performance
             plugins: [
                 ...Object.keys(options.experimentalFeatures),
                 ...Object.keys(options.languageExtensions),

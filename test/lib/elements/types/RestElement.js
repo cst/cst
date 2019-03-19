@@ -1,4 +1,4 @@
-import {parseAndGetStatementInFunctionParams, parseAndGetExpression} from '../../../utils';
+import {parseAndGetStatement, parseAndGetStatementInFunctionParams, parseAndGetExpression} from '../../../utils';
 import {expect} from 'chai';
 
 describe('RestElement', () => {
@@ -52,5 +52,36 @@ describe('RestElement', () => {
         expect(expression.left.elements[1].argument.type).to.equal('MemberExpression');
         expect(expression.left.elements[1].argument.object.name).to.equal('x');
         expect(expression.left.elements[1].argument.property.name).to.equal('b');
+    });
+
+    it('should yield correct type', () => {
+        let properties = parseAndGetStatement('let {...a} = b;').declarations[0].id.properties;
+        expect(properties[0].type).to.equal('RestElement');
+    });
+
+    it('should accept a single identifier', () => {
+        let properties = parseAndGetStatement('let {...a} = b;').declarations[0].id.properties;
+        expect(properties[0].type).to.equal('RestElement');
+        expect(properties[0].argument.type).to.equal('Identifier');
+        expect(properties[0].argument.name).to.equal('a');
+    });
+
+    it('should accept a single identifier with a comment in between', () => {
+        let properties = parseAndGetStatement('let {... /* a */ a} = b;').declarations[0].id.properties;
+        expect(properties[0].type).to.equal('RestElement');
+        expect(properties[0].argument.type).to.equal('Identifier');
+        expect(properties[0].argument.name).to.equal('a');
+    });
+
+    it('should allow other params', () => {
+        let properties = parseAndGetStatement('let { a, ... b } = c ;').declarations[0].id.properties;
+        expect(properties[0].type).to.equal('ObjectProperty');
+        expect(properties[0].key.type).to.equal('Identifier');
+        expect(properties[0].key.name).to.equal('a');
+        expect(properties[0].value.type).to.equal('Identifier');
+        expect(properties[0].value.name).to.equal('a');
+        expect(properties[1].type).to.equal('RestElement');
+        expect(properties[1].argument.type).to.equal('Identifier');
+        expect(properties[1].argument.name).to.equal('b');
     });
 });
