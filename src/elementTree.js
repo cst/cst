@@ -1,6 +1,6 @@
 /* @flow */
 
-import * as babylon from 'babylon';
+import * as babylon from '@babel/parser';
 
 import type Program from './elements/types/Program';
 import type Location from './elements/Element';
@@ -70,7 +70,6 @@ function buildElementTreeItem(ast: Object, state: ElementTreeItemState): ?Elemen
     let childElements = [];
     for (let i = 0; i < childProps.length; i++) {
         let childAst = ast[childProps[i]];
-
         if (!childAst) {
             continue;
         }
@@ -212,8 +211,8 @@ function processToken(token: Object, source: string): BabylonToken {
         type === tt.relational || type === tt.bitShift ||
         type === tt.plusMin || type === tt.modulo ||
         type === tt.exponent || type === tt.prefix ||
-        type === tt.doubleColon ||
-        type.isAssign) {
+        type === tt.doubleColon || type === tt.tilde ||
+        type === tt.bang || type.isAssign) {
         token.type = 'Punctuator';
         if (!token.value) {
             token.sourceCode = token.value = type.label;

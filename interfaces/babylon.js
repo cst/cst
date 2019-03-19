@@ -10,7 +10,7 @@ type babylonOptions = {
   ecmaVersion: number
 };
 
-declare module 'babylon' {
+declare module '@babel/parser' {
     declare function parse(code: string, opts: babylonOptions): Object;
     declare var tokTypes: Object;
 }

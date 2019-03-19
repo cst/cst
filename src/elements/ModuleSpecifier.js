@@ -12,6 +12,4 @@ export default class ModuleSpecifier extends Node {
         super(type, children);
         this.isModuleSpecifier = true;
     }
-
-    local: Object;
 }

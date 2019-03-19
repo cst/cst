@@ -1,1 +1,1 @@
-test/utils.js test/lib test/integrated test/3rdParty/index.js src --recursive --compilers js:babel-register
+test/utils.js test/lib test/integrated test/3rdParty/index.js src --recursive --compilers js:@babel/register

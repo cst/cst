@@ -9,7 +9,10 @@ export default class YieldExpression extends Expression {
     }
 
     _acceptChildren(children) {
-        children.passToken('Keyword', 'yield');
+        // yield is not always a keyword. See:
+        // https://github.com/babel/babel/issues/6719
+        // https://github.com/babel/babel/pull/9400
+        children.passToken('Identifier', 'yield');
 
         let argument = null;
         let delegate = false;

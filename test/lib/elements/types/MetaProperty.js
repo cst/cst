@@ -34,6 +34,6 @@ describe('MetaProperty', () => {
     it('should error if not in function', () => {
         expect(() => {
             parseAndGetExpression('new.target');
-        }).to.throw(/new.target can only be used in functions \(\d+:\d+\)/);
+        }).to.throw(/new.target can only be used in functions or class properties \(\d+:\d+\)/);
     });
 });
