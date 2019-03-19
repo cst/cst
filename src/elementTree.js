@@ -210,9 +210,8 @@ function processToken(token: Object, source: string): BabylonToken {
         type === tt.bitwiseAND || type === tt.equality ||
         type === tt.relational || type === tt.bitShift ||
         type === tt.plusMin || type === tt.modulo ||
-        type === tt.exponent || type === tt.prefix ||
-        type === tt.doubleColon || type === tt.tilde ||
-        type === tt.bang || type.isAssign) {
+        type === tt.exponent || type === tt.doubleColon ||
+        type === tt.tilde || type === tt.bang || type.isAssign) {
         token.type = 'Punctuator';
         if (!token.value) {
             token.sourceCode = token.value = type.label;
