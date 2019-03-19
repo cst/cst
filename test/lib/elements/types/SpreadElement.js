@@ -1,4 +1,4 @@
-import {parseAndGetExpression} from '../../../utils';
+import {parseAndGetExpression, parseAndGetObjectProperty, parseAndGetStatement} from '../../../utils';
 import {expect} from 'chai';
 
 describe('SpreadElement', () => {
@@ -59,5 +59,38 @@ describe('SpreadElement', () => {
         expect(args[1].type).to.equal('SpreadElement');
         expect(args[1].argument.type).to.equal('Identifier');
         expect(args[1].argument.name).to.equal('b');
+    });
+
+    it('should yield correct type', () => {
+        expect(parseAndGetObjectProperty('...b').type).to.equal('SpreadElement');
+    });
+
+    it('should accept a single identifier', () => {
+        let spreadProperty = parseAndGetObjectProperty('...b');
+        expect(spreadProperty.type).to.equal('SpreadElement');
+        expect(spreadProperty.argument.type).to.equal('Identifier');
+        expect(spreadProperty.argument.name).to.equal('b');
+    });
+
+    it('should accept a single identifier with a comment in between', () => {
+        let spreadProperty = parseAndGetObjectProperty('... /* a */ b');
+        expect(spreadProperty.type).to.equal('SpreadElement');
+        expect(spreadProperty.argument.type).to.equal('Identifier');
+        expect(spreadProperty.argument.name).to.equal('b');
+    });
+
+    it('should allow other params', () => {
+        let properties = parseAndGetStatement('let a = { b, ... c, ... d } ;').declarations[0].init.properties;
+        expect(properties[0].type).to.equal('ObjectProperty');
+        expect(properties[0].key.type).to.equal('Identifier');
+        expect(properties[0].key.name).to.equal('b');
+        expect(properties[0].value.type).to.equal('Identifier');
+        expect(properties[0].value.name).to.equal('b');
+        expect(properties[1].type).to.equal('SpreadElement');
+        expect(properties[1].argument.type).to.equal('Identifier');
+        expect(properties[1].argument.name).to.equal('c');
+        expect(properties[2].type).to.equal('SpreadElement');
+        expect(properties[2].argument.type).to.equal('Identifier');
+        expect(properties[2].argument.name).to.equal('d');
     });
 });
