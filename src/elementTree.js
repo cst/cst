@@ -220,7 +220,7 @@ function processToken(token: Object, source: string): BabylonToken {
         }
     } else if (type === tt.template) {
         token.type = 'Template';
-        token.sourceCode = token.value;
+        token.sourceCode = source.substring(token.start, token.end);
     } else if (type === tt.jsxTagStart) {
         token.type = 'Punctuator';
         token.sourceCode = token.value = '<';
